@@ -1,3 +1,4 @@
+import './config.js';
 import express from "express";
 import { initDB } from "./DB/dataSource.js";
 
