@@ -12,7 +12,4 @@ export class Payment {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(0)' })
   paymentDate: Date;
 
-//   @ManyToOne(() => Order, (order) => order.payments)
-//   orders: Order;
-
 }
