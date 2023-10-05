@@ -2,7 +2,7 @@ import express from 'express';
 
 const router = express.Router();
 
-router.get('/orders', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
        
     } catch (error) {
@@ -10,7 +10,7 @@ router.get('/orders', async (req, res) => {
     }
 });
 
-router.post('/orders',  async (req, res) => {
+router.post('/',  async (req, res) => {
     try {
        
     } catch (error) {
@@ -19,7 +19,7 @@ router.post('/orders',  async (req, res) => {
 
 });
 
-router.post('/orders/checkout',  async (req, res) => {
+router.post('/checkout',  async (req, res) => {
     try {
        
     } catch (error) {

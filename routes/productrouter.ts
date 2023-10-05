@@ -2,7 +2,7 @@ import express from 'express';
 
 const router = express.Router();
 
-router.get('/Product', async(req,res) => {
+router.get('/', async(req,res) => {
     try {
        
     } catch (error) {
@@ -11,7 +11,7 @@ router.get('/Product', async(req,res) => {
 
 });
 
-router.get('/product/:id', async(req,res) => {
+router.get('/:id', async(req,res) => {
     try {
        
     } catch (error) {
@@ -20,7 +20,7 @@ router.get('/product/:id', async(req,res) => {
 
 });
 
-router.post('/product', async(req,res) => {
+router.post('/', async(req,res) => {
     try {
        
     } catch (error) {
@@ -29,7 +29,7 @@ router.post('/product', async(req,res) => {
 
 });
 
-router.delete('/product/:id', async(req,res) => {
+router.delete('/:id', async(req,res) => {
     try {
        
     } catch (error) {
