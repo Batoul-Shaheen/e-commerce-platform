@@ -13,6 +13,5 @@ export namespace NSUser{
         description?: string,
         price : number ,
         quantity: number,
-        category: string,
     }
 }
