@@ -43,4 +43,4 @@ const getUsersById = async (id: number) => {
   }
 };
 
-export default { insertUser, loginUser, getUsers, getUsersById };
+export { insertUser, loginUser, getUsers, getUsersById };
