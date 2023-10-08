@@ -5,6 +5,7 @@ export namespace NSUser{
         username: string;
         password:string;
         email:string;
+        phone: string;
     }
  
     export interface Product{
