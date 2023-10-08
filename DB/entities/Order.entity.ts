@@ -1,21 +1,38 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable } from "typeorm";
+import {
+  Entity,
+  BaseEntity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  ManyToMany,
+  JoinTable,
+} from "typeorm";
 import { User } from "./User.entity.js";
 import { Product } from "./Product.entity.js";
 import { Payment } from "./Payment.entity.js";
 
 @Entity()
 export class Order extends BaseEntity {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn("increment")
   id: number;
 
   @Column()
   orderDate: Date;
 
-  @Column('decimal', { precision: 10, scale: 2 })
+  @Column("decimal", { precision: 10, scale: 2 })
   totalAmount: number;
 
-  @Column()
+  @Column({ default: "Pending" })
   status: string;
+
+  @Column()
+  city: string;
+
+  @Column()
+  country: string;
+
+  @Column()
+  phone: string;
 
   @ManyToOne(() => User, (user) => user.orders)
   user: User;
