@@ -1,4 +1,5 @@
 import express from 'express';
+import { Product } from '../DB/entities/Product.entity.js';
 
 const router = express.Router();
 
@@ -31,11 +32,17 @@ router.post('/', async(req,res) => {
 
 router.delete('/:id', async(req,res) => {
     try {
-       
-    } catch (error) {
+        const id = Number(req.params.id)
+        const product = await Product.findOneBy({ id });
+        if (product) {
+            await product.remove();
+            res.send('Product deleted');
+        } else {
+            res.status(404).send('Product not found !')
+         }
+        } catch (error) {
         res.status(500).send(error)
     }
-
 });
 
 export default router;
