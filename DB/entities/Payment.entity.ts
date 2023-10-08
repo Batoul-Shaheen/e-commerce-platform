@@ -1,8 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Order } from './Order.entity.js';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
 
 @Entity()
-export class Payment {
+export class Payment extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
