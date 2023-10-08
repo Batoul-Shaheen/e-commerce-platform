@@ -1,6 +1,7 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, ManyToOne } from "typeorm";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable,ManyToOne } from "typeorm";
 import { Order } from "./Order.entity.js";
 import { ShoppingCart } from "./ShoppingCart.entity.js";
+import { Category } from "./category.js";
 
 @Entity()
 export class Product extends BaseEntity {
@@ -25,5 +26,8 @@ export class Product extends BaseEntity {
     @ManyToMany(() => ShoppingCart, (cart) => cart.products)
     @JoinTable()
     shoppingCarts: ShoppingCart[];
+
+    @ManyToOne(() => Category, (category) => category.products)
+    category: Category;
 
 }
