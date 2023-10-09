@@ -12,15 +12,6 @@ const insertProduct = (payload: NSUser.Product) => {
   };
 
 
-//   const getproductsByCategory = async (category: string) => {
-//     try {
-//       const product = await Product.find({ where: { category } });
-//       return product;
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-
   const getProductsById = async (id: number) => {
     try {
       const product = await Product.findOne({ where: { id } });
@@ -29,3 +20,5 @@ const insertProduct = (payload: NSUser.Product) => {
       console.log(error);
     }
   };
+
+export {insertProduct, getProductsById}
