@@ -72,7 +72,7 @@ router.get("/", authenticate, async (req, res) => {
 
 router.get("/:name", authenticate, async (req, res) => {
   try {
-    const id = req.body.id;
+    const id = parseInt(req.params.id);
     const UserById = await getUsersById(id);
     res.send(UserById);
   } catch (error) {
