@@ -15,4 +15,12 @@ export namespace NSUser{
         price : number ,
         quantity: number,
     }
+
+    export interface Category{
+        name: string,
+        icon: string,
+        color: string,
+        products: Product[],
+        status: "new" | "done",
+    }
 }

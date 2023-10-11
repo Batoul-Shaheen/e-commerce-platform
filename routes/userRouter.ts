@@ -70,7 +70,7 @@ router.get("/", authenticate, async (req, res) => {
   }
 });
 
-router.get("/:id", authenticate, async (req, res) => {
+router.get("/:name", authenticate, async (req, res) => {
   try {
     const id = req.body.id;
     const UserById = await getUsersById(id);

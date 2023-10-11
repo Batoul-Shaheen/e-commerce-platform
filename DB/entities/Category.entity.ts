@@ -12,6 +12,9 @@ export class Category extends BaseEntity {
   @Column()
   color: string;
 
+  @Column()
+  status: 'new' | 'done';
+
   @OneToMany(() => Product, (product) => product.category)
   products: Product[];
 }
