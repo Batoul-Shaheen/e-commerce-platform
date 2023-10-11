@@ -22,26 +22,5 @@ const getordersById = async (id: number) => {
     }
   };
 
-//   export function getOrdersForUser(userId: number): Promise<Order[]> {
-//     const repository = TypeORM.getRepository(Order);
-//     const orders = await repository.find({ where: { userId } });
-//     return orders;
-//   }
-
- 
-// async function fetchUserAndProducts(id: number, id: number[]): Promise<{ user: User; products: Product[] }> {
-//  const user = await User.findOne({ where: { id } });
-//  const products = await Product.findOne({ _id: { $in: id } });
-
-//  if (!user) {
-//     throw new Error('User not found');
-//  }
-
-//  if (products.length !== id.length) {
-//     throw new Error('Some products not found');
-//  }
-
-//  return { user, products };
-// }
 
   export {getordersById, CreateOrder};

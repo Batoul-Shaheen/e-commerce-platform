@@ -1,9 +1,9 @@
-import { Entity, BaseEntity, OneToMany, Column } from "typeorm";
+import { Entity, BaseEntity, OneToMany, Column, PrimaryColumn } from "typeorm";
 import { Product } from "./Product.entity.js";
 
 @Entity()
 export class Category extends BaseEntity {
-  @Column()
+  @PrimaryColumn()
   name: string;
 
   @Column()

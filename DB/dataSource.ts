@@ -1,9 +1,10 @@
 import { DataSource } from "typeorm";
 import { Order } from "./entities/Order.entity.js";
-import { Payment } from "./entities/Payment.entity.js";
 import { Product } from "./entities/Product.entity.js";
 import { ShoppingCart } from "./entities/ShoppingCart.entity.js";
 import { User } from "./entities/User.entity.js";
+import { Category } from "./entities/Category.entity.js";
+import { OrderItem } from "./entities/OrderItem.entity.js";
 
 const dataSource = new DataSource({
     type: 'mysql',
@@ -14,10 +15,11 @@ const dataSource = new DataSource({
     database: process.env.DB_NAME,
     entities: [
         Order,
-        Payment,
         Product,
         ShoppingCart,
-        User
+        User,
+        Category,
+        OrderItem
     ],
     migrations: ['./**/migration/*.ts'],
     synchronize: true,

@@ -35,9 +35,4 @@ export class Order extends BaseEntity {
 
   @OneToMany(() => OrderItem, orderItem => orderItem.order)
   orderItems: OrderItem[];
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 24bec6ab0dc2741a5daf5c2866111beb2da5a98c
 }
