@@ -2,7 +2,6 @@ import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMa
 import { User } from "./User.entity.js";
 import { Product } from "./Product.entity.js";
 import { OrderItem } from "./OrderItem.entity.js";
-import { Payment } from "./Payment.entity.js";
 
 @Entity()
 export class Order extends BaseEntity {
@@ -37,6 +36,5 @@ export class Order extends BaseEntity {
   @OneToMany(() => OrderItem, orderItem => orderItem.order)
   orderItems: OrderItem[];
 
-  @ManyToOne(() => Payment)
-  payments: Payment;
+
 }
