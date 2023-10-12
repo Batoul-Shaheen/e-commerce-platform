@@ -2,8 +2,10 @@ import './config.js';
 import express from "express";
 import { initDB } from "./DB/dataSource.js";
 
+
 const app = express();
 const PORT = process.env.PORT || 3000;
+
 
 app.use(express.json());
 
