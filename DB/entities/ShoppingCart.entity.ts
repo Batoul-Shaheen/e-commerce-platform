@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Entity,
   JoinColumn,
   JoinTable,
@@ -10,7 +11,7 @@ import { User } from "./User.entity.js";
 import { Product } from "./Product.entity.js";
 
 @Entity()
-export class ShoppingCart {
+export class ShoppingCart extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
