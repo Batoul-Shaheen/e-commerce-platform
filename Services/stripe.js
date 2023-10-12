@@ -56,6 +56,7 @@ app.post('/payment', function(req, res){
 	});
 })
 
+export default stripe;
 // app.listen(port, function(error){
 // 	if(error) throw error
 // 	console.log("Server created Successfully")
