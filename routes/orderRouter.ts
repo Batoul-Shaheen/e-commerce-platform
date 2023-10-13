@@ -68,21 +68,6 @@ router.get("/find/:userId", async (req, res) => {
   }
 });
 
-router.post('/checkout',  async (req, res) => {
-    try {
-        const orderCount = await Order.findAndCount();
-
-        if(!orderCount) {
-            res.status(500).send('ERROR')
-        } 
-        res.send({
-            orderCount: orderCount
-        });
-    } catch (error) {
-        res.status(500).send(error)
-    }
-});
-
 // Delete Order dependent on OrderId
 router.delete("/:id", isUser, async (req, res) => {
   try {
