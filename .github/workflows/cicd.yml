@@ -32,8 +32,8 @@ jobs:
     runs-on: [aws-ec2]
     steps:
       - name: Pull image from docker hub
-        run: docker pull integrationninjas/nodejs:latest
+        run: docker pull batoolshaheen/nodejs:latest
       - name: Delete old container
         run: docker rm -f nodejs-container
       - name: Run docker container
-        run: docker run -d -p 3000:3000 --name nodejs-container integrationninjas/nodejs        
+        run: docker run -d -p 3000:3000 --name nodejs-container batoolshaheen/nodejs        
