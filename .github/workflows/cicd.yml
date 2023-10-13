@@ -9,9 +9,6 @@ jobs:
   build:
     runs-on: [ubuntu-latest]
     steps:
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-        
       - name: Checkout code
         uses: actions/checkout@v3
 
