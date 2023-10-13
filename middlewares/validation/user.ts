@@ -22,7 +22,7 @@ const validateUser = (req: express.Request,
     errorList.push('Password should contain at least 6 characters!');
   }
 
-  if (!['admin', 'customer'].includes(user.type)) {
+  if (!['Admin', 'User'].includes(user.type)) {
     errorList.push('User type unknown!');
   }
 

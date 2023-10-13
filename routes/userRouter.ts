@@ -6,7 +6,8 @@ import {
   getUsersById,
 } from "../controllers/user.js";
 import { validateUser } from "../middlewares/validation/user.js";
-import { authenticate } from "../middlewares/auth/authenticate.js";
+import { auth } from "../middlewares/auth/authenticate.js";
+
 
 const router = express.Router();
 
@@ -61,7 +62,7 @@ router.post("/logout", async (req, res, next) => {
   res.send();
 });
 
-router.get("/", authenticate, async (req, res) => {
+router.get("/", auth, async (req, res) => {
   try {
     const AllUser = await getUsers();
     res.send(AllUser);
@@ -70,7 +71,7 @@ router.get("/", authenticate, async (req, res) => {
   }
 });
 
-router.get("/:name", authenticate, async (req, res) => {
+router.get("/:id", auth, async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     const UserById = await getUsersById(id);

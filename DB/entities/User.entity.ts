@@ -1,4 +1,4 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany, Admin } from "typeorm";
 import { Order } from "./Order.entity.js";
 
 @Entity()
@@ -18,6 +18,10 @@ export class User extends BaseEntity {
     @Column()
     phone: string;
 
+    @Column()
+    type: string;
+
     @OneToMany(() => Order, (order) => order.user)
     orders: Order[];
+  
  }

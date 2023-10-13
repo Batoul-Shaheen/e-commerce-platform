@@ -1,6 +1,7 @@
 import express from "express";
 import { Category } from "../DB/entities/Category.entity.js";
 import { getCategoryByName, insertCategory } from "../controllers/category.js";
+import { isAdmin } from "../middlewares/auth/authorize.js";
 
 const router = express.Router();
 
@@ -22,7 +23,7 @@ router.get('/:name', async (req, res) => {
     res.status(200).send(category);
 });
 
-router.post('/', (req, res) => {
+router.post('/', isAdmin, (req, res) => {
     insertCategory(req.body).then((data) => {
         res.status(201).send(data)
     }).catch(err => {
@@ -31,7 +32,7 @@ router.post('/', (req, res) => {
     });
 });
 
-router.put('/:name', async (req, res) => {
+router.put('/:name', isAdmin, async (req, res) => {
     const name = req.params.name;
     const category = await Category.findOneBy({ name });
     if (category) {
@@ -44,9 +45,9 @@ router.put('/:name', async (req, res) => {
     }
 });
 
-router.delete('/:name', async (req, res) => {
+router.delete('/:name', isAdmin, async (req, res) => {
     const name = req.params.name;
-    const category = await Category.findOneBy({name });
+    const category = await Category.findOneBy({ name });
     if (category) {
         category.remove();
         res.send('category Deleted');

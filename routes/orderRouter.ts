@@ -3,11 +3,13 @@ import { Order } from "../DB/entities/Order.entity.js";
 import dataSource from "../DB/dataSource.js";
 import { getordersById, CreateOrder } from "../controllers/order.js";
 import { User } from "../DB/entities/User.entity.js";
+import { auth } from "../middlewares/auth/authenticate.js";
+import { isAdmin, isUser } from "../middlewares/auth/authorize.js";
 
 const router = express.Router();
 
 // Get All Order
-router.get("/", async (req, res) => {
+router.get("/", isAdmin, async (req, res) => {
   try {
     const orders = await dataSource.manager.find(Order);
     res.status(200).send(orders);
@@ -17,7 +19,7 @@ router.get("/", async (req, res) => {
 });
 
 // Get Order dependent on OrderId
-router.get("/:id", async (req, res) => {
+router.get("/:id", isUser, async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     const order = await getordersById(id);
@@ -29,23 +31,8 @@ router.get("/:id", async (req, res) => {
     res.status(500).send(error);
   }
 });
-
-router.post('/checkout',  async (req, res) => {
-    try {
-        const orderCount = await Order.findAndCount();
-
-        if(!orderCount) {
-            res.status(500).json({success: false})
-        } 
-        res.send({
-            orderCount: orderCount
-        });
-    } catch (error) {
-        res.status(500).send(error)
-    }
-});
 // Create Order
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   try {
     const userId = req.body;
 
@@ -63,7 +50,7 @@ router.post("/", async (req, res) => {
 });
 
 // Delete Order dependent on OrderId
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", isUser, async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     const order = await Order.findOneBy({ id });
@@ -79,7 +66,7 @@ router.delete("/:id", async (req, res) => {
 });
 
 // Update the status of an order by ID
-router.put("/:id", async (req, res) => {
+router.put("/:id", isUser, async (req, res) => {
   const id = parseInt(req.params.id);
   const { status } = req.body;
 
@@ -98,11 +85,5 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// router.post("/checkout", async (req, res) => {
-//   try {
-//   } catch (error) {
-//     res.status(500).send(error);
-//   }
-// });
 
 export default router;

@@ -1,34 +1,32 @@
 export namespace NSUser {
+  export enum Type {
+    user = 'User',
+    admin = 'Admin'
+  }
   export interface User {
     id: number;
     username: string;
     password: string;
     email: string;
     phone: string;
+    type: Type;
   }
-    export interface User{
-        id: number;
-        username: string;
-        password:string;
-        email:string;
-        phone: string;
-    }
- 
-    export interface Product{
-        id:number,
-        name: string,
-        description?: string,
-        price : number ,
-        quantity: number,
-    }
 
-    export interface Category{
-        name: string,
-        icon: string,
-        color: string,
-        products: Product[],
-        status: "new" | "done",
-    }
+  export interface Product {
+    id: number;
+    name: string;
+    description?: string;
+    price: number;
+    quantity: number;
+  }
+
+  export interface Category {
+    name: string;
+    icon: string;
+    color: string;
+    products: Product[];
+    status: "new" | "done";
+  }
 
   export interface Product {
     id: number;

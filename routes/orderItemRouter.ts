@@ -1,13 +1,12 @@
 import express from "express";
 import { getordersById } from "../controllers/order.js";
 import { insertOrderItem } from "../controllers/orderItem.js";
-import { Order } from "../DB/entities/Order.entity.js";
-import { OrderItem } from "../DB/entities/OrderItem.entity.js";
+import { isUser } from "../middlewares/auth/authorize.js";
 
 const router = express.Router();
 
 // Crete OrderItem 
-router.post("/", async (req, res, next) => {
+router.post("/", isUser, async (req, res, next) => {
   insertOrderItem(req.body)
     .then(() => {
       res.status(201).send();
@@ -17,7 +16,7 @@ router.post("/", async (req, res, next) => {
     });
 });
 
-router.get("/calculateTotal/:orderId", async (req, res) => {
+router.get("/calculateTotal/:orderId", isUser, async (req, res) => {
   try {
     const orderId = parseInt(req.params.orderId);
     // Find the order by its ID and include its associated order items
