@@ -1,19 +1,20 @@
 const express = require('express')
 const bodyparser = require('body-parser')
 const path = require('path')
-// const app = express()
 
 var Publishable_Key = process.env.Publishable_Key;
 var Secret_Key = process.env.Secret_Key;
 
 const stripe = require('stripe')(Secret_Key)
 
+const app = express();
 
+app.use(express.json());
 app.use(bodyparser.urlencoded({extended:false}))
 app.use(bodyparser.json())
 
 // View Engine Setup
-app.set('Services', path.join(__dirname, 'Services'))
+app.set('Client', path.join(__dirname, 'Client'))
 app.set('view engine', 'html')
 
 app.get('/', function(req, res){
