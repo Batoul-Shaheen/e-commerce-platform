@@ -8,6 +8,25 @@ import { isAdmin, isUser } from "../middlewares/auth/authorize.js";
 
 const router = express.Router();
 
+
+// Create Order
+router.post("/", auth, async (req, res) => {
+  try {
+    const userId = req.body;
+
+    // Check if the user exists
+    const user = await User.findOne({ where: { id: userId } });
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+    CreateOrder(req.body).then(() => {
+      res.status(201).send();
+    });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 // Get All Order
 router.get("/", isAdmin, async (req, res) => {
   try {
@@ -31,22 +50,37 @@ router.get("/:id", isUser, async (req, res) => {
     res.status(500).send(error);
   }
 });
-// Create Order
-router.post("/", auth, async (req, res) => {
-  try {
-    const userId = req.body;
 
-    // Check if the user exists
-    const user = await User.findOne({ where: { id: userId } });
-    if (!user) {
-      return res.status(404).send("User not found");
+//GET USER ORDERS
+router.get("/find/:userId", async (req, res) => {
+  try {
+    const userId = parseInt(req.params.userId);
+    const orders = await Order.findOne({ where: { id: userId } });
+    if (orders) {
+      // If the order is found.
+      res.status(200).send(orders);
+    } else {
+      // If no order is found.
+      res.status(404).send("Order not found");
     }
-    CreateOrder(req.body).then(() => {
-      res.status(201).send();
-    });
-  } catch (error) {
-    res.status(500).send(error);
+  } catch (err) {
+    res.status(500).send(err);
   }
+});
+
+router.post('/checkout',  async (req, res) => {
+    try {
+        const orderCount = await Order.findAndCount();
+
+        if(!orderCount) {
+            res.status(500).send('ERROR')
+        } 
+        res.send({
+            orderCount: orderCount
+        });
+    } catch (error) {
+        res.status(500).send(error)
+    }
 });
 
 // Delete Order dependent on OrderId
@@ -84,6 +118,5 @@ router.put("/:id", isUser, async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-
 
 export default router;
