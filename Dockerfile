@@ -20,4 +20,4 @@ ADD . .
 EXPOSE 3000
 
 # When running the container, execute the following command
-CMD ["npm", "run" , "dev"]
+CMD  node ./dist/index.js
