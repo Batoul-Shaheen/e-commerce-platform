@@ -1,5 +1,5 @@
 # The base image that will have node dep
-FROM node:20
+FROM node:20-alpine
 
 # Set the current working directory in the container
 WORKDIR /usr/app
@@ -14,7 +14,6 @@ RUN npm ci
 ADD . . 
 # Build the app
 RUN npm run build
-
 RUN apk add curl
 
 HEALTHCHECK --interval=10s --timeout=3s \
