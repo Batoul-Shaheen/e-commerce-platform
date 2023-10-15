@@ -1,0 +1,9 @@
+version: "3"
+services:
+  app:
+    profiles:
+      - in_docker
+    container_name: e-commerceplatform-express-1
+    build: .
+    ports:
+      - "3000:3000"

@@ -10,14 +10,15 @@ COPY package.json package-lock.json ./
 # Execute a command while building the container
 RUN npm ci
 
-# Install application dependencies
-RUN npm install
-
 # Now copy the project files
 ADD . . 
+# Build the app
+RUN npm run build
 
-# Expose a port for your Node.js application to listen on
-EXPOSE 3000
+RUN apk add curl
+
+HEALTHCHECK --interval=10s --timeout=3s \
+ CMD curl -f http://localhost/ || exit 1
 
 # When running the container, execute the following command
 CMD  node ./dist/index.js
