@@ -5,9 +5,10 @@
   "main": "./dist/index.js",
   "type": "module",
   "scripts": {
-    "build": "tsc -w",
+    "build-tsc": "tsc -w",
     "run-watch": "nodemon ./dist/index.js",
-    "dev": "concurrently \"npm:build-tsc\"  \"npm:run-watch\""
+    "dev": "concurrently \"npm:build-tsc\"  \"npm:run-watch\"",
+    "build": "tsc --project"
   },
   "author": "Batool-Anwar",
   "license": "ISC",
