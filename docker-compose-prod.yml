@@ -1,0 +1,7 @@
+version: '3'
+services:
+  app:
+    image: ghcr.io/batoul-shaheen/e-commerce-platform:$GIT_VERSION
+    restart: always
+    ports:
+      - "3000:3000"

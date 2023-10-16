@@ -7,7 +7,8 @@
   "scripts": {
     "build-tsc": "tsc -w",
     "run-watch": "nodemon ./dist/index.js",
-    "dev": "concurrently \"npm:build-tsc\"  \"npm:run-watch\""
+    "dev": "concurrently \"npm:build-tsc\"  \"npm:run-watch\"",
+    "build": "tsc --project ."
   },
   "author": "Batool-Anwar",
   "license": "ISC",
