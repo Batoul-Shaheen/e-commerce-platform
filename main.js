@@ -1,8 +1,6 @@
-import express from "express";
 import mysql from "mysql";
 import "dotenv/config";
 
-const PORT = process.env.PORT || 3000;
 const dbhost = process.env.DB_HOST
 const dbUsername = process.env.DB_USER_NAME
 const dbPassword = process.env.DB_PASSWORD
