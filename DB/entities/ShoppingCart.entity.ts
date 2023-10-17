@@ -1,5 +1,6 @@
 import {
   BaseEntity,
+  Column,
   Entity,
   Column,
   JoinColumn,
@@ -20,7 +21,6 @@ export class ShoppingCart extends BaseEntity {
   bill: number;
 
   @ManyToMany(() => Product, (product) => product.shoppingCarts)
-  @JoinTable()
   products: Product[];
 
   @OneToOne(() => User)

@@ -5,7 +5,11 @@ const validateUser = (req: express.Request,
   res: express.Response,
   next: express.NextFunction
 ) => {
+<<<<<<< HEAD
   const values = ['username', 'email', 'password','phone', 'type'];
+=======
+  const values = ['username', 'email', 'password', 'type'];
+>>>>>>> 889f90019186f4d83eeeab89bc3158a9395967e5
   const user = req.body;
   const errorList = [];
   values.forEach(key => {

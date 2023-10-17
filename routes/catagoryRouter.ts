@@ -18,7 +18,7 @@ router.get('/:name', async (req, res) => {
     const name = req.params.name
     const category = await getCategoryByName(name);
     if (!category) {
-        res.status(500).send('The category with the given ID was not found.')
+        res.status(500).send('The category with the given name was not found.')
     }
     res.status(200).send(category);
 });
@@ -36,12 +36,11 @@ router.put('/:name', isAdmin, async (req, res) => {
     const name = req.params.name;
     const category = await Category.findOneBy({ name });
     if (category) {
-        category.status = 'done'
         category.save();
-        res.send('category Updated');
+        res.send('Category Updated');
     }
     else {
-        res.status(404).send('category not found!');
+        res.status(404).send('Category not found!');
     }
 });
 
@@ -50,8 +49,10 @@ router.delete('/:name', isAdmin, async (req, res) => {
     const category = await Category.findOneBy({ name });
     if (category) {
         category.remove();
-        res.send('category Deleted');
+        res.send('Category Deleted');
     } else {
-        res.status(404).send('category not found!');
+        res.status(404).send('Category not found!');
     }
 });
+
+export default router
