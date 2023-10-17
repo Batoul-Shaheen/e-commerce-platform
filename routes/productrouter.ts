@@ -1,7 +1,6 @@
 import express from 'express';
 import { Product } from '../DB/entities/Product.entity.js';
-import { Equal } from 'typeorm';
-import { getProductsById, insertProduct } from '../controllers/poduct.js';
+import { getProductsById, insertProduct} from '../controllers/poduct.js';
 import { Category } from '../DB/entities/Category.entity.js';
 import { ShoppingCart } from '../DB/entities/ShoppingCart.entity.js';
 import { isAdmin } from '../middlewares/auth/authorize.js';
@@ -10,15 +9,28 @@ const router = express.Router();
 
 router.get('/:categoryName', async (req, res) => {
     try {
-        const categoryName = req.params.categoryName;
-        const products = await Product.find({
-            where: { category: Equal(categoryName) }
-        });
+        const categoryName = req.body;
+        const products = await Product.find(
+            categoryName
+        );
         res.send(products);
     } catch (error) {
         res.status(500).send(error)
     }
 });
+
+router.get('/:shoppingCartId', async (req, res) => {
+    try {
+        const shoppingCartId = req.body;
+        const products = await Product.findBy(
+            shoppingCartId
+        );
+        res.send(products);
+    } catch (error) {
+        res.status(500).send(error)
+    }
+});
+
 
 router.get('/:id', async (req, res) => {
     try {
@@ -41,13 +53,12 @@ router.post('/:categoryName', isAdmin, async (req, res) => {
         if (!categoryName) {
             return res.status(400).send('Category Name is missing');
         }
-        const category = await Category.findOne(categoryName);
+        const category = await Category.findOneBy({name: categoryName});
         if (!category) {
             return res.status(400).send('Category Not Found');
         }
         await insertProduct({
             ...product,
-            category
         });
         res.status(201).send('Product inserted successfully');
     } catch (error) {
@@ -55,20 +66,19 @@ router.post('/:categoryName', isAdmin, async (req, res) => {
     }
 });
 
-router.post('/:cartId', isAdmin, async (req, res) => {
+router.post('/:shoppingCartId', isAdmin, async (req, res) => {
     try {
         const product = req.body;
-        const cartId = product.cartId;
+        const cartId = parseInt(req.params.shoppingCartId);
         if (!cartId) {
             return res.status(400).send('shoppingCart is missing');
         }
-        const cart = await ShoppingCart.findOne(cartId);
-        if (!cart) {
+        const shoppingCart = await ShoppingCart.findOneBy({ id: cartId});
+        if (!shoppingCart) {
             return res.status(400).send('shoppingCart Not Found');
         }
         await insertProduct({
             ...product,
-            cart
         });
         res.status(201).send('Product inserted successfully');
     } catch (error) {
@@ -76,7 +86,7 @@ router.post('/:cartId', isAdmin, async (req, res) => {
     }
 });
 
-router.delete('/:categoryName/:productId', isAdmin, async (req, res) => {
+router.delete('/:shoppingCartId', isAdmin, async (req, res) => {
     try {
         const categoryName = req.body.categoryName;
         const productId = req.body.productId;

@@ -22,10 +22,7 @@ export namespace NSUser {
 
   export interface Category {
     name: string;
-    icon: string;
-    color: string;
     products: Product[];
-    status: "new" | "done";
   }
 
   export interface Product {
@@ -49,6 +46,10 @@ export namespace NSUser {
   export interface OrderItem {
     quantity: number;
     productId: number;
+  }
+
+  export interface ShoppingCart{
+    id :number;
   }
 }
 
