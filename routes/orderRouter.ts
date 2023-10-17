@@ -19,8 +19,8 @@ router.post("/", auth, async (req, res) => {
     if (!user) {
       return res.status(404).send("User not found");
     }
-    CreateOrder(req.body).then(() => {
-      res.status(201).send();
+    CreateOrder(req.body).then((data) => {
+      res.status(201).send(data);
     });
   } catch (error) {
     res.status(500).send(error);
@@ -45,7 +45,7 @@ router.get("/:id", isUser, async (req, res) => {
     if (!order) {
       return res.status(404).send("Order not found");
     }
-    res.send(order);
+    res.status(200).send(order);
   } catch (error) {
     res.status(500).send(error);
   }

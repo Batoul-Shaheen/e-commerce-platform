@@ -8,8 +8,8 @@ const router = express.Router();
 // Crete OrderItem 
 router.post("/", isUser, async (req, res, next) => {
   insertOrderItem(req.body)
-    .then(() => {
-      res.status(201).send();
+    .then((data) => {
+      res.status(201).send(data);
     })
     .catch((err) => {
       next(err);

@@ -8,43 +8,33 @@ import {
 import { validateUser } from "../middlewares/validation/user.js";
 import { auth } from "../middlewares/auth/authenticate.js";
 
-
 const router = express.Router();
 
 router.post("/signup", validateUser, async (req, res, next) => {
   insertUser(req.body)
     .then(() => {
-      res.status(201).send();
+      res.status(201).send("Successfully Added the user");
     })
     .catch((err) => {
       next(err);
     });
 });
 
-router.post("/login", async (req, res, next) => {
+router.post("/login", auth, async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  loginUser(email, password)
-    .then((data) => {
-      res.cookie("fullName", data.user, {
-        maxAge: 60 * 60 * 1000,
+  if (email && password) {
+    loginUser(email, password)
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((err) => {
+        res.status(404).send(err);
       });
-      res.cookie("loginTime", Date.now(), {
-        maxAge: 60 * 60 * 1000,
-      });
-      res.cookie("token", data.token, {
-        maxAge: 60 * 60 * 1000,
-      });
-
-      res.send();
-    })
-    .catch((err) => {
-      next({
-        code: "INVALID_CREDENTIALS",
-        message: err,
-      });
-    });
+  } else {
+    res.status(400).send(`Invalid email or password.`);
+  }
 });
 
 router.post("/logout", async (req, res, next) => {
