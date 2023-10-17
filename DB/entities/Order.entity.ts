@@ -15,7 +15,7 @@ export class Order extends BaseEntity {
   totalAmount: number;
 
   @Column({default: 'Pending'})
-  status: string;
+  status: "Pending" | "Canceled" | "Done";
 
   @Column()
   city: string;

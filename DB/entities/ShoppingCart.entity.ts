@@ -1,6 +1,7 @@
 import {
   BaseEntity,
   Entity,
+  Column,
   JoinColumn,
   JoinTable,
   ManyToMany,
@@ -14,6 +15,9 @@ import { Product } from "./Product.entity.js";
 export class ShoppingCart extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column("decimal", { precision: 10, scale: 2 })
+  bill: number;
 
   @ManyToMany(() => Product, (product) => product.shoppingCarts)
   @JoinTable()

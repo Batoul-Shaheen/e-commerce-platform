@@ -11,7 +11,7 @@ import {
 import { Order } from "./Order.entity.js";
 import { ShoppingCart } from "./ShoppingCart.entity.js";
 import { Category } from "./Category.entity.js";
-import { OrderItem } from "./OrderItem.entity.js";
+// import { OrderItem } from "./OrderItem.entity.js";
 
 @Entity()
 export class Product extends BaseEntity {
@@ -40,6 +40,6 @@ export class Product extends BaseEntity {
   @ManyToOne(() => Category, (category) => category.products)
   category: Category;
 
-  @OneToMany(() => OrderItem, (orderItem) => orderItem.product)
-  orderItems: OrderItem[];
+  // @OneToMany(() => OrderItem, (orderItem) => orderItem.product)
+  // orderItems: OrderItem[];
 }

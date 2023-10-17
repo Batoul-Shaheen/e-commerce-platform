@@ -10,6 +10,7 @@ import { auth } from "../middlewares/auth/authenticate.js";
 
 const router = express.Router();
 
+// signup user
 router.post("/signup", validateUser, async (req, res, next) => {
   insertUser(req.body)
     .then(() => {
@@ -20,6 +21,7 @@ router.post("/signup", validateUser, async (req, res, next) => {
     });
 });
 
+// login user
 router.post("/login", auth, async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -37,6 +39,7 @@ router.post("/login", auth, async (req, res, next) => {
   }
 });
 
+// logout user
 router.post("/logout", async (req, res, next) => {
   res.cookie("fullName", "", {
     maxAge: -1, // This means the cookie will be deleted
@@ -52,7 +55,8 @@ router.post("/logout", async (req, res, next) => {
   res.send();
 });
 
-router.get("/", auth, async (req, res) => {
+// get all user
+router.get("/", async (req, res) => {
   try {
     const AllUser = await getUsers();
     res.send(AllUser);
@@ -61,7 +65,8 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-router.get("/:id", auth, async (req, res) => {
+//get user by id
+router.get("/:id", async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     const UserById = await getUsersById(id);

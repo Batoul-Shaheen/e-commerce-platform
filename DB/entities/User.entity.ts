@@ -1,5 +1,6 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany, Admin } from "typeorm";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany, BeforeInsert } from "typeorm";
 import { Order } from "./Order.entity.js";
+import bcrypt from 'bcrypt';
 
 @Entity()
 export class User extends BaseEntity {
@@ -8,6 +9,13 @@ export class User extends BaseEntity {
 
     @Column({ length: 50, nullable: false })
     username: string;
+
+    @BeforeInsert()
+    async hashPassword() {
+        if (this.password) {
+            this.password = await bcrypt.hash(this.password, 6)
+        }
+    }
 
     @Column({ nullable: false })
     password: string;
@@ -18,8 +26,12 @@ export class User extends BaseEntity {
     @Column()
     phone: string;
 
-    @Column()
-    type: string;
+    @Column({
+        type: 'enum',
+        enum: ['Admin', 'User'],
+        default: 'user'
+    })
+    type: string ;
 
     @OneToMany(() => Order, (order) => order.user)
     orders: Order[];
