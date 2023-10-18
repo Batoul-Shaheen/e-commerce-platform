@@ -12,12 +12,7 @@ import {
 import { Order } from "./Order.entity.js";
 import { ShoppingCart } from "./ShoppingCart.entity.js";
 import { Category } from "./Category.entity.js";
-<<<<<<< HEAD
-// import { OrderItem } from "./OrderItem.entity.js";
 
-=======
-import { OrderItem } from "./OrderItem.entity.js";
->>>>>>> 889f90019186f4d83eeeab89bc3158a9395967e5
 @Entity()
 export class Product extends BaseEntity {
   @PrimaryGeneratedColumn("increment")
@@ -46,6 +41,4 @@ export class Product extends BaseEntity {
   @JoinColumn()
   category: Category;
 
-  // @OneToMany(() => OrderItem, (orderItem) => orderItem.product)
-  // orderItems: OrderItem[];
 }

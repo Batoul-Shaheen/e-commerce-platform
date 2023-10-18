@@ -3,8 +3,6 @@ import { Product } from "../DB/entities/Product.entity.js";
 import { User } from "../DB/entities/User.entity.js";
 import { ShoppingCart } from "../DB/entities/ShoppingCart.entity.js";
 import { isUser } from "../middlewares/auth/authorize.js";
-import { ShoppingCart } from "../DB/entities/ShoppingCart.entity.js";
-import { User } from "../DB/entities/User.entity.js";
 import { insertProduct } from "../controllers/poduct.js";
 
 const router = express.Router();
@@ -131,4 +129,5 @@ router.post("/carts", async (req, res) => {
     }
   });
 
+  
 export default router;

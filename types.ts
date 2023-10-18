@@ -43,16 +43,8 @@ export namespace NSUser {
     // orderItems: { productId: number; quantity: number }[];
   }
 
-<<<<<<< HEAD
-=======
-  export interface OrderItem {
-    quantity: number;
-    productId: number;
-  }
-
   export interface ShoppingCart{
     id :number;
   }
->>>>>>> 889f90019186f4d83eeeab89bc3158a9395967e5
 }
 

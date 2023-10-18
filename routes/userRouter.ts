@@ -74,7 +74,6 @@ router.post("/logout", async (req, res, next) => {
   res.send("successfully loged out");
 });
 
-<<<<<<< HEAD
 // get all user
 router.get("/", async (req, res) => {
   try {
@@ -95,25 +94,5 @@ router.get("/:id", async (req, res) => {
     res.status(500).send(error);
   }
 });
-=======
-router.get("/", auth, async (req, res) => {
-    try {
-      const AllUser = await getUsers();
-      res.send(AllUser);
-    } catch (error) {
-      res.status(500).send(error);
-    }
-  });
-
-router.get("/:id", auth, async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      const UserById = await getUsersById(id);
-      res.send(UserById);
-    } catch (error) {
-      res.status(500).send(error);
-    }
-  });
->>>>>>> 889f90019186f4d83eeeab89bc3158a9395967e5
 
 export default router;
