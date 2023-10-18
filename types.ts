@@ -34,7 +34,7 @@ export namespace NSUser {
   }
   export interface Order {
     orderId: number
-    orderDate: Date;
+    orderDate: string;
     status: "Pending" | "Canceled" | "Done";
     city: string;
     country: string;

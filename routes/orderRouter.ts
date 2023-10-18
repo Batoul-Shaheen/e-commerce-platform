@@ -1,7 +1,7 @@
 import express from "express";
 import { Order } from "../DB/entities/Order.entity.js";
 import dataSource from "../DB/dataSource.js";
-import { getordersById, CreateOrder } from "../controllers/order.js";
+import { getOrdersById, CreateOrder } from "../controllers/order.js";
 import { User } from "../DB/entities/User.entity.js";
 import { Product } from "../DB/entities/Product.entity.js";
 import { auth } from "../middlewares/auth/authenticate.js";
@@ -9,139 +9,109 @@ import { isAdmin, isUser } from "../middlewares/auth/authorize.js";
 
 const router = express.Router();
 
-router.post("/orders", async (req, res) => {
+router.post("/:userId", async (req, res) => {
   try {
-    const { userId, productIds, city, country, phone } = req.body;
+    const { userId } = req.params;
+    const userData = await User.findOne({ where: { id: parseInt(userId) } });
 
-    // Find the user
-    const user = await User.findOne(userId);
+    if (!userData) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const orderData = {
+      ...req.body,
+      user: userData, 
+    };
+
+    const newOrder = await CreateOrder(orderData);
+
+    res.status(201).send(newOrder);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal server error");
+  }
+});
+
+router.post("/add-to-order/product/:productId/order/:orderId",// isUser,
+ async (req, res) => {
+  try {
+    const order = await Order.findOne({
+      relations: ["products"],
+      where: { id: parseInt(req.params.orderId) },
+    });
+    const product = await Product.findOne({
+      where: { id: parseInt(req.params.productId) },
+    });
+
+    if (!order || !product) {
+      return res.status(404).send("Order or product not found");
+    }
+
+    order.products.push(product);
+
+    await order.save();
+
+    return res.status(200).send("Product added to the order");
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send("Internal server error");
+  }
+});
+
+
+router.get("/:userId/:orderId", async (req, res) => {
+  try {
+    const userId  = req.params.userId;
+    const orderId = parseInt(req.params.orderId)
+
+    const user = await User.find({ where: { id: parseInt(userId) } });
+
     if (!user) {
       return res.status(404).send("User not found");
     }
 
-    // Find the selected products
-    const products = await Product.find(productIds);
-    if (products.length !== productIds.length) {
-      return res.status(400).send("Some products not found");
+    const orders = await Order.find({
+      where: { id: parseInt(userId) },
+    });
+
+    const order = await Order.findOne({ relations: ['products'], where: { id: orderId } });
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
     }
 
-    // Calculate the total amount based on product prices
-    const totalAmount = products.reduce(
-      (total, product) => total + product.price,
-      0
-    );
+    const totalAmount = order.products.reduce((total, product) => {
+      return (total + product.price);
+    }, 0);
+     
+    const productDetails = order.products.map((product) => {
+      return {
+        id: product.id,
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        quantity: product.quantity,
+      };
+    });
 
-    // Create a new order
-    const order = new Order();
-    order.orderDate = new Date();
-    order.totalAmount = totalAmount;
-    order.status = "Pending";
-    order.city = city;
-    order.country = country;
-    order.phone = phone;
-    order.user = user;
-    order.products = products;
-
-    await Order.save(order);
-
-    return res.status(201).send(order);
+    res.status(200).send({
+      user: user,
+      orders: orders,
+      totalAmount: totalAmount,
+      Product: productDetails,
+    });
   } catch (error) {
-    return res.status(500).send(error);
+    console.error(error);
+    res.status(500).send("Internal server error");
   }
 });
 
-// // Create Order
-// router.post("/", async (req, res) => {
-//   try {
-//     const userId = req.body;
-//     // Check if the user exists
-//     const user = await User.findOne({ where: { id: userId } });
-//     if (!user) {
-//       return res.status(404).send("User not found");
-//     }
-//     CreateOrder(req.body).then((data) => {
-//       res.status(201).send(data);
-//     });
-//   } catch (error) {
-//     res.status(500).send(error);
-//   }
-// });
-
-// Get All Order
-router.get(
-  "/", //isAdmin,
+router.put("/:orderId", //isUser,
   async (req, res) => {
-    try {
-      const orders = await dataSource.manager.find(Order);
-      res.status(200).send(orders);
-    } catch (error) {
-      res.status(500).send(error);
-    }
-  }
-);
-
-// Get Order dependent on OrderId
-router.get(
-  "/:id", //isUser,
-  async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      const order = await getordersById(id);
-      if (!order) {
-        return res.status(404).send("Order not found");
-      }
-      res.status(200).send(order);
-    } catch (error) {
-      res.status(500).send(error);
-    }
-  }
-);
-
-//GET USER ORDERS
-router.get("/find/:userId", async (req, res) => {
-  try {
-    const userId = parseInt(req.params.userId);
-    const orders = await Order.findOne({ where: { id: userId } });
-    if (orders) {
-      // If the order is found.
-      res.status(200).send(orders);
-    } else {
-      // If no order is found.
-      res.status(404).send("Order not found");
-    }
-  } catch (err) {
-    res.status(500).send(err);
-  }
-});
-
-// Delete Order dependent on OrderId
-router.delete(
-  "/:id", //isUser,
-  async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      const order = await Order.findOneBy({ id });
-      if (order) {
-        await order.remove();
-        res.send("Order deleted");
-      } else {
-        res.status(404).send("Order not found !");
-      }
-    } catch (error) {
-      res.status(500).send(error);
-    }
-  }
-);
-
-// Update the status of an order by ID
-router.put(
-  "/:id", //isUser,
-  async (req, res) => {
-    const id = parseInt(req.params.id);
+    const orderId = parseInt(req.params.orderId);
     const { status } = req.body;
 
     try {
-      const order = await Order.findOneBy({ id });
+      const order = await Order.findOne({ where: { id: orderId } });
       if (!order) {
         res.status(404).send("Order not found");
       } else {

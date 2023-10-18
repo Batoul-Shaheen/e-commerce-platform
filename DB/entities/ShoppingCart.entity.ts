@@ -3,7 +3,6 @@ import {
   Column,
   Entity,
   JoinColumn,
-  JoinTable,
   ManyToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -16,7 +15,7 @@ export class ShoppingCart extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column("decimal", { precision: 10, scale: 2 })
+  @Column()
   bill: number;
 
   @ManyToMany(() => Product, (product) => product.shoppingCarts)

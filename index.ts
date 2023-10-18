@@ -8,7 +8,7 @@ import categoryRouter from "./routes/categoryRouter.js";
 import shoppingCartRouter from "./routes/shoppingCartRouter.js"
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use("/users", usersRouter);
@@ -22,7 +22,7 @@ app.get("/health", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`APP is listining in port ${PORT}`);
+  console.log(`APP is listening in port ${PORT}`);
   initDB();
 });
 
