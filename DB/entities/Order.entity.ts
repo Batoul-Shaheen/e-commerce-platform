@@ -1,7 +1,6 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable, OneToMany } from "typeorm";
 import { User } from "./User.entity.js";
 import { Product } from "./Product.entity.js";
-import { OrderItem } from "./OrderItem.entity.js";
 
 @Entity()
 export class Order extends BaseEntity {
@@ -15,7 +14,7 @@ export class Order extends BaseEntity {
   totalAmount: number;
 
   @Column({default: 'Pending'})
-  status: string;
+  status: "Pending" | "Canceled" | "Done";
 
   @Column()
   city: string;
@@ -33,6 +32,4 @@ export class Order extends BaseEntity {
   @JoinTable()
   products: Product[];
 
-  @OneToMany(() => OrderItem, orderItem => orderItem.order)
-  orderItems: OrderItem[];
 }

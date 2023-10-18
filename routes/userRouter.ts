@@ -11,6 +11,7 @@ import { ShoppingCart } from "../DB/entities/ShoppingCart.entity.js";
 
 const router = express.Router();
 
+// signup user
 router.post("/signup", validateUser, async (req, res, next) => {
   try {
     // Extract user and shopping cart data from the request body
@@ -39,6 +40,7 @@ router.post("/signup", validateUser, async (req, res, next) => {
   }
 });
 
+// login user
 router.post("/login", auth, async (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
@@ -56,6 +58,7 @@ router.post("/login", auth, async (req, res, next) => {
     }
   });
 
+// logout user
 router.post("/logout", async (req, res, next) => {
   res.cookie("fullName", "", {
     maxAge: -1, // This means the cookie will be deleted
@@ -68,26 +71,28 @@ router.post("/logout", async (req, res, next) => {
     maxAge: -1,
   });
 
-  res.send("successfully loged out");
+  res.send("successfully log out");
 });
 
-router.get("/", auth, async (req, res) => {
-    try {
-      const AllUser = await getUsers();
-      res.send(AllUser);
-    } catch (error) {
-      res.status(500).send(error);
-    }
-  });
+// get all user
+router.get("/", async (req, res) => {
+  try {
+    const AllUser = await getUsers();
+    res.send(AllUser);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
 
-router.get("/:id", auth, async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      const UserById = await getUsersById(id);
-      res.send(UserById);
-    } catch (error) {
-      res.status(500).send(error);
-    }
-  });
+//get user by id
+router.get("/:id", async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const UserById = await getUsersById(id);
+    res.send(UserById);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
 
 export default router;

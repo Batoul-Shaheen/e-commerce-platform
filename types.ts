@@ -33,23 +33,13 @@ export namespace NSUser {
     quantity: number;
   }
   export interface Order {
-    // orderId: number
+    orderId: number
     orderDate: Date;
-    status: string;
+    status: "Pending" | "Canceled" | "Done";
     city: string;
     country: string;
     phone: string;
-    userId: number;
-    orderItems: { productId: number; quantity: number }[];
   }
 
-  export interface OrderItem {
-    quantity: number;
-    productId: number;
-  }
-
-  export interface ShoppingCart{
-    id :number;
-  }
 }
 

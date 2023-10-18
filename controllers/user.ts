@@ -14,12 +14,12 @@ const insertUser = (payload: NSUser.User) => {
 };
 
 const loginUser = async (email: string, password: string) => {
-  const user = await User.findOne({ where: { email } });
+  const user = await User.findOneBy({ email });
   if (!user) {
     throw new Error("User not found");
   }
 
-  const isPasswordValid = await bcrypt.compare(password, user.password);
+  const isPasswordValid = await bcrypt.compare(password, user?.password || "");
   if (!isPasswordValid) {
     throw new Error("Invalid password");
   }

@@ -4,7 +4,6 @@ import { Product } from "./entities/Product.entity.js";
 import { ShoppingCart } from "./entities/ShoppingCart.entity.js";
 import { User } from "./entities/User.entity.js";
 import { Category } from "./entities/Category.entity.js";
-import { OrderItem } from "./entities/OrderItem.entity.js";
 
 const dataSource = new DataSource({
     type: 'mysql',
@@ -18,8 +17,7 @@ const dataSource = new DataSource({
         Product,
         ShoppingCart,
         User,
-        Category,
-        OrderItem
+        Category
     ],
     migrations: ['./**/migration/*.ts'],
     synchronize: true,
