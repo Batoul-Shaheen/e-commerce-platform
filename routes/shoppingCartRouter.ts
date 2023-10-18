@@ -3,11 +3,6 @@ import { Product } from "../DB/entities/Product.entity.js";
 import { User } from "../DB/entities/User.entity.js";
 import { ShoppingCart } from "../DB/entities/ShoppingCart.entity.js";
 import { isUser } from "../middlewares/auth/authorize.js";
-<<<<<<< HEAD
-import { insertProduct } from "../controllers/poduct.js";
-=======
-import { insertProduct } from "../controllers/product.js";
->>>>>>> 038aff9f72db4ea018aacd03a162bba6cc090cfd
 
 const router = express.Router();
 
