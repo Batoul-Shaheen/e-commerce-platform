@@ -40,6 +40,8 @@ export namespace NSUser {
     country: string;
     phone: string;
   }
-
+  export interface ShoppingCart{
+    id :number;
+  }
 }
 

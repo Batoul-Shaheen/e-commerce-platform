@@ -1,8 +1,12 @@
 import {
   BaseEntity,
-  Column,
   Entity,
   JoinColumn,
+<<<<<<< HEAD
+=======
+  JoinTable,
+  Column,
+>>>>>>> 3497d264b47e818740406aeda049072bb959d848
   ManyToMany,
   OneToOne,
   PrimaryGeneratedColumn,
