@@ -34,18 +34,14 @@ export namespace NSUser {
   }
   export interface Order {
     orderId: number
-    orderDate: Date;
+    orderDate: string;
     status: "Pending" | "Canceled" | "Done";
     city: string;
     country: string;
     phone: string;
   }
-
-<<<<<<< HEAD
   export interface ShoppingCart{
     id :number;
   }
-=======
->>>>>>> 038aff9f72db4ea018aacd03a162bba6cc090cfd
 }
 

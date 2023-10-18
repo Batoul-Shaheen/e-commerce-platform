@@ -8,7 +8,7 @@ export class Order extends BaseEntity {
   id: number;
 
   @Column()
-  orderDate: Date;
+  orderDate: string;
 
   @Column('decimal', { precision: 10, scale: 2 })
   totalAmount: number;
