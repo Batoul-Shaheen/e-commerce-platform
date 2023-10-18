@@ -6,6 +6,7 @@ const validateUser = (req: express.Request,
   next: express.NextFunction
 ) => {
   const values = ['username', 'email', 'password', 'phone','type'];
+
   const user = req.body;
   const errorList = [];
   values.forEach(key => {

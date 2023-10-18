@@ -71,7 +71,7 @@ router.post("/logout", async (req, res, next) => {
     maxAge: -1,
   });
 
-  res.send("successfully loged out");
+  res.send("successfully log out");
 });
 
 // get all user

@@ -1,36 +1,36 @@
 import express from 'express';
 import { Product } from '../DB/entities/Product.entity.js';
-import { getProductsById, insertProduct} from '../controllers/poduct.js';
+import { getProductsById, insertProduct} from '../controllers/product.js';
 import { Category } from '../DB/entities/Category.entity.js';
 import { ShoppingCart } from '../DB/entities/ShoppingCart.entity.js';
 import { isAdmin } from '../middlewares/auth/authorize.js';
 
 const router = express.Router();
 
-router.get('/:categoryName', async (req, res) => {
-    try {
-        const categoryName = req.body;
-        const products = await Product.find(
-            categoryName
-        );
-        res.send(products);
-    } catch (error) {
-        res.status(500).send(error)
-    }
-});
+// router.get('/:categoryName', async (req, res) => {
+//     try {
+//         const categoryName = req.body;
+//         const products = await Product.find(
+//             categoryName
+//         );
+//         res.send(products);
+//     } catch (error) {
+//         res.status(500).send(error)
+//     }
+// });
 
 router.get('/:shoppingCartId', async (req, res) => {
+    console.log("HERE")
     try {
-        const shoppingCartId = req.body;
-        const products = await Product.findBy(
-            shoppingCartId
-        );
+        const shoppingCartId = parseInt(req.params.shoppingCartId);
+        const products = await Product.findOne({where: {id: shoppingCartId}});
+        console.log(products);
+        
         res.send(products);
     } catch (error) {
         res.status(500).send(error)
     }
 });
-
 
 router.get('/:id', async (req, res) => {
     try {

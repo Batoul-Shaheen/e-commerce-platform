@@ -1,9 +1,9 @@
 import {
   BaseEntity,
   Entity,
-  Column,
   JoinColumn,
   JoinTable,
+  Column,
   ManyToMany,
   OneToOne,
   PrimaryGeneratedColumn,

@@ -39,12 +39,13 @@ export namespace NSUser {
     city: string;
     country: string;
     phone: string;
-    // userId: number;
-    // orderItems: { productId: number; quantity: number }[];
   }
 
+<<<<<<< HEAD
   export interface ShoppingCart{
     id :number;
   }
+=======
+>>>>>>> 038aff9f72db4ea018aacd03a162bba6cc090cfd
 }
 
