@@ -15,7 +15,7 @@ app.use("/users", usersRouter);
 app.use("/product", productRouter);
 app.use("/category", categoryRouert);
 app.use("/orders", orderRouter);
-app.use("shoppingCart", shoppingCartRouter)
+app.use("/shoppingCart", shoppingCartRouter)
 
 app.get("/health", (req, res) => {
   res.send("Hello, From E-Commerce :)");
