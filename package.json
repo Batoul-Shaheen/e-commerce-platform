@@ -24,7 +24,7 @@
     "jsonwebtoken": "^9.0.2",
     "mysql": "^2.18.1",
     "sql": "^0.78.0",
-    "stripe": "^13.10.0",
+    "stripe": "^13.11.0",
     "typeorm": "^0.3.17",
     "typescript": "^5.2.2",
     "validator": "^13.11.0"

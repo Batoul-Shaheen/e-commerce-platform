@@ -1,11 +1,7 @@
 import express from "express";
 import { Product } from "../DB/entities/Product.entity.js";
 import { ShoppingCart } from "../DB/entities/ShoppingCart.entity.js";
-<<<<<<< HEAD
 import { isUser } from "../middlewares/auth/authorize.js";
-=======
-import { isUser } from "../middlewares/auth/authorize.js"
->>>>>>> a0b54b8ffaee38db390a7d04d2f92d974b8a9f62
 
 const router = express.Router();
 
