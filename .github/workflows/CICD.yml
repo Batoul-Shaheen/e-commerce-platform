@@ -33,7 +33,7 @@ jobs:
     - name: configure docker host
       uses: khaledez/configure-docker-host@v1
       with:
-        host: 13.49.72.149 
+        host: 13.49.0.120 
         user: github
         ssh-private-key: ${{ secrets.SECRET_KEY }}
     - name: deploy
