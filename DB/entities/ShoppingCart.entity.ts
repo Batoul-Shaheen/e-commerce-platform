@@ -2,6 +2,10 @@ import {
   BaseEntity,
   Entity,
   JoinColumn,
+<<<<<<< HEAD
+=======
+  JoinTable,
+>>>>>>> 682417f40580da4e6224eb726404de3e8106e331
   Column,
   ManyToMany,
   OneToOne,
