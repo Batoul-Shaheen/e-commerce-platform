@@ -1,0 +1,73 @@
+<!DOCTYPE html> 
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE-edge" />
+        <meta name="viewport" content="width-device-width, initial-scale=1.0" />
+        <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1473.0.min.js"></script>
+        <link href="https://unpkg.com/nes.css@latest/css/nes.min.css"rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+        <title>Demo App</title> 
+    </head>
+<body> 
+    <div id="app">
+        <div class="nes-container with-title is-centered">
+            <p class="title">Contact Form</p>
+            <form class="form" id="contact-us" method="POST" action="/review/email" > 
+                  <div class="nes-field">
+                     <label for= "name field">Your Name</label> 
+                     <input placeholder="Enter Your Name" type="text"
+                          name="name"
+                          id="name_field" class="nes_input"/>
+                </div>
+                <div class="nes-field job">
+                    <label for="email field">Your Email</label>
+                    <input placeholder="Enter Your email" type="email"
+                          name="email"
+                          id="email_field" class="nes-input"/>
+                </div>
+
+
+                <div class="nes-field job">
+                    <label for="name_field">Message</label>
+                    <textarea placeholder="Enter message here" type="text"
+                    name="message" 
+                    rows="4"
+                    id="message_field" class="nes-input" ></textarea>
+                <div>
+
+                <button
+                 type="submit" id="button" class="job nes-btn is-primary">
+                 Send
+                <button>
+                <button
+                type="reset" id="button" class="job nes-btn is-primary">
+                Reset
+                <button>
+        </div>
+
+        </dialog>
+    </div> 
+</body> 
+  
+    <script>
+
+        const formEL = document.querySelector('.form');
+
+        formEL.addEventListener('submit', event => {
+            event.preventDefault();
+            const formData = new FormData(formEL);
+            const data = Object.fromEntries(formData);
+            fetch('http://localhost:3000/review/email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then(res => res.json())
+            .then(data => console.log(data))
+            .catch(error => console.log(error))
+    });
+
+</script>
+</html>

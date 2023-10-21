@@ -5,7 +5,8 @@ import { isUser } from "../middlewares/auth/authorize.js";
 
 const router = express.Router();
 
-router.post("/add-to-cart/product/:productId/cart/:cartId", isUser, async (req, res) => {
+router.post("/add-to-cart/product/:productId/cart/:cartId"//, isUser
+, async (req, res) => {
   try {
     const shoppingCart = await ShoppingCart.findOne({
       relations: ["products"],
@@ -27,6 +28,14 @@ router.post("/add-to-cart/product/:productId/cart/:cartId", isUser, async (req, 
       return res.status(200).send('Product quantity updated');
     } else {
       shoppingCart.products.push(product);
+
+      let bill = 0;
+      for (let product of shoppingCart.products) {
+        let productEntity = await Product.findOne({ where: { id: product.id } });
+        if (productEntity) {
+          bill += productEntity.price * product.quantity;
+        }
+      }
       await shoppingCart.save()
       console.log(shoppingCart)
       return res.status(200).send('Product added to the shopping cart');
@@ -38,7 +47,8 @@ router.post("/add-to-cart/product/:productId/cart/:cartId", isUser, async (req, 
   }
 });
 
-router.get("/shopping-cart/:id", isUser, async (req, res) => {
+router.get("/shopping-cart/:id"//, isUser
+, async (req, res) => {
   try {
     const shoppingCart = await ShoppingCart.findOne({
       relations: ["products"],

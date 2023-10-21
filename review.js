@@ -1,80 +1,39 @@
-var AWS = require('aws-sdk');
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = require("express");
+var router = express_1.default.Router();
+var aws_sdk_1 = require("aws-sdk");
 
-const router = express.Router();
+var ses = new aws_sdk_1.default.SES({ region: 'eu-north-1' });
 
-AWS.config.update({region: 'eu-north-1'});
-
-router.post('/email', (req, res) => {
-    const {email, message, name} = req.body;
+router.post('/email', function (req, res) {
+    var _a = req.body, email = _a.email, message = _a.message, name = _a.name;
     try {
-        console.log("hii");
-        sendEmail("platformecommerce54@gmail.com", email, message, name);
-        res.send('Email sent successfully');  
-    } catch (error) {
-        console.send('Email sending error:', error);
+        sesTest("platformecommerce54@gmail.com", email, message, name);
+        res.send('Email sent successfully');
+    }
+    catch (error) {
+        console.log('Email sending error:', error);
         res.status(500).send('Internal Server Error');
     }
 });
-
-function sendEmail(emailTo, emailFrom, message, name){
+async function sesTest(emailTo, emailFrom, message, name) {
     var params = {
         Destination: {
-          CcAddresses: [
-            emailFrom,
-          ],
-          ToAddresses: [
-            emailTo
-          ]
+            ToAddresses: [emailTo],
         },
-        Message: { 
-          Body: { 
-            Html: {
-             Charset: "UTF-8",
-             Data: "HTML_FORMAT_BODY"
+        Message: {
+            Body: {
+                Text: {
+                    Data: "From User: ".concat(name, " \n ").concat(message),
+                },
             },
-            Text: {
-             Charset: "UTF-8",
-             Data: `From User: ${name}\n${message}`
-            }
-           },
-           Subject: {
-            Charset: 'UTF-8',
-            Data: `Name: ${emailFrom}`
-           }
-          },
-        Source: "platformecommerce54@gmail.com",
-      };
-    
-      var sendPromise = new AWS.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
-    
-      sendPromise.then(
-        function(data) {
-          console.log(data.MessageId);
-        }).catch(
-          function(err) {
-          console.error(err, err.stack);
-        });
-
+            Subject: {
+                Data: "Name: ".concat(emailFrom),
+            },
+        },
+        Source: "platformecommerce54@gmail.com"
+    };
+    const res = await ses.sendEmail(params).promise();
 }
-// function sendEmail(emailTo, emailFrom, message, name) {
-//     const params = {
-//         Destination: {
-//             ToAddresses: [emailTo],
-//         },
-//         Message: {
-//             Body: {
-//                 Text: {
-//                     Charset: 'UTF-8',
-//                     Data: `From User: ${name}\n${message}`,
-//                 },
-//             },
-//             Subject: {
-//                 Charset: 'UTF-8',
-//                 Data: `Name: ${emailFrom}`,
-//             },
-//         },
-//         Source: "platformecommerce54@gmail.com"
-//     };
-// }
-
-export default router;
+exports.default = router;

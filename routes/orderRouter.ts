@@ -49,9 +49,18 @@ router.post("/add-to-order/product/:productId/order/:orderId",// isUser,
 
     order.products.push(product);
 
+    let totalAmount = 0;
+    for (let product of order.products) {
+      let productEntity = await Product.findOne({ where: { id: product.id } });
+      if (productEntity) {
+        totalAmount += productEntity.price * product.quantity;
+      }
+    }
+
     await order.save();
 
     return res.status(200).send("Product added to the order");
+
   } catch (error) {
     console.error(error);
     return res.status(500).send("Internal server error");
@@ -78,10 +87,6 @@ router.get("/:userId/:orderId", async (req, res) => {
     if (!order) {
       return res.status(404).json({ message: 'Order not found' });
     }
-
-    const totalAmount = order.products.reduce((total, product) => {
-      return (total + product.price);
-    }, 0);
      
     const productDetails = order.products.map((product) => {
       return {
@@ -96,7 +101,6 @@ router.get("/:userId/:orderId", async (req, res) => {
     res.status(200).send({
       user: user,
       orders: orders,
-      totalAmount: totalAmount,
       Product: productDetails,
     });
   } catch (error) {
