@@ -14,14 +14,11 @@ const router = express.Router();
 // signup user
 router.post("/signup", validateUser, async (req, res, next) => {
   try {
-    // Extract user and shopping cart data from the request body
     const userData = req.body;
     const shoppingCartData = req.body.shoppingCart;
 
-    // Create a new user
     const user = await insertUser(userData);
 
-    // Create a new shopping cart
     if (userData.type === 'User') {
       const shoppingCart = ShoppingCart.create(shoppingCartData);
       shoppingCart.users = user;
@@ -32,7 +29,6 @@ router.post("/signup", validateUser, async (req, res, next) => {
       res.send("You are 'Admin', There is no shoppingCart for you ;)");
 
     } else {
-      // Handle the case where the user type is neither 'User' nor 'Admin'
       res.status(400).send("Invalid user type");
     }
   } catch (error) {
@@ -41,27 +37,32 @@ router.post("/signup", validateUser, async (req, res, next) => {
 });
 
 // login user
-router.post("/login", auth, async (req, res, next) => {
-    const email = req.body.email;
-    const password = req.body.password;
+router.post("/login", async (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  loginUser(email, password)
+    .then((data) => {
+      res.cookie('username', data.username, {
+        maxAge: 60 * 60 * 1000
+      });
+      res.cookie('loginTime', Date.now(), {
+        maxAge: 60 * 60 * 1000
+      });
+      res.cookie('token', data.token, {
+        maxAge: 60 * 60 * 1000
+      });
 
-    if (email && password) {
-      loginUser(email, password)
-        .then((data) => {
-          res.status(200).send(data);
-        })
-        .catch((err) => {
-          res.status(404).send(err);
-        });
-    } else {
-      res.status(400).send(`Invalid email or password.`);
-    }
-  });
+      res.send();
+    })
+    .catch(err => {
+      res.status(401).send(err);
+    })
+});
 
 // logout user
-router.post("/logout", async (req, res, next) => {
-  res.cookie("fullName", "", {
-    maxAge: -1, // This means the cookie will be deleted
+router.get("/logout", async (req, res, next) => {
+  res.cookie("username", "", {
+    maxAge: -1,
     expires: new Date(Date.now() - 1000),
   });
   res.cookie("loginTime", "", {

@@ -6,10 +6,13 @@ import orderRouter from "./routes/orderRouter.js";
 import categoryRouter from "./routes/categoryRouter.js";
 import shoppingCartRouter from "./routes/shoppingCartRouter.js";
 import productRouter from './routes/productrouter.js'
-import router from "./review.js";
+import cookieParser from 'cookie-parser';
+ import router from "./review.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+app.use(cookieParser());
 
 app.use(express.json());
 
