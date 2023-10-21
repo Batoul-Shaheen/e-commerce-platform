@@ -7,7 +7,7 @@ import categoryRouter from "./routes/categoryRouter.js";
 import shoppingCartRouter from "./routes/shoppingCartRouter.js";
 import productRouter from './routes/productrouter.js'
 import cookieParser from 'cookie-parser';
- import router from "./review.js";
+import router from "./review.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
