@@ -7,6 +7,7 @@ import { Category } from "./entities/Category.entity.js";
 
 const dataSource = new DataSource({
     type: 'mysql',
+    supportBigNumbers: false,
     host: process.env.DB_HOST,
     port: Number(process.env.DB_PORT),
     username: process.env.DB_USER_NAME,
