@@ -5,7 +5,7 @@ import usersRouter from "./routes/userRouter.js";
 import orderRouter from "./routes/orderRouter.js";
 import categoryRouter from "./routes/categoryRouter.js";
 import shoppingCartRouter from "./routes/shoppingCartRouter.js";
-import productRouter from './routes/productRouter.js'
+import productRouter from './routes/productrouter.js'
 import cookieParser from 'cookie-parser';
 import router from "./review.js";
 
