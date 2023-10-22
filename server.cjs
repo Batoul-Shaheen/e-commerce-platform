@@ -22,4 +22,4 @@ app.post("/create-checkout-session", async (req, res) => {
   res.redirect(303, session.url);
 });
 
-app.listen(5000, () => console.log('Running on port 5000'));
+app.listen(5000, () => console.log('Running on PORT 5000'));

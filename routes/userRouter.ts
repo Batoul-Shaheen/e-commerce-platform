@@ -58,7 +58,7 @@ router.get("/logout", async (req, res, next) => {
   res.send("successfully log out");
 });
 
-// get all user
+
 router.get("/", async (req, res) => {
   try {
     const AllUser = await getUsers();
@@ -68,7 +68,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-//get user by id
+
 router.get("/:id", async (req, res) => {
   try {
     const id = parseInt(req.params.id);
