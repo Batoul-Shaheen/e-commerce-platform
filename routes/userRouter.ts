@@ -6,35 +6,18 @@ import {
 } from "../controllers/user.js";
 import { validateUser } from "../middlewares/validation/user.js";
 import { auth } from "../middlewares/auth/authenticate.js";
-import { ShoppingCart } from "../DB/entities/ShoppingCart.entity.js";
 import { User } from "../DB/entities/User.entity.js";
 import bcrypt from "bcrypt";
 
 const router = express.Router();
 
-// signup user
 router.post("/signup", validateUser, async (req, res, next) => {
-  try {
-    const userData = req.body;
-    const shoppingCartData = req.body.shoppingCart;
-
-    const user = await insertUser(userData);
-
-    if (userData.type === 'User') {
-      const shoppingCart = ShoppingCart.create(shoppingCartData);
-      shoppingCart.users = user;
-      await shoppingCart.save();
-      res.status(201).send('User and shopping cart created successfully');
-
-    } else if (userData.type === 'Admin') {
-      res.send("You are 'Admin', There is no shoppingCart for you ;)");
-
-    } else {
-      res.status(400).send("Invalid user type");
-    }
-  } catch (error) {
-    res.status(500).send('Internal server error');
-  }
+  insertUser(req.body).then(() => {
+    res.status(201).send("User and shopping cart created successfully");
+  }).catch(err => {
+    console.error(err);
+    res.status(500).send(err);
+  });
 });
 
 router.post("/login", async (req, res, next) => {
