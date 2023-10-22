@@ -13,34 +13,6 @@ const insertUser = (payload: NSUser.User) => {
   });
 };
 
-const loginUser = async (email: string, password: string) => {
-  try{
-    
-    const user = await User.findOneBy({ email });
-    
-    const passwordMatching = await bcrypt.compare(password, user?.password || '');
-    
-    if (user && passwordMatching) {
-      const token = jwt.sign(
-        {
-          email: user.email,
-          username: user.username
-        },
-        process.env.SECRET_KEY || '',
-        {
-          expiresIn: "30m"
-        }
-      );
-
-      return { token, username: user.username };
-    } else {
-      throw ("Invalid Username or password!");
-    }
-  }catch(error){
-    throw ("Invalid Username or password!");
-  }
-}
-
 const getUsers = () => {
   return User.find();
 };
@@ -54,4 +26,4 @@ const getUsersById = async (id: number) => {
   }
 };
 
-export { insertUser, loginUser, getUsers, getUsersById };
+export { insertUser, getUsers, getUsersById };

@@ -33,7 +33,8 @@ router.get('/:id', async (req, res) => {
 
 });
 
-router.post('/:categoryName', isAdmin, async (req, res) => {
+router.post('/:categoryName',// isAdmin, 
+async (req, res) => {
     try {
         const product = req.body;
         const categoryName = product.categoryName;

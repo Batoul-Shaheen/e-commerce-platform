@@ -1,10 +1,10 @@
 import mysql from "mysql";
 import "dotenv/config";
 
-const dbhost = process.env.DB_HOST
-const dbUsername = process.env.DB_USER_NAME
-const dbPassword = process.env.DB_PASSWORD
-const dbName = process.env.DB_NAME
+const dbhost = process.env.RDS_DB_HOST
+const dbUsername = process.env.RDS_DB_USER_NAME
+const dbPassword = process.env.RDS_DB_PASSWORD
+const dbName = process.env.RDS_DB_NAME
 
 const connection = mysql.createConnection({
     host:dbhost,
@@ -25,7 +25,7 @@ connection.query("SELECT 1+1 AS solution", (error, results, fields) => {
     console.log(results[0])
 });
 
-connection.query("INSERT INTO user VALUES(1,'anwar','123456','anwar@gmail.com', '056666699', 'Admin')", (error, results)=>{
+connection.query("INSERT INTO user VALUES(2,'anwar','123456','anwar@gmail.com', '056666699', 'Admin')", (error, results)=>{
     if(error){
         console.error(error);
         return

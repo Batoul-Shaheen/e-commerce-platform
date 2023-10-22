@@ -8,19 +8,21 @@ import shoppingCartRouter from "./routes/shoppingCartRouter.js";
 import productRouter from './routes/productRouter.js'
 import cookieParser from 'cookie-parser';
  import router from "./review.js";
+import cors from "cors";
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 app.use(cookieParser());
 
 app.use(express.json());
+app.use(cors());
 app.use("/users", usersRouter);
 app.use("/category", categoryRouter);
-app.use("/category", productRouter);
+app.use("/product", productRouter);
 app.use("/orders", orderRouter);
 app.use("/shoppingCart", shoppingCartRouter);
-app.use("/review", router)
+app.use("/review", router);
 
 
 

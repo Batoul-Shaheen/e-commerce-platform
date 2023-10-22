@@ -1,13 +1,14 @@
 import express from "express";
 import {
   insertUser,
-  loginUser,
   getUsers,
   getUsersById,
 } from "../controllers/user.js";
 import { validateUser } from "../middlewares/validation/user.js";
 import { auth } from "../middlewares/auth/authenticate.js";
 import { ShoppingCart } from "../DB/entities/ShoppingCart.entity.js";
+import { User } from "../DB/entities/User.entity.js";
+import bcrypt from "bcrypt";
 
 const router = express.Router();
 
@@ -36,31 +37,30 @@ router.post("/signup", validateUser, async (req, res, next) => {
   }
 });
 
-// login user
 router.post("/login", async (req, res, next) => {
-  const email = req.body.email;
-  const password = req.body.password;
-  loginUser(email, password)
-    .then((data) => {
-      res.cookie('username', data.username, {
-        maxAge: 60 * 60 * 1000
-      });
-      res.cookie('loginTime', Date.now(), {
-        maxAge: 60 * 60 * 1000
-      });
-      res.cookie('token', data.token, {
-        maxAge: 60 * 60 * 1000
-      });
+  try {
+    const { email, password } = req.body;
 
-      res.send();
-    })
-    .catch(err => {
-      res.status(401).send(err);
-    })
+    const user = await User.findOneBy({ email });
+
+    if (!user) {
+      return res.status(401).json({ message: 'Authentication failed!!' });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user?.password || '')
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Authentication failed' });
+    }
+
+    res.status(200).json({ message: 'Login successful', user });
+  } catch (error) {
+    res.status(500).json({ message: 'An error occurred' });
+  }
 });
 
-// logout user
 router.get("/logout", async (req, res, next) => {
+  const username = req.body
   res.cookie("username", "", {
     maxAge: -1,
     expires: new Date(Date.now() - 1000),

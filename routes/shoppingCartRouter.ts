@@ -6,65 +6,61 @@ import { isUser } from "../middlewares/auth/authorize.js";
 const router = express.Router();
 
 router.post("/add-to-cart/product/:productId/cart/:cartId"//, isUser
-, async (req, res) => {
-  try {
-    const shoppingCart = await ShoppingCart.findOne({
-      relations: ["products"],
-      where: { id: parseInt(req.params.cartId) },
-    });
-    const product = await Product.findOne({
-      where: { id: parseInt(req.params.productId) },
-    });
+  , async (req, res) => {
+    try {
+      const shoppingCart = await ShoppingCart.findOne({
+        relations: ["products"],
+        where: { id: parseInt(req.params.cartId) },
+      });
+      const product = await Product.findOne({
+        where: { id: parseInt(req.params.productId) },
+      });
 
-    if (!shoppingCart || !product) {
-      return res.status(404).send("Shopping cart or product not found");
-    }
-
-    let existingProduct = shoppingCart.products.find((p) => p.id === parseInt(req.params.productId));
-    if (existingProduct) {
-      existingProduct.quantity += 1;
-      existingProduct.save();
-      console.log(shoppingCart)
-      return res.status(200).send('Product quantity updated');
-    } else {
-      shoppingCart.products.push(product);
-
-      let bill = 0;
-      for (let product of shoppingCart.products) {
-        let productEntity = await Product.findOne({ where: { id: product.id } });
-        if (productEntity) {
-          bill += productEntity.price * product.quantity;
-        }
+      if (!shoppingCart || !product) {
+        return res.status(404).send("Shopping cart or product not found");
       }
-      await shoppingCart.save()
-      console.log(shoppingCart)
-      return res.status(200).send('Product added to the shopping cart');
-    }
 
-  } catch (error) {
-    console.error(error);
-    return res.status(500).send("Internal server error");
-  }
-});
+      let existingProduct = shoppingCart.products.find((p) => p.id === parseInt(req.params.productId));
+
+      if (existingProduct) {
+        existingProduct.quantity += 1;
+      shoppingCart.bill += (existingProduct.price * existingProduct.quantity);
+        console.log(shoppingCart.bill);
+        existingProduct.save();
+        return res.status(200).send('Product quantity updated and added to the shopping cart');
+      } else {
+        shoppingCart.products.push(product);
+        shoppingCart.bill += (product.price * product.quantity);
+        console.log(shoppingCart.bill);
+        await shoppingCart.save()
+        return res.status(200).send('Product added to the shopping cart');
+      }
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send("Internal server error");
+    }
+  });
 
 router.get("/shopping-cart/:id"//, isUser
-, async (req, res) => {
-  try {
-    const shoppingCart = await ShoppingCart.findOne({
-      relations: ["products"],
-      where: { id: parseInt(req.params.id) },
-    });
+  , async (req, res) => {
+    try {
+      const shoppingCart = await ShoppingCart.findOne({
+        relations: ["products"],
+        where: { id: parseInt(req.params.id) },
+      });
 
-    if (!shoppingCart) {
-      return res.status(404).send("Shopping cart not found");
+      if (!shoppingCart) {
+        return res.status(404).send("Shopping cart not found");
+      }
+      res.send({
+        product: shoppingCart.products,
+        bill: shoppingCart.bill
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal server error");
     }
-
-    res.send(shoppingCart.products);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal server error");
-  }
-});
+  });
 
 router.delete("/remove-from-cart/product/:productId/cart/:cartId", isUser, async (req, res) => {
   try {

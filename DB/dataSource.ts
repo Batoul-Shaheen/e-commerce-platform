@@ -4,6 +4,7 @@ import { Product } from "./entities/Product.entity.js";
 import { ShoppingCart } from "./entities/ShoppingCart.entity.js";
 import { User } from "./entities/User.entity.js";
 import { Category } from "./entities/Category.entity.js";
+import "dotenv/config";
 
 const dataSource = new DataSource({
     type: 'mysql',
