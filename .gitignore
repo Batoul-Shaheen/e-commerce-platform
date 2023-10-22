@@ -4,3 +4,4 @@ dist
 *.js
 !main.js
 !user.test.js
+!product.test.js
