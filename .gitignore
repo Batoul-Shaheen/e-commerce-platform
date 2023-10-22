@@ -5,3 +5,4 @@ dist
 !main.js
 !user.test.js
 !product.test.js
+!jest.config.js
