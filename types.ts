@@ -42,6 +42,7 @@ export namespace NSUser {
   }
   export interface ShoppingCart{
     id :number;
+    userId:number
   }
 }
 
