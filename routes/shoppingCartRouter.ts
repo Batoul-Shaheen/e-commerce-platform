@@ -1,12 +1,12 @@
 import express from "express";
 import { Product } from "../DB/entities/Product.entity.js";
 import { ShoppingCart } from "../DB/entities/ShoppingCart.entity.js";
-import { isUser } from "../middlewares/auth/authorize.js";
+import { authorize } from "../middlewares/auth/authorize.js";
 
 const router = express.Router();
 
-router.post("/add-to-cart/product/:productId/cart/:cartId"//, isUser
-  , async (req, res) => {
+router.post("/add-to-cart/product/:productId/cart/:cartId",// authorize('POST-shoppingCart'), 
+async (req, res) => {
     try {
       const shoppingCart = await ShoppingCart.findOne({
         relations: ["products"],
@@ -41,8 +41,8 @@ router.post("/add-to-cart/product/:productId/cart/:cartId"//, isUser
     }
   });
 
-router.get("/shopping-cart/:id"//, isUser
-  , async (req, res) => {
+router.get("/shopping-cart/:id", //authorize('GET-shoppingCart'), 
+async (req, res) => {
     try {
       const shoppingCart = await ShoppingCart.findOne({
         relations: ["products"],
@@ -62,7 +62,8 @@ router.get("/shopping-cart/:id"//, isUser
     }
   });
 
-router.delete("/remove-from-cart/product/:productId/cart/:cartId", isUser, async (req, res) => {
+router.delete("/remove-from-cart/product/:productId/cart/:cartId",// authorize('DELETE-FSC'), 
+async (req, res) => {
   try {
     const shoppingCartId = parseInt(req.params.cartId);
     const productId = req.params.productId;
@@ -98,27 +99,5 @@ router.delete("/remove-from-cart/product/:productId/cart/:cartId", isUser, async
   }
 }
 );
-
-// router.get("/calculate-bill/:cartId", async (req, res) => {
-//   try {
-//     const cartId = parseInt(req.params.cartId);
-//     const cart = await ShoppingCart.findOne({
-//       relations: ["products"],
-//       where: { id: cartId },
-//     });
-
-//     if (!cart) {
-//       return res.status(404).send("Shopping cart not found");
-//     }
-
-//     var bill = 0;
-//     for (const product of cart.products) {
-//       bill += product.price;
-//     }
-//     res.send(bill);
-//   } catch (error) {
-//     res.sendStatus(500).send("An error occurred while calculating the bill");
-//   }
-// });
 
 export default router;

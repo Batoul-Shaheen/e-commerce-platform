@@ -13,14 +13,4 @@ const CreateOrder = (payload: NSUser.Order) => {
   };
   
 
-const getOrdersById = async (id: number) => {
-    try {
-      const order = await Order.findOne({ where: { id } });
-      return order;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-
-  export {getOrdersById, CreateOrder};
+  export { CreateOrder};

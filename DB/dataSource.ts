@@ -5,6 +5,8 @@ import { ShoppingCart } from "./entities/ShoppingCart.entity.js";
 import { User } from "./entities/User.entity.js";
 import { Category } from "./entities/Category.entity.js";
 import "dotenv/config";
+import { Role } from "./entities/Role.entity.js";
+import { Permission } from "./entities/Permission.entity.js";
 
 const dataSource = new DataSource({
     type: 'mysql',
@@ -19,7 +21,9 @@ const dataSource = new DataSource({
         Product,
         ShoppingCart,
         User,
-        Category
+        Category,
+        Role,
+        Permission
     ],
     migrations: ['./**/migration/*.ts'],
     synchronize: true,
