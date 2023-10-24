@@ -4,6 +4,7 @@ import { Product } from "./entities/Product.entity.js";
 import { ShoppingCart } from "./entities/ShoppingCart.entity.js";
 import { User } from "./entities/User.entity.js";
 import { Category } from "./entities/Category.entity.js";
+import {ProductCart} from "./entities/ProductCart.entity.js"
 import "dotenv/config";
 
 const dataSource = new DataSource({
@@ -15,11 +16,12 @@ const dataSource = new DataSource({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     entities: [
+      User,
+      Product,
         Order,
-        Product,
         ShoppingCart,
-        User,
-        Category
+        Category,
+        ProductCart
     ],
     migrations: ['./**/migration/*.ts'],
     synchronize: true,

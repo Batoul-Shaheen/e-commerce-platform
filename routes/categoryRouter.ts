@@ -23,7 +23,7 @@ router.get('/:name', async (req, res) => {
     res.status(200).send(category);
 });
 
-router.post('/', isAdmin, (req, res) => {
+router.post('/', (req, res) => {
     insertCategory(req.body).then((data) => {
         res.status(201).send(data)
     }).catch(err => {

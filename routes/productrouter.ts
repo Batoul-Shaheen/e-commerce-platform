@@ -1,6 +1,6 @@
 import express from 'express';
 import { Product } from '../DB/entities/Product.entity.js';
-import { getProductsById, insertProduct} from '../controllers/product.js';
+import { getProductsById, insertProduct } from '../controllers/product.js';
 import { Category } from '../DB/entities/Category.entity.js';
 import { ShoppingCart } from '../DB/entities/ShoppingCart.entity.js';
 import { isAdmin } from '../middlewares/auth/authorize.js';
@@ -33,26 +33,43 @@ router.get('/:id', async (req, res) => {
 
 });
 
+
 router.post('/:categoryName',// isAdmin, 
-async (req, res) => {
-    try {
-        const product = req.body;
-        const categoryName = product.categoryName;
-        if (!categoryName) {
-            return res.status(400).send('Category Name is missing');
+    async (req, res) => {
+        try {
+            const product = req.body;
+            const categoryName = product.categoryName;
+            if (!categoryName) {
+                return res.status(400).send('Category Name is missing');
+            }
+
+            const category = await Category.findOneBy({ name: categoryName });
+            if (!category) {
+                return res.status(400).send('Category Not Found');
+            }
+
+            const existingProduct = await Product.findOneBy({ id: product.id });
+
+            if (existingProduct) {
+                existingProduct.quantity += product.quantity;
+
+                await existingProduct.save();
+
+                res.status(200).send('Product quantity increased successfully');
+            } else {
+                product.category = category;
+
+                await insertProduct({
+                    ...product,
+                });
+
+                res.status(201).send('Product inserted successfully');
+            }
+
+        } catch (error) {
+            res.status(500).send(error)
         }
-        const category = await Category.findOneBy({name: categoryName});
-        if (!category) {
-            return res.status(400).send('Category Not Found');
-        }
-        await insertProduct({
-            ...product,
-        });
-        res.status(201).send('Product inserted successfully');
-    } catch (error) {
-        res.status(500).send(error)
-    }
-});
+    });
 
 
 
@@ -84,7 +101,6 @@ router.delete('/:categoryName', isAdmin, async (req, res) => {
         res.status(500).send(error);
     }
 });
-
 
 
 export default router;

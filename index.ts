@@ -7,11 +7,13 @@ import categoryRouter from "./routes/categoryRouter.js";
 import shoppingCartRouter from "./routes/shoppingCartRouter.js";
 import productRouter from './routes/productrouter.js'
 import cookieParser from 'cookie-parser';
- import router from "./review.js";
+import router from "./review.js";
 import cors from "cors";
+import stripeRouter from './server.js';
+
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 app.use(cookieParser());
 
@@ -23,6 +25,7 @@ app.use("/product", productRouter);
 app.use("/orders", orderRouter);
 app.use("/shoppingCart", shoppingCartRouter);
 app.use("/review", router);
+app.use("/stripe" , stripeRouter )
 
 
 

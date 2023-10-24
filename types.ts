@@ -12,14 +12,6 @@ export namespace NSUser {
     type: Type;
   }
 
-  export interface Product {
-    id: number;
-    name: string;
-    description?: string;
-    price: number;
-    quantity: number;
-  }
-
   export interface Category {
     name: string;
     products: Product[];
@@ -31,6 +23,7 @@ export namespace NSUser {
     description?: string;
     price: number;
     quantity: number;
+    categoryName: string;
   }
   export interface Order {
     orderId: number
