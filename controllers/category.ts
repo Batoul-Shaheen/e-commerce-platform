@@ -11,6 +11,7 @@ const getCategoryByName = async (name: string) => {
   }
 };
 
+<<<<<<< HEAD
 const insertCategory = async (payload: NSUser.Category) => {
   return dataSource.manager.transaction(async (transaction) => {
     const newCategory = Category.create({
@@ -19,5 +20,15 @@ const insertCategory = async (payload: NSUser.Category) => {
     await transaction.save(newCategory);
   });
 }
+=======
+  const insertCategory = async (payload: NSUser.Category) => {
+    return dataSource.manager.transaction(async (transaction) => {
+      const newCategory = Category.create({
+        ...payload
+      });
+      await transaction.save(newCategory);
+    });
+  }
+>>>>>>> 2b10fa985c170a53b6e1a11f7264e84de65168b8
 
 export { getCategoryByName, insertCategory };

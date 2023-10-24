@@ -12,9 +12,17 @@ export namespace NSUser {
     type: Type;
   }
 
-  export interface Category {
+<<<<<<< HEAD
+=======
+  export interface Role {
+    id: number;
     name: string;
-    products: Product[];
+    permissions: number[];
+  }
+  
+  export interface Permission {
+    id: number;
+    name: string;
   }
 
   export interface Product {
@@ -23,8 +31,26 @@ export namespace NSUser {
     description?: string;
     price: number;
     quantity: number;
+    categoryName: string ;
+  }
+
+>>>>>>> 2b10fa985c170a53b6e1a11f7264e84de65168b8
+  export interface Category {
+    name: string;
+    products: Product[];
+  }
+
+<<<<<<< HEAD
+  export interface Product {
+    id: number;
+    name: string;
+    description?: string;
+    price: number;
+    quantity: number;
     categoryName: string;
   }
+=======
+>>>>>>> 2b10fa985c170a53b6e1a11f7264e84de65168b8
   export interface Order {
     orderId: number
     orderDate: string;

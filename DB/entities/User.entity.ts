@@ -1,6 +1,7 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany, BeforeInsert } from "typeorm";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany, BeforeInsert, ManyToOne, JoinColumn } from "typeorm";
 import { Order } from "./Order.entity.js";
 import bcrypt from 'bcrypt';
+import { Role } from "./Role.entity.js";
 
 @Entity()
 export class User extends BaseEntity {
@@ -31,7 +32,11 @@ export class User extends BaseEntity {
         enum: ['Admin', 'User'],
         default: 'user'
     })
-    type: string ;
+    type: 'Admin' | 'User' ;
+
+    @ManyToOne(() => Role, role => role.users, { cascade: true, eager: true, nullable: true })
+    @JoinColumn()
+    role: Role;
 
     @OneToMany(() => Order, (order) => order.user)
     orders: Order[];

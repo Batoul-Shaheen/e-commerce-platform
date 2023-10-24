@@ -1,15 +1,14 @@
 import express from "express";
 import { Order } from "../DB/entities/Order.entity.js";
-import dataSource from "../DB/dataSource.js";
-import { getOrdersById, CreateOrder } from "../controllers/order.js";
+import { CreateOrder } from "../controllers/order.js";
 import { User } from "../DB/entities/User.entity.js";
 import { Product } from "../DB/entities/Product.entity.js";
-import { auth } from "../middlewares/auth/authenticate.js";
-import { isAdmin, isUser } from "../middlewares/auth/authorize.js";
+import { authorize } from "../middlewares/auth/authorize.js";
 
 const router = express.Router();
 
-router.post("/:userId", async (req, res) => {
+router.post("/:userId", //authorize('POST-order'),
+ async (req, res) => {
   try {
     const { userId } = req.params;
     const userData = await User.findOne({ where: { id: parseInt(userId) } });
@@ -20,7 +19,7 @@ router.post("/:userId", async (req, res) => {
 
     const orderData = {
       ...req.body,
-      user: userData, 
+      user: userData,
     };
 
     const newOrder = await CreateOrder(orderData);
@@ -32,7 +31,7 @@ router.post("/:userId", async (req, res) => {
   }
 });
 
-router.post("/add-to-order/product/:productId/order/:orderId",// isUser,
+router.post("/add-to-order/product/:productId/order/:orderId", //authorize('POST-PTO'),
  async (req, res) => {
   try {
     const order = await Order.findOne({
@@ -68,9 +67,10 @@ router.post("/add-to-order/product/:productId/order/:orderId",// isUser,
 });
 
 
-router.get("/:userId/:orderId", async (req, res) => {
+router.get("/:userId/:orderId", //authorize('GET-order'),
+ async (req, res) => {
   try {
-    const userId  = req.params.userId;
+    const userId = req.params.userId;
     const orderId = parseInt(req.params.orderId)
 
     const user = await User.find({ where: { id: parseInt(userId) } });
@@ -87,7 +87,7 @@ router.get("/:userId/:orderId", async (req, res) => {
     if (!order) {
       return res.status(404).json({ message: 'Order not found' });
     }
-     
+
     const productDetails = order.products.map((product) => {
       return {
         id: product.id,
@@ -109,24 +109,24 @@ router.get("/:userId/:orderId", async (req, res) => {
   }
 });
 
-router.put("/:orderId", //isUser,
-  async (req, res) => {
-    const orderId = parseInt(req.params.orderId);
-    const { status } = req.body;
+router.put("/:orderId", //authorize('PUT-order'),
+ async (req, res) => {
+  const orderId = parseInt(req.params.orderId);
+  const { status } = req.body;
 
-    try {
-      const order = await Order.findOne({ where: { id: orderId } });
-      if (!order) {
-        res.status(404).send("Order not found");
-      } else {
-        order.status = status;
-        await Order.save(order);
-        res.send(order);
-      }
-    } catch (error) {
-      res.status(500).send("Error updating order:");
+  try {
+    const order = await Order.findOne({ where: { id: orderId } });
+    if (!order) {
+      res.status(404).send("Order not found");
+    } else {
+      order.status = status;
+      await Order.save(order);
+      res.send(order);
     }
+  } catch (error) {
+    res.status(500).send("Error updating order:");
   }
+}
 );
 
 export default router;

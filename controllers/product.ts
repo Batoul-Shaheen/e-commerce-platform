@@ -11,7 +11,7 @@ const insertProduct = (payload: NSUser.Product) => {
     });
   };
 
-
+  
   const getProductsById = async (id: number) => {
     try {
       const product = await Product.findOne({ where: { id } });
