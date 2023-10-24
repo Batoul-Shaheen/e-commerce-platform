@@ -24,12 +24,8 @@ router.get('/:name', async (req, res) => {
     res.status(200).send(category);
 });
 
-<<<<<<< HEAD
-router.post('/', (req, res) => {
-=======
 router.post('/', //authorize('POST-category'),
  (req, res) => {
->>>>>>> 2b10fa985c170a53b6e1a11f7264e84de65168b8
     insertCategory(req.body).then((data) => {
         res.status(201).send(data)
     }).catch(err => {

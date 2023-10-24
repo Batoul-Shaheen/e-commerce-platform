@@ -22,15 +22,10 @@ const dataSource = new DataSource({
       Product,
         Order,
         ShoppingCart,
-<<<<<<< HEAD
         Category,
-        ProductCart
-=======
-        User,
-        Category,
+        ProductCart,
         Role,
         Permission
->>>>>>> 2b10fa985c170a53b6e1a11f7264e84de65168b8
     ],
     migrations: ['./**/migration/*.ts'],
     synchronize: true,

@@ -31,9 +31,8 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-<<<<<<< HEAD
 
-router.post('/:categoryName',// isAdmin, 
+router.post('/:categoryName',// authorize('POST-PTC'), 
     async (req, res) => {
         try {
             const product = req.body;
@@ -69,59 +68,21 @@ router.post('/:categoryName',// isAdmin,
             res.status(500).send(error)
         }
     });
-=======
-router.post('/:categoryName/:productId',// authorize('POST-PTC'),
-async (req, res) => {
-    try {
-        const product = req.body;
-        const categoryName = product.categoryName;
-        if (!categoryName) {
-            return res.status(400).send('Category Name is missing');
-        }
-        const category = await Category.findOneBy({ name: categoryName });
-        if (!category) {
-            return res.status(400).send('Category Not Found');
-        }
-        product.category = category;
 
-        if (!category || !product) {
-            return res.status(404).send("Shopping cart or product not found");
-          }
-    
-          let existingProduct = category.products.find((p) => p.id === parseInt(req.params.productId));
-    
-          if (existingProduct) {
-            existingProduct.quantity += 1;
-            existingProduct.save();
-            return res.status(200).send('Product quantity updated and added to the category');
-          }else{
-              await insertProduct({
-                  ...product,
-              });
-              res.status(201).send('Product inserted successfully');
-            } 
-    } catch (error) {
-        res.status(500).send(error)
-    }
-});
->>>>>>> 2b10fa985c170a53b6e1a11f7264e84de65168b8
 
 router.put('/update-category/:productId', async (req, res) => {
     const productId = parseInt(req.params.productId);
-    const newCategoryName = req.body.newCategoryName; // The new category name
+    const newCategoryName = req.body.newCategoryName;
 
     try {
-        // Find the product by its ID
-        const product = await Product.findOneBy({id: productId});
+        const product = await Product.findOneBy({ id: productId });
 
         if (!product) {
             return res.status(404).send('Product not found');
         }
 
-        // Set the category field to the new category name
         product.category = newCategoryName;
 
-        // Save the updated product
         await product.save();
 
         res.send('Category updated for the product');
@@ -133,8 +94,6 @@ router.put('/update-category/:productId', async (req, res) => {
 // router.delete('/remove-category/:productId', async (req, res) => {
 //     const productId = parseInt(req.params.productId);
 
-<<<<<<< HEAD
-=======
 //     try {
 //         // Find the product by its ID
 //         const product = await Product.findOneBy({id :productId});
@@ -142,7 +101,7 @@ router.put('/update-category/:productId', async (req, res) => {
 //         if (!product) {
 //             return res.status(404).send('Product not found');
 //         }
-        
+
 //         // Update the category field to remove the reference to the category name
 //         category.products = null; // Or, set it to another default category or handle as needed
 
@@ -208,5 +167,4 @@ router.put('/update-category/:productId', async (req, res) => {
 //     }
 // });
 
->>>>>>> 2b10fa985c170a53b6e1a11f7264e84de65168b8
 export default router;
