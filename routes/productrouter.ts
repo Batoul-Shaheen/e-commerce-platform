@@ -55,8 +55,7 @@ router.post('/:categoryName',// authorize('POST-PTC'),
 
                 res.status(200).send('Product quantity increased successfully');
             } else {
-                product.category = category;
-
+                product.category = category;               
                 await insertProduct({
                     ...product,
                 });
