@@ -1,4 +1,4 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, Relation } from "typeorm";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, Relation } from "typeorm";
 import { Product } from "./Product.entity.js";
 import { ShoppingCart } from "./ShoppingCart.entity.js";
 
