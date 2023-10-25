@@ -10,5 +10,5 @@ services:
      - RDS_DB_PASSWORD=xQMRUDbzmq8eMsghNTTL
      - RDS_DB_NAME=e-commerce
     ports:
-     - "5000:80"
+     - "80:5000"
     
