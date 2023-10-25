@@ -6,9 +6,9 @@ services:
       dockerfile: Dockerfile
     environment:
      - RDS_DB_PORT=3306
-     - RDS_DB_HOST=$RDS_DB_HOST
+     - RDS_DB_HOST=e-commerceDB.conevz7aueby.eu-north-1.rds.amazonaws.com
      - RDS_DB_USER_NAME=AnwarBatool
-     - RDS_DB_PASSWORD=$RDS_DB_PASSWORD
+     - RDS_DB_PASSWORD=xQMRUDbzmq8eMsghNTTL
      - RDS_DB_NAME=e-commerce
     ports:
      - "5000:80"
