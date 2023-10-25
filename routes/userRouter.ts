@@ -8,7 +8,7 @@ import { authorize } from "../middlewares/auth/authorize.js";
 
 const router = express.Router();
 
-router.post("/signup", //authorize('SIGNUP'), 
+router.post("/signup", authorize('SIGNUP'), 
 validateUser, 
 async (req, res, next) => {
   insertUser(req.body).then(() => {
@@ -19,8 +19,7 @@ async (req, res, next) => {
   });
 });
 
-router.post('/role', //authorize('POST_users/role'), //auth,
- (req, res, next) => {
+router.post('/role', authorize('POST_users/role'), auth, (req, res, next) => {
   insertRole(req.body).then((data) => {
     res.status(201).send(data)
   }).catch(err => {
@@ -38,15 +37,14 @@ router.post('/permission', (req, res, next) => {
   });
 });
 
-router.post("/login",// auth,
- async (req, res, next) => {
+router.post("/login", async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
     const user = await User.findOneBy({ email });
 
     if (!user) {
-      return res.status(401).json({ message: 'Authentication failed!!' });
+      return res.status(404).json({ message: 'Authentication failed!!' });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user?.password || '')
@@ -61,8 +59,7 @@ router.post("/login",// auth,
   }
 });
 
-router.get('/roles', //authorize('GET_users/role'), auth, 
-async (req, res, next) => {
+router.get('/roles', authorize('GET_users/role'), auth, async (req, res, next) => {
   try {
     const roles = await getRoles();
     res.send(roles);
@@ -103,7 +100,7 @@ router.get("/logout", async (req, res, next) => {
     maxAge: -1,
   });
 
-  res.send("successfully log out");
+  res.status(200).send("successfully log out");
 });
 
 export default router;

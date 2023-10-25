@@ -1,6 +1,7 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable, OneToMany } from "typeorm";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable, OneToMany, JoinColumn } from "typeorm";
 import { User } from "./User.entity.js";
 import { Product } from "./Product.entity.js";
+import { OrderItem } from "./orderItem.entity.js";
 
 @Entity()
 export class Order extends BaseEntity {
@@ -31,5 +32,8 @@ export class Order extends BaseEntity {
   @ManyToMany(() => Product, (product) => product.orders)
   @JoinTable()
   products: Product[];
+
+  @OneToMany(() => OrderItem, (orderItems) => orderItems.orders)
+  orderItems: OrderItem[];
 
 }

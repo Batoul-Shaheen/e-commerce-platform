@@ -32,8 +32,7 @@ router.get('/:id', async (req, res) => {
 });
 
 
-router.post('/:categoryName',// authorize('POST-PTC'), 
-    async (req, res) => {
+router.post('/:categoryName', authorize('POST-PTC'), async (req, res) => {
         try {
             const product = req.body;
             const categoryName = product.categoryName;
@@ -91,80 +90,34 @@ router.put('/update-category/:productId', async (req, res) => {
     }
 });
 
-// router.delete('/remove-category/:productId', async (req, res) => {
-//     const productId = parseInt(req.params.productId);
 
-//     try {
-//         // Find the product by its ID
-//         const product = await Product.findOneBy({id :productId});
+router.delete('/:categoryName' , authorize('DELETE-FC'), async (req, res) => {
+    try {
+        const categoryName = req.params.categoryName;
+        const productId = req.body.productId;
+        const category = await Category.findOneBy({name :categoryName});
 
-//         if (!product) {
-//             return res.status(404).send('Product not found');
-//         }
+        if (!category) {
+            return res.status(404).send('Category not found');
+        }
+        const product = await Product.findOneBy({ id: productId} );
 
-//         // Update the category field to remove the reference to the category name
-//         category.products = null; // Or, set it to another default category or handle as needed
+        if (!product) {
+            return res.status(404).send('Product not found');
+        }
 
-//         // Save the updated product
-//         await product.save();
+        const productIndex = category.products.findIndex((item) => item.toString() === productId);
 
-//         res.send('Category name removed from the product');
-//     } catch (error) {
-//         res.status(500).send(error);
-//     }
-// });
+        if (productIndex === -1) {
+            return res.status(404).send('Product is not in the Category');
+        }
 
-// router.delete('/remove-category/:categoryName', async (req, res) => {
-//     const categoryName = req.params.categoryName;
-
-//     try {
-//         // Find all products with the specified categoryName
-//         const productsToUpdate = await Product.find({ category: categoryName });
-
-//         if (productsToUpdate.length === 0) {
-//             return res.status(404).send('No products found with this category name');
-//         }
-
-//         // Update each product to remove the category name
-//         for (const product of productsToUpdate) {
-//             product.category = null; // Or, set it to another default category or handle as needed
-//             await product.save();
-//         }
-
-//         res.send('Category name removed from products');
-//     } catch (error) {
-//         res.status(500).send(error);
-//     }
-// });
-
-// router.delete('/:categoryName' ,// authorize('DELETE-FC'), 
-// async (req, res) => {
-//     try {
-//         const categoryName = req.params.categoryName;
-//         const productId = req.body.productId;
-//         const category = await Category.findOneBy({name :categoryName});
-
-//         if (!category) {
-//             return res.status(404).send('Category not found');
-//         }
-//         const product = await Product.findOneBy({ id: productId} );
-
-//         if (!product) {
-//             return res.status(404).send('Product not found');
-//         }
-
-//         const productIndex = category.products.findIndex((item) => item.toString() === productId);
-
-//         if (productIndex === -1) {
-//             return res.status(404).send('Product is not in the Category');
-//         }
-
-//         category.products.splice(productIndex, 1);
-//         await category.save();
-//         res.send('Product removed from the Category');
-//     } catch (error) {
-//         res.status(500).send("something went wrong");
-//     }
-// });
+        category.products.splice(productIndex, 1);
+        await category.save();
+        res.send('Product removed from the Category');
+    } catch (error) {
+        res.status(500).send("something went wrong");
+    }
+});
 
 export default router;

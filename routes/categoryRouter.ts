@@ -2,7 +2,6 @@ import express from "express";
 import { Category } from "../DB/entities/Category.entity.js";
 import { getCategoryByName, insertCategory } from "../controllers/category.js";
 import { authorize } from "../middlewares/auth/authorize.js";
-import { User } from "../DB/entities/User.entity.js";
 
 const router = express.Router();
 
@@ -24,9 +23,9 @@ router.get('/:name', async (req, res) => {
     res.status(200).send(category);
 });
 
-router.post('/', //authorize('POST-category'),
- (req, res) => {
-    insertCategory(req.body).then((data) => {
+router.post('/categoryName', authorize('POST-category'),(req, res) => {
+    const category = req.body
+    insertCategory(category).then((data) => {
         res.status(201).send(data)
     }).catch(err => {
         console.error(err);
@@ -34,7 +33,7 @@ router.post('/', //authorize('POST-category'),
     });
 });
 
-router.put('/:name', //authorize('PUT-category'),
+router.put('/:name', authorize('PUT-category'),
  async (req, res) => {
     const name = req.params.name;
     const category = await Category.findOneBy({ name });
@@ -47,8 +46,7 @@ router.put('/:name', //authorize('PUT-category'),
     }
 });
 
-router.delete('/:name', //authorize('DELETE-category'),
- async (req, res) => {
+router.delete('/:name', authorize('DELETE-category'), async (req, res) => {
     const name = req.params.name;
     const category = await Category.findOneBy({ name });
     if (category) {

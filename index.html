@@ -58,7 +58,7 @@
             event.preventDefault();
             const formData = new FormData(formEL);
             const data = Object.fromEntries(formData);
-            fetch('http://localhost:3000/review/email', {
+            fetch('http://localhost:5000/review/email', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

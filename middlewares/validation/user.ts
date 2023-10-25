@@ -34,8 +34,6 @@ const validateUser = (req: express.Request,
   }
 }
 
-
-
 export {
   validateUser
 }

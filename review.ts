@@ -4,6 +4,7 @@ import 'dotenv/config';
 const router = express.Router();
 
 import aws from 'aws-sdk';
+import { User } from "./DB/entities/User.entity.js";
 
 const SESCONFIG ={
     accessKeyId: process.env.AWS_ACCESS_KEY,
@@ -13,11 +14,16 @@ const SESCONFIG ={
 
 const ses = new aws.SES(SESCONFIG);
 
-router.post('/email', (req, res) => {
+router.post('/email', async(req, res) => {
     const {email, message, name} = req.body;
     try {
-        sesTest("platformecommerce54@gmail.com", email, message, name);
-        res.json({ message: 'Email sent successfully'}); 
+        const user = await User.findOneBy({ email : email });
+        if (user) {
+            sesTest("platformecommerce54@gmail.com", email, message, name);
+            res.json({ message: 'Email sent successfully'}); 
+        }else {
+            res.status(400).json({ error: 'Email not found in the database' })
+        }
     } catch (error) {
         console.log('Email sending error:', error);
         res.status(500).send('Internal Server Error');

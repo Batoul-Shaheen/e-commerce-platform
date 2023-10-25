@@ -4,11 +4,11 @@ import { CreateOrder } from "../controllers/order.js";
 import { User } from "../DB/entities/User.entity.js";
 import { Product } from "../DB/entities/Product.entity.js";
 import { authorize } from "../middlewares/auth/authorize.js";
+import { OrderItem } from "../DB/entities/orderItem.entity.js";
 
 const router = express.Router();
 
-router.post("/:userId", //authorize('POST-order'),
- async (req, res) => {
+router.post("/:userId", authorize('POST-order'), async (req, res) => {
   try {
     const { userId } = req.params;
     const userData = await User.findOne({ where: { id: parseInt(userId) } });
@@ -31,11 +31,10 @@ router.post("/:userId", //authorize('POST-order'),
   }
 });
 
-router.post("/add-to-order/product/:productId/order/:orderId", //authorize('POST-PTO'),
- async (req, res) => {
+router.post("/add-to-order/product/:productId/order/:orderId", authorize('POST-PTO'), async (req, res) => {
   try {
     const order = await Order.findOne({
-      relations: ["products"],
+      relations: ["orderItems.product","products"],
       where: { id: parseInt(req.params.orderId) },
     });
     const product = await Product.findOne({
@@ -46,20 +45,31 @@ router.post("/add-to-order/product/:productId/order/:orderId", //authorize('POST
       return res.status(404).send("Order or product not found");
     }
 
-    order.products.push(product);
+    const existingProductCart = order.orderItems? order.orderItems.find(
+      (orderItems) => orderItems.product.id === parseInt(req.params.productId)
+    )
+    :undefined;
 
-    let totalAmount = 0;
-    for (let product of order.products) {
-      let productEntity = await Product.findOne({ where: { id: product.id } });
-      if (productEntity) {
-        totalAmount += productEntity.price * product.quantity;
+    if (existingProductCart) {
+      existingProductCart.quantity += 1;
+      order.totalAmount += (existingProductCart.product.price * existingProductCart.quantity);
+      await existingProductCart.save();
+    } else {
+      const newProductCart = new OrderItem();
+      newProductCart.product = product;
+      newProductCart.quantity = 1;
+      order.totalAmount += (newProductCart.product.price * newProductCart.quantity);
+
+      if (!order.orderItems) {
+        order.orderItems = [];
       }
-    }
 
+    order.orderItems.push(newProductCart);
+    await newProductCart.save();
     await order.save();
+  }
 
     return res.status(200).send("Product added to the order");
-
   } catch (error) {
     console.error(error);
     return res.status(500).send("Internal server error");
@@ -67,8 +77,7 @@ router.post("/add-to-order/product/:productId/order/:orderId", //authorize('POST
 });
 
 
-router.get("/:userId/:orderId", //authorize('GET-order'),
- async (req, res) => {
+router.get("/:userId/:orderId", authorize('GET-order'), async (req, res) => {
   try {
     const userId = req.params.userId;
     const orderId = parseInt(req.params.orderId)
@@ -109,8 +118,7 @@ router.get("/:userId/:orderId", //authorize('GET-order'),
   }
 });
 
-router.put("/:orderId", //authorize('PUT-order'),
- async (req, res) => {
+router.put("/:orderId", authorize('PUT-order'), async (req, res) => {
   const orderId = parseInt(req.params.orderId);
   const { status } = req.body;
 
