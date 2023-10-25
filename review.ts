@@ -50,4 +50,5 @@ async function sesTest(emailTo: string, emailFrom: string, message: string, name
         const res = await ses.sendEmail(params).promise();
         
 } 
+
 export default router;
