@@ -4,5 +4,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+     - PORT=3306
+     - DB_HOST=$RDS_DB_HOST
+     - DB_USER=$RDS_DB_USER_NAME
+     - DB_PASSWORD=$RDS_DB_PASSWORD
+     - DB_NAME=e-commerce
+
     ports:
-      - "80:80"
+      - "5000:80"
