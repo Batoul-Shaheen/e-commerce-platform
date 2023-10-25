@@ -3,6 +3,12 @@ services:
   web:
     image:  ghcr.io/batoul-shaheen/e-commerce-platform:$GIT_VERSION
     restart: always
+    environment:
+     - RDS_DB_PORT=3306
+     - RDS_DB_HOST=e-commerceDB.conevz7aueby.eu-north-1.rds.amazonaws.com
+     - RDS_DB_USER_NAME=AnwarBatool
+     - RDS_DB_PASSWORD=$RDS_DB_PASSWORD
+     - RDS_DB_NAME=e-commerce
     ports:
-      - "80:80"
+     - "80:5000"
     

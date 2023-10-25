@@ -33,13 +33,15 @@ jobs:
     - name: configure docker host
       uses: khaledez/configure-docker-host@v1
       with:
-        host: 16.171.232.51
+        host: 16.171.111.89
         user: github
         ssh-private-key: ${{ secrets.DEPLOYMENT_KEY }}
     - name: deploy
       run: docker compose -f docker-compose-prod.yml up -d
       env:
+        RDS_DB_PASSWORD: ${{ secrets.RDS_DB_PASSWORD }}
         GIT_VERSION: ${{ steps.image_version.outputs.gitsha }}
+        RDS_DB_HOST: ${{ secrets.RDS_DB_HOST }}
     - name: print logs
       if: always() # This step will be executed even if previous steps fails
       run: docker compose logs

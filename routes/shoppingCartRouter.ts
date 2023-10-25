@@ -1,8 +1,8 @@
 import express from "express";
 import { Product } from "../DB/entities/Product.entity.js";
 import { ShoppingCart } from "../DB/entities/ShoppingCart.entity.js";
-import { authorize } from "../middlewares/auth/authorize.js";
 import { ProductCart } from "../DB/entities/ProductCart.entity.js";
+import { authorize } from "../middlewares/auth/authorize.js";
 
 const router = express.Router();
 
