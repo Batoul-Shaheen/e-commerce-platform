@@ -6,7 +6,7 @@ services:
     environment:
      - RDS_DB_PORT=3306
      - RDS_DB_HOST=$RDS_DB_HOST
-     - RDS_DB_USER_NAME=$RDS_DB_USER_NAME
+     - RDS_DB_USER_NAME=AnwarBatool
      - RDS_DB_PASSWORD=$RDS_DB_PASSWORD
      - RDS_DB_NAME=e-commerce
     ports:
