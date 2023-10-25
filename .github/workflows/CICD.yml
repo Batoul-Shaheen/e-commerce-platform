@@ -39,7 +39,9 @@ jobs:
     - name: deploy
       run: docker compose -f docker-compose-prod.yml up -d
       env:
+        RDS_DB_PASSWORD: ${{ secrets.RDS_DB_PASSWORD }}
         GIT_VERSION: ${{ steps.image_version.outputs.gitsha }}
+        RDS_DB_HOST: ${{ secrets.RDS_DB_HOST }}
     - name: print logs
       if: always() # This step will be executed even if previous steps fails
       run: docker compose logs
