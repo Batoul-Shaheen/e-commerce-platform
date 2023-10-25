@@ -11,8 +11,8 @@ export class OrderItem extends BaseEntity {
   quantity: number;
 
   @ManyToOne(() => Product, (product) => product.orderItems)
-  product: Relation<Product>;
+  products: Relation<Product>;
 
-  @ManyToOne(() => Order, order => order.orderItems)
+  @ManyToOne(() => Order, (order) => order.orderItem)
   orders: Relation<Order>;
 }

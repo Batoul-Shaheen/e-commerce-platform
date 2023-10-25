@@ -33,19 +33,6 @@ router.post('/categoryName', authorize('POST-category'),(req, res) => {
     });
 });
 
-router.put('/:name', authorize('PUT-category'),
- async (req, res) => {
-    const name = req.params.name;
-    const category = await Category.findOneBy({ name });
-    if (category) {
-        category.save();
-        res.send('Category Updated');
-    }
-    else {
-        res.status(404).send('Category not found!');
-    }
-});
-
 router.delete('/:name', authorize('DELETE-category'), async (req, res) => {
     const name = req.params.name;
     const category = await Category.findOneBy({ name });

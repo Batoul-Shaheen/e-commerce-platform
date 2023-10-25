@@ -31,10 +31,11 @@ router.post("/:userId", authorize('POST-order'), async (req, res) => {
   }
 });
 
-router.post("/add-to-order/product/:productId/order/:orderId", authorize('POST-PTO'), async (req, res) => {
+router.post("/add-to-order/product/:productId/order/:orderId",// authorize('POST-PTO'),
+ async (req, res) => {
   try {
     const order = await Order.findOne({
-      relations: ["orderItems.product","products"],
+      relations: ["orderItem.products","products"],
       where: { id: parseInt(req.params.orderId) },
     });
     const product = await Product.findOne({
@@ -45,27 +46,27 @@ router.post("/add-to-order/product/:productId/order/:orderId", authorize('POST-P
       return res.status(404).send("Order or product not found");
     }
 
-    const existingProductCart = order.orderItems? order.orderItems.find(
-      (orderItems) => orderItems.product.id === parseInt(req.params.productId)
+    const existingProductCart = order.orderItem? order.orderItem.find(
+      (orderItems) => orderItems.products.id === parseInt(req.params.productId)
     )
     :undefined;
 
     if (existingProductCart) {
       existingProductCart.quantity += 1;
-      order.totalAmount += (existingProductCart.product.price * existingProductCart.quantity);
+      order.totalAmount += (existingProductCart.products.price * existingProductCart.quantity);
       await existingProductCart.save();
     } else {
-      const newProductCart = new OrderItem();
-      newProductCart.product = product;
-      newProductCart.quantity = 1;
-      order.totalAmount += (newProductCart.product.price * newProductCart.quantity);
+      const newOrderItem = new OrderItem();
+      newOrderItem.products = product;
+      newOrderItem.quantity = 1;
+      order.totalAmount += (newOrderItem.products.price * newOrderItem.quantity);
 
-      if (!order.orderItems) {
-        order.orderItems = [];
+      if (!order.orderItem) {
+        order.orderItem = [];
       }
 
-    order.orderItems.push(newProductCart);
-    await newProductCart.save();
+    order.orderItem.push(newOrderItem);
+    await newOrderItem.save();
     await order.save();
   }
 

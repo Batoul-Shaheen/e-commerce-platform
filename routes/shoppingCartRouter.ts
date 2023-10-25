@@ -68,7 +68,6 @@ router.get("/shopping-cart/:id", async (req, res) => {
       where: { id: parseInt(req.params.id) },
     });
     
-    // Extract product details from the ProductCart records
     const products = productCarts.map((productCart) => ({
       product: productCart.product,
       quantityInShoppingCart: productCart.quantity,
