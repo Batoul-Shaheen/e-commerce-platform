@@ -34,6 +34,6 @@ export class Order extends BaseEntity {
   products: Product[];
 
   @OneToMany(() => OrderItem, (orderItems) => orderItems.orders)
-  orderItems: OrderItem[];
+  orderItem: OrderItem[];
 
 }
