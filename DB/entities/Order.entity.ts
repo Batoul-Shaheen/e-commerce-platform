@@ -14,7 +14,7 @@ export class Order extends BaseEntity {
   @Column('decimal', { precision: 10, scale: 2 })
   totalAmount: number;
 
-  @Column({default: 'Pending'})
+  @Column({ default: 'Pending' })
   status: "Pending" | "Canceled" | "Done";
 
   @Column()
