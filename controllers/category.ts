@@ -11,13 +11,13 @@ const getCategoryByName = async (name: string) => {
   }
 };
 
-  const insertCategory = async (payload: NSUser.Category) => {
-    return dataSource.manager.transaction(async (transaction) => {
-      const newCategory = Category.create({
-        ...payload
-      });
-      await transaction.save(newCategory);
+const insertCategory = async (payload: NSUser.Category) => {
+  return dataSource.manager.transaction(async (transaction) => {
+    const newCategory = Category.create({
+      ...payload
     });
-  }
+    await transaction.save(newCategory);
+  });
+}
 
 export { getCategoryByName, insertCategory };

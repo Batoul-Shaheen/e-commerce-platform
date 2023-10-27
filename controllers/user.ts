@@ -9,15 +9,15 @@ import { In } from "typeorm";
 
 const insertUser = (payload: NSUser.User) => {
   return dataSource.manager.transaction(async (transaction) => {
-  const role = await Role.findOneBy({ name: payload.type });
+    const role = await Role.findOneBy({ name: payload.type });
     const newUser = User.create({
       ...payload,
       role: role as Role
     });
     await transaction.save(newUser);
-    if(payload.type === 'User'){
+    if (payload.type === 'User') {
       const shoppingCartData = ShoppingCart.create({
-        id : newUser.id
+        id: newUser.id
       });
       shoppingCartData.users = newUser;
       await transaction.save(shoppingCartData)
@@ -69,11 +69,11 @@ const getUsersById = async (id: number) => {
   }
 };
 
-export { 
+export {
   insertUser,
-  getUsers, 
+  getUsers,
   getUsersById,
   insertRole,
   insertPermission,
   getRoles
-  };
+};

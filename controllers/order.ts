@@ -3,14 +3,14 @@ import { NSUser } from "../types.js";
 import dataSource from "../DB/dataSource.js";
 
 const CreateOrder = (payload: NSUser.Order) => {
-    return dataSource.manager.transaction(async (transaction) => {
-      const newOrder = Order.create({
-        ...payload,
-      });
-      await transaction.save(newOrder);
-      return newOrder;
+  return dataSource.manager.transaction(async (transaction) => {
+    const newOrder = Order.create({
+      ...payload,
     });
-  };
-  
+    await transaction.save(newOrder);
+    return newOrder;
+  });
+};
 
-  export { CreateOrder};
+
+export { CreateOrder };
