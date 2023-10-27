@@ -23,7 +23,7 @@ router.get('/:name', async (req, res) => {
     res.status(200).send(category);
 });
 
-router.post('/categoryName', authorize('POST-category'),(req, res) => {
+router.post('/categoryName', authorize('POST-category'), (req, res) => {
     const category = req.body
     insertCategory(category).then((data) => {
         res.status(201).send(data)

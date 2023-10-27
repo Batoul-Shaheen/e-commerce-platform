@@ -36,8 +36,8 @@ router.post("/add-to-order/product/:productId/order/:orderId", async (req, res) 
     const orderId = parseInt(req.params.orderId);
     const productId = parseInt(req.params.productId);
 
-    const order = await Order.findOne({ relations: ["orderItem.products", "products"], where: {id : orderId} });
-    const product = await Product.findOne({ where: { id : productId }});
+    const order = await Order.findOne({ relations: ["orderItem.products", "products"], where: { id: orderId } });
+    const product = await Product.findOne({ where: { id: productId } });
 
     if (!order || !product) {
       return res.status(404).send("Order or product not found");
@@ -72,7 +72,7 @@ router.get("/order/:id", async (req, res) => {
   try {
     const productOrder = await OrderItem.find({
       where: { orders: { id: parseInt(req.params.id) } },
-      relations: ["products"], 
+      relations: ["products"],
     });
 
     if (!productOrder || productOrder.length === 0) {
@@ -83,7 +83,7 @@ router.get("/order/:id", async (req, res) => {
       relations: ["orderItem.products"],
       where: { id: parseInt(req.params.id) },
     });
-    
+
     const products = productOrder.map((productCart) => ({
       product: productCart.products,
       quantityOrder: productCart.quantity,
@@ -91,7 +91,8 @@ router.get("/order/:id", async (req, res) => {
 
     res.send({
       products,
-      totalAmount : order?.totalAmount});
+      totalAmount: order?.totalAmount
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal server error");
