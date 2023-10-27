@@ -1,5 +1,5 @@
 import express from "express";
-import {insertUser, getUsers, getUsersById, insertRole, insertPermission, getRoles} from "../controllers/user.js";
+import { insertUser, getUsers, getUsersById, insertRole, insertPermission, getRoles } from "../controllers/user.js";
 import { validateUser } from "../middlewares/validation/user.js";
 import { auth } from "../middlewares/auth/authenticate.js";
 import { User } from "../DB/entities/User.entity.js";
@@ -8,16 +8,16 @@ import { authorize } from "../middlewares/auth/authorize.js";
 
 const router = express.Router();
 
-router.post("/signup", authorize('SIGNUP'), 
-validateUser, 
-async (req, res, next) => {
-  insertUser(req.body).then(() => {
-    res.status(201).send("User and shopping cart created successfully");
-  }).catch(err => {
-    console.error(err);
-    res.status(500).send(err);
+router.post("/signup", authorize('SIGNUP'),
+  validateUser,
+  async (req, res, next) => {
+    insertUser(req.body).then(() => {
+      res.status(201).send("User and shopping cart created successfully");
+    }).catch(err => {
+      console.error(err);
+      res.status(500).send(err);
+    });
   });
-});
 
 router.post('/role', authorize('POST_users/role'), auth, (req, res, next) => {
   insertRole(req.body).then((data) => {

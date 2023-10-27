@@ -9,10 +9,10 @@ const router = express.Router();
 router.post("/add-to-cart/product/:productId/cart/:cartId", async (req, res) => {
   try {
     const shoppingCart = await ShoppingCart.findOne({
-      relations: ["productCarts.product","products"],
+      relations: ["productCarts.product", "products"],
       where: { id: parseInt(req.params.cartId) },
     });
-    
+
     const product = await Product.findOne({
       where: { id: parseInt(req.params.productId) },
     });
@@ -21,10 +21,10 @@ router.post("/add-to-cart/product/:productId/cart/:cartId", async (req, res) => 
       return res.status(404).send("Shopping cart or product not found");
     }
 
-    const existingProductCart = shoppingCart.productCarts? shoppingCart.productCarts.find(
+    const existingProductCart = shoppingCart.productCarts ? shoppingCart.productCarts.find(
       (productCart) => productCart.product.id === parseInt(req.params.productId)
     )
-    :undefined;
+      : undefined;
 
     if (existingProductCart) {
       existingProductCart.quantity += 1;
@@ -56,7 +56,7 @@ router.get("/shopping-cart/:id", async (req, res) => {
   try {
     const productCarts = await ProductCart.find({
       where: { cart: { id: parseInt(req.params.id) } },
-      relations: ["product"], 
+      relations: ["product"],
     });
 
     if (!productCarts || productCarts.length === 0) {
@@ -67,7 +67,7 @@ router.get("/shopping-cart/:id", async (req, res) => {
       relations: ["productCarts.product"],
       where: { id: parseInt(req.params.id) },
     });
-    
+
     const products = productCarts.map((productCart) => ({
       product: productCart.product,
       quantityInShoppingCart: productCart.quantity,
@@ -75,7 +75,8 @@ router.get("/shopping-cart/:id", async (req, res) => {
 
     res.send({
       products,
-      bill : shoppingCart?.bill});
+      bill: shoppingCart?.bill
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal server error");

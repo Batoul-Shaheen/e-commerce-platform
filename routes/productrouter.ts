@@ -33,39 +33,39 @@ router.get('/:id', async (req, res) => {
 
 
 router.post('/:categoryName', authorize('POST-PTC'), async (req, res) => {
-        try {
-            const product = req.body;
-            const categoryName = product.categoryName;
-            if (!categoryName) {
-                return res.status(400).send('Category Name is missing');
-            }
-
-            const category = await Category.findOneBy({ name: categoryName });
-            if (!category) {
-                return res.status(400).send('Category Not Found');
-            }
-
-            const existingProduct = await Product.findOneBy({ id: product.id });
-
-            if (existingProduct) {
-                existingProduct.quantity += product.quantity;
-
-                await existingProduct.save();
-
-                res.status(200).send('Product quantity increased successfully');
-            } else {
-                product.category = category;               
-                await insertProduct({
-                    ...product,
-                });
-
-                res.status(201).send('Product inserted successfully');
-            }
-
-        } catch (error) {
-            res.status(500).send(error)
+    try {
+        const product = req.body;
+        const categoryName = product.categoryName;
+        if (!categoryName) {
+            return res.status(400).send('Category Name is missing');
         }
-    });
+
+        const category = await Category.findOneBy({ name: categoryName });
+        if (!category) {
+            return res.status(400).send('Category Not Found');
+        }
+
+        const existingProduct = await Product.findOneBy({ id: product.id });
+
+        if (existingProduct) {
+            existingProduct.quantity += product.quantity;
+
+            await existingProduct.save();
+
+            res.status(200).send('Product quantity increased successfully');
+        } else {
+            product.category = category;
+            await insertProduct({
+                ...product,
+            });
+
+            res.status(201).send('Product inserted successfully');
+        }
+
+    } catch (error) {
+        res.status(500).send(error)
+    }
+});
 
 
 router.put('/update-category/:productId', async (req, res) => {
@@ -90,16 +90,16 @@ router.put('/update-category/:productId', async (req, res) => {
 });
 
 
-router.delete('/:categoryName' , authorize('DELETE-FC'), async (req, res) => {
+router.delete('/:categoryName', authorize('DELETE-FC'), async (req, res) => {
     try {
         const categoryName = req.params.categoryName;
         const productId = req.body.productId;
-        const category = await Category.findOneBy({name :categoryName});
+        const category = await Category.findOneBy({ name: categoryName });
 
         if (!category) {
             return res.status(404).send('Category not found');
         }
-        const product = await Product.findOneBy({ id: productId} );
+        const product = await Product.findOneBy({ id: productId });
 
         if (!product) {
             return res.status(404).send('Product not found');
