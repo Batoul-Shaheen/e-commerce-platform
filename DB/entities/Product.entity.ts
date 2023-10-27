@@ -19,7 +19,7 @@ import { OrderItem } from "./orderItem.entity.js";
 export class Product extends BaseEntity {
   @PrimaryGeneratedColumn("increment")
   id: number;
-  
+
   @Column()
   name: string;
 
