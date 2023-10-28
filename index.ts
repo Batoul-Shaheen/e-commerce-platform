@@ -5,7 +5,8 @@ import usersRouter from "./routes/userRouter.js";
 import orderRouter from "./routes/orderRouter.js";
 import categoryRouter from "./routes/categoryRouter.js";
 import shoppingCartRouter from "./routes/shoppingCartRouter.js";
-import productRouter from './routes/productrouter.js'
+import productRouter from './routes/productrouter.js';
+import saleRouter from "./routes/saleRouter.js";
 import cookieParser from 'cookie-parser';
 import router from "./review.js";
 import cors from "cors";
@@ -24,6 +25,7 @@ app.use("/category", categoryRouter);
 app.use("/product", productRouter);
 app.use("/orders", orderRouter);
 app.use("/shoppingCart", shoppingCartRouter);
+app.use("/sale", saleRouter);
 app.use("/review", router);
 app.use("/stripe", stripeRouter)
 

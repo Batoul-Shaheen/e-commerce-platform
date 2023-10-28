@@ -32,7 +32,8 @@ router.get('/:id', async (req, res) => {
 });
 
 
-router.post('/:categoryName', authorize('POST-PTC'), async (req, res) => {
+router.post('/:categoryName', //authorize('POST-PTC'),
+ async (req, res) => {
     try {
         const product = req.body;
         const categoryName = product.categoryName;

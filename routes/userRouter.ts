@@ -66,7 +66,7 @@ router.get('/roles', authorize('GET_users/role'), auth, async (req, res, next) =
   } catch (error) {
     res.status(500).send("Something went wrong");
   }
-});
+}); 
 
 router.get("/", async (req, res) => {
   try {

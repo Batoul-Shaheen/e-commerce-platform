@@ -14,6 +14,7 @@ import { ShoppingCart } from "./ShoppingCart.entity.js";
 import { Category } from "./Category.entity.js";
 import { ProductCart } from "./ProductCart.entity.js";
 import { OrderItem } from "./orderItem.entity.js";
+import {Sale} from './Sale.entity.js';
 
 @Entity()
 export class Product extends BaseEntity {
@@ -32,6 +33,9 @@ export class Product extends BaseEntity {
   @Column()
   quantity: number;
 
+  @Column('decimal', { precision: 10, scale: 2 })
+  salePrice: number;
+
   @ManyToMany(() => Order, (order) => order.products)
   orders: Order[];
 
@@ -48,4 +52,8 @@ export class Product extends BaseEntity {
 
   @OneToMany(() => OrderItem, (orderItem) => orderItem.products)
   orderItems: OrderItem[];
+
+  @ManyToMany(() => Sale, (sale) => sale.products)
+  @JoinTable()
+  sales: Sale[];
 }

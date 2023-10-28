@@ -9,6 +9,7 @@ import "dotenv/config";
 import { Role } from "./entities/Role.entity.js";
 import { Permission } from "./entities/Permission.entity.js";
 import { OrderItem } from "./entities/orderItem.entity.js";
+import {Sale} from "./entities/Sale.entity.js";
 
 const dataSource = new DataSource({
   type: 'mysql',
@@ -27,7 +28,8 @@ const dataSource = new DataSource({
     ProductCart,
     Role,
     Permission,
-    OrderItem
+    OrderItem,
+    Sale
   ],
   migrations: ['./**/migration/*.ts'],
   synchronize: true,

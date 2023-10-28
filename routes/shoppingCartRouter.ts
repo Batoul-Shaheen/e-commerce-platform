@@ -3,6 +3,8 @@ import { Product } from "../DB/entities/Product.entity.js";
 import { ShoppingCart } from "../DB/entities/ShoppingCart.entity.js";
 import { ProductCart } from "../DB/entities/ProductCart.entity.js";
 import { authorize } from "../middlewares/auth/authorize.js";
+import { Sale } from "../DB/entities/Sale.entity.js";
+import { LessThanOrEqual, MoreThanOrEqual } from "typeorm";
 
 const router = express.Router();
 
@@ -28,13 +30,43 @@ router.post("/add-to-cart/product/:productId/cart/:cartId", async (req, res) => 
 
     if (existingProductCart) {
       existingProductCart.quantity += 1;
-      shoppingCart.bill += (existingProductCart.product.price * existingProductCart.quantity);
+      const activeSale = await Sale.findOne({
+        where: {
+          products: {
+            id: product.id,
+          },
+          startDate: LessThanOrEqual(new Date()),
+          endDate: MoreThanOrEqual(new Date()),
+        },
+      });
+
+      if (activeSale) {
+        const saleDiscount = (activeSale.discountPercentage || 0) / 100;
+        existingProductCart.product.salePrice = existingProductCart.product.price * (1 - saleDiscount);
+      }
+
+      shoppingCart.bill += (existingProductCart.product.salePrice || existingProductCart.product.price) * existingProductCart.quantity;
       await existingProductCart.save();
     } else {
       const newProductCart = new ProductCart();
       newProductCart.product = product;
       newProductCart.quantity = 1;
-      shoppingCart.bill += (newProductCart.product.price * newProductCart.quantity);
+      const activeSale = await Sale.findOne({
+        where: {
+          products: {
+            id: product.id,
+          },
+          startDate: LessThanOrEqual(new Date()),
+          endDate: MoreThanOrEqual(new Date()),
+        },
+      });
+
+      if (activeSale) {
+        const saleDiscount = (activeSale.discountPercentage || 0) / 100;
+        newProductCart.product.salePrice = newProductCart.product.price * (1 - saleDiscount);
+      }
+
+      shoppingCart.bill += (newProductCart.product.salePrice || newProductCart.product.price) * newProductCart.quantity;
 
       if (!shoppingCart.productCarts) {
         shoppingCart.productCarts = [];
