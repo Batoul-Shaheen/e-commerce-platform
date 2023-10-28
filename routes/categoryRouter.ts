@@ -1,6 +1,6 @@
 import express from "express";
 import { Category } from "../DB/entities/Category.entity.js";
-import { getCategoryByName, insertCategory } from "../controllers/category.js";
+import {insertCategory } from "../controllers/category.js";
 import { authorize } from "../middlewares/auth/authorize.js";
 
 const router = express.Router();
@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
     res.status(200).send(categoryList);
 });
 
-router.post('/categoryName',//authorize('POST-category'), 
+router.post('/categoryName',authorize('POST-category'), 
 (req, res) => {
     const category = req.body
     insertCategory(category).then((data) => {

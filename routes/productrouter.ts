@@ -40,8 +40,7 @@ router.get('/:id', async (req, res) => {
 });
 
 
-router.post('/:categoryName', //authorize('POST-PTC'),
- async (req, res) => {
+router.post('/:categoryName', authorize('POST-productToCategory'), async (req, res) => {
     try {
         const product = req.body;
         const categoryName = product.categoryName;
@@ -98,7 +97,7 @@ router.put('/update-category/:productId', async (req, res) => {
 });
 
 
-router.delete('/:categoryName', //authorize('DELETE-FC'), 
+router.delete('/:categoryName', authorize('DELETE-FromCategory'), 
 async (req, res) => {
     try {
         const categoryName = req.params.categoryName;

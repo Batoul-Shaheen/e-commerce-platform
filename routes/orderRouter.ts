@@ -8,7 +8,7 @@ import { OrderItem } from "../DB/entities/orderItem.entity.js";
 
 const router = express.Router();
 
-router.post("/:userId", //authorize('POST-order'), 
+router.post("/:userId", authorize('POST-order'), 
 async (req, res) => {
   try {
     const { userId } = req.params;
@@ -100,7 +100,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.put("/:orderId", //authorize('PUT-order'),
+router.put("/:orderId", authorize('PUT-order'),
  async (req, res) => {
   const orderId = parseInt(req.params.orderId);
   const { status } = req.body;

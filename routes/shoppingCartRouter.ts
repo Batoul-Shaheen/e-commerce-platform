@@ -2,8 +2,6 @@ import express from "express";
 import { Product } from "../DB/entities/Product.entity.js";
 import { ShoppingCart } from "../DB/entities/ShoppingCart.entity.js";
 import { ProductCart } from "../DB/entities/ProductCart.entity.js";
-import { authorize } from "../middlewares/auth/authorize.js";
-
 
 const router = express.Router();
 
@@ -84,8 +82,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.delete("/remove-from-cart/product/:productId/cart/:cartId", //authorize('DELETE-FSC'),
- async (req, res) => {
+router.delete("/remove-from-cart/product/:productId/cart/:cartId",async (req, res) => {
   try {
     const shoppingCartId = parseInt(req.params.cartId);
     const productId = req.params.productId;
