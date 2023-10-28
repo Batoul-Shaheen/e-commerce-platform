@@ -37,8 +37,7 @@ jobs:
         user: github
         ssh-private-key: ${{ secrets.DEPLOYMENT_KEY }}
     - name: deploy
-      run: docker compose -f docker-compose-prod.yml up -d
-      run: docker system prune -af
+      run: docker compose -f docker-compose-prod.yml up -d docker system prune -af
       env:
         RDS_DB_PASSWORD: ${{ secrets.RDS_DB_PASSWORD }}
         GIT_VERSION: ${{ steps.image_version.outputs.gitsha }}
