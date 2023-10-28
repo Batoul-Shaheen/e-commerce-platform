@@ -19,6 +19,5 @@ export class Sale extends BaseEntity {
   discountPercentage: number;
 
   @ManyToMany(() => Product, (product) => product.sales)
-  @JoinTable()
   products: Product[];
 }
