@@ -38,6 +38,4 @@ router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });
 });
 
-// exports.default = stripeRouter;
-
 module.exports = router;

@@ -8,7 +8,8 @@ import { OrderItem } from "../DB/entities/orderItem.entity.js";
 
 const router = express.Router();
 
-router.post("/:userId", authorize('POST-order'), async (req, res) => {
+router.post("/:userId", //authorize('POST-order'), 
+async (req, res) => {
   try {
     const { userId } = req.params;
     const userData = await User.findOne({ where: { id: parseInt(userId) } });
@@ -68,7 +69,7 @@ router.post("/add-to-order/product/:productId/order/:orderId", async (req, res) 
   }
 });
 
-router.get("/order/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const productOrder = await OrderItem.find({
       where: { orders: { id: parseInt(req.params.id) } },
@@ -99,7 +100,8 @@ router.get("/order/:id", async (req, res) => {
   }
 });
 
-router.put("/:orderId", authorize('PUT-order'), async (req, res) => {
+router.put("/:orderId", //authorize('PUT-order'),
+ async (req, res) => {
   const orderId = parseInt(req.params.orderId);
   const { status } = req.body;
 

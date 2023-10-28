@@ -14,16 +14,7 @@ router.get('/', async (req, res) => {
     res.status(200).send(categoryList);
 });
 
-router.get('/:name', async (req, res) => {
-    const name = req.params.name
-    const category = await getCategoryByName(name);
-    if (!category) {
-        res.status(500).send('The category with the given name was not found.')
-    }
-    res.status(200).send(category);
-});
-
-router.post('/categoryName', //authorize('POST-category'), 
+router.post('/categoryName',//authorize('POST-category'), 
 (req, res) => {
     const category = req.body
     insertCategory(category).then((data) => {
@@ -34,11 +25,14 @@ router.post('/categoryName', //authorize('POST-category'),
     });
 });
 
-router.delete('/:name', authorize('DELETE-category'), async (req, res) => {
+//no needed
+router.delete('/:name', //authorize('DELETE-category'),
+ async (req, res) => {
     const name = req.params.name;
     const category = await Category.findOneBy({ name });
     if (category) {
-        category.remove();
+         category.remove();
+        // await category.save();
         res.send('Category Deleted');
     } else {
         res.status(404).send('Category not found!');

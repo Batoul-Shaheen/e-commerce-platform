@@ -3,8 +3,7 @@ import { Product } from "../DB/entities/Product.entity.js";
 import { ShoppingCart } from "../DB/entities/ShoppingCart.entity.js";
 import { ProductCart } from "../DB/entities/ProductCart.entity.js";
 import { authorize } from "../middlewares/auth/authorize.js";
-import { Sale } from "../DB/entities/Sale.entity.js";
-import { LessThanOrEqual, MoreThanOrEqual } from "typeorm";
+
 
 const router = express.Router();
 
@@ -30,53 +29,23 @@ router.post("/add-to-cart/product/:productId/cart/:cartId", async (req, res) => 
 
     if (existingProductCart) {
       existingProductCart.quantity += 1;
-      const activeSale = await Sale.findOne({
-        where: {
-          products: {
-            id: product.id,
-          },
-          startDate: LessThanOrEqual(new Date()),
-          endDate: MoreThanOrEqual(new Date()),
-        },
-      });
-
-      if (activeSale) {
-        const saleDiscount = (activeSale.discountPercentage || 0) / 100;
-        existingProductCart.product.salePrice = existingProductCart.product.price * (1 - saleDiscount);
-      }
-
-      shoppingCart.bill += (existingProductCart.product.salePrice || existingProductCart.product.price) * existingProductCart.quantity;
+      shoppingCart.bill += (existingProductCart.product.price * existingProductCart.quantity);
       await existingProductCart.save();
+      await shoppingCart.save();
     } else {
       const newProductCart = new ProductCart();
       newProductCart.product = product;
       newProductCart.quantity = 1;
-      const activeSale = await Sale.findOne({
-        where: {
-          products: {
-            id: product.id,
-          },
-          startDate: LessThanOrEqual(new Date()),
-          endDate: MoreThanOrEqual(new Date()),
-        },
-      });
-
-      if (activeSale) {
-        const saleDiscount = (activeSale.discountPercentage || 0) / 100;
-        newProductCart.product.salePrice = newProductCart.product.price * (1 - saleDiscount);
-      }
-
-      shoppingCart.bill += (newProductCart.product.salePrice || newProductCart.product.price) * newProductCart.quantity;
-
+      shoppingCart.bill += (newProductCart.product.price * newProductCart.quantity);
+      
       if (!shoppingCart.productCarts) {
         shoppingCart.productCarts = [];
       }
-
+      
       shoppingCart.productCarts.push(newProductCart);
       await newProductCart.save();
       await shoppingCart.save();
     }
-
     return res.status(200).send("Product added to the shopping cart");
   } catch (error) {
     console.error(error);
@@ -84,7 +53,7 @@ router.post("/add-to-cart/product/:productId/cart/:cartId", async (req, res) => 
   }
 });
 
-router.get("/shopping-cart/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const productCarts = await ProductCart.find({
       where: { cart: { id: parseInt(req.params.id) } },
@@ -115,7 +84,8 @@ router.get("/shopping-cart/:id", async (req, res) => {
   }
 });
 
-router.delete("/remove-from-cart/product/:productId/cart/:cartId", authorize('DELETE-FSC'), async (req, res) => {
+router.delete("/remove-from-cart/product/:productId/cart/:cartId", //authorize('DELETE-FSC'),
+ async (req, res) => {
   try {
     const shoppingCartId = parseInt(req.params.cartId);
     const productId = req.params.productId;

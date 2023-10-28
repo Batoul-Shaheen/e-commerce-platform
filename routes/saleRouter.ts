@@ -9,7 +9,7 @@ router.post('/:saleId', async (req, res) => {
         const { name, startDate, endDate, discountPercentage, productIds } = req.body;
         const saleId = parseInt(req.params.saleId);
 
-        let sale = saleId ? await Sale.findOne( { relations: ["products"] ,where: { id: saleId}}) : null;
+        let sale = saleId ? await Sale.findOne({ relations: ["products"], where: { id: saleId } }) : null;
 
         const products = await Product.findBy(productIds);
 

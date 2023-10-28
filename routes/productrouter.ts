@@ -6,18 +6,26 @@ import { authorize } from '../middlewares/auth/authorize.js';
 
 const router = express.Router();
 
-router.get('/:categoryName', async (req, res) => {
-    try {
-        const categoryName = req.body;
-        const products = await Product.find(
-            categoryName
-        );
-        res.send(products);
-    } catch (error) {
-        res.status(500).send("no products")
-    }
 
-});
+// router.get('/:categoryName', async (req, res) => {
+//     const categoryName = req.params.categoryName;
+//     try {
+//         const category = await Category.findOne({ where: { name: categoryName } });
+    
+//         if (!category) {
+//           return res.status(404).json({ message: 'Category not found' });
+//         }
+    
+//         const products = await Product.findOneBy({ where: { category } });
+    
+//         res.status(200).json(products);
+//       } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ error: "Internal Server Error" });
+//       }
+//     });
+    
+
 router.get('/:id', async (req, res) => {
     try {
         const id = parseInt(req.params.id);
@@ -68,7 +76,6 @@ router.post('/:categoryName', //authorize('POST-PTC'),
     }
 });
 
-
 router.put('/update-category/:productId', async (req, res) => {
     const productId = parseInt(req.params.productId);
     const newCategoryName = req.body.newCategoryName;
@@ -91,7 +98,8 @@ router.put('/update-category/:productId', async (req, res) => {
 });
 
 
-router.delete('/:categoryName', authorize('DELETE-FC'), async (req, res) => {
+router.delete('/:categoryName', //authorize('DELETE-FC'), 
+async (req, res) => {
     try {
         const categoryName = req.params.categoryName;
         const productId = req.body.productId;
