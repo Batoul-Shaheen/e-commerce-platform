@@ -97,34 +97,4 @@ router.put('/update-category/:productId', async (req, res) => {
 });
 
 
-router.delete('/:categoryName', authorize('DELETE-FromCategory'), 
-async (req, res) => {
-    try {
-        const categoryName = req.params.categoryName;
-        const productId = req.body.productId;
-        const category = await Category.findOneBy({ name: categoryName });
-
-        if (!category) {
-            return res.status(404).send('Category not found');
-        }
-        const product = await Product.findOneBy({ id: productId });
-
-        if (!product) {
-            return res.status(404).send('Product not found');
-        }
-
-        const productIndex = category.products.findIndex((item) => item.toString() === productId);
-
-        if (productIndex === -1) {
-            return res.status(404).send('Product is not in the Category');
-        }
-
-        category.products.splice(productIndex, 1);
-        await category.save();
-        res.send('Product removed from the Category');
-    } catch (error) {
-        res.status(500).send("something went wrong");
-    }
-});
-
 export default router;

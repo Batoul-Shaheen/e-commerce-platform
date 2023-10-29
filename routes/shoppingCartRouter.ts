@@ -27,7 +27,7 @@ router.post("/add-to-cart/product/:productId/cart/:cartId", async (req, res) => 
 
     if (existingProductCart) {
       existingProductCart.quantity += 1;
-      shoppingCart.bill += (existingProductCart.product.price * existingProductCart.quantity);
+      shoppingCart.bill += (existingProductCart.product.price * 1);
       await existingProductCart.save();
       await shoppingCart.save();
     } else {
