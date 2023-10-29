@@ -1,6 +1,6 @@
 import express from "express";
 import { Category } from "../DB/entities/Category.entity.js";
-import { getCategoryByName, insertCategory } from "../controllers/category.js";
+import {insertCategory } from "../controllers/category.js";
 import { authorize } from "../middlewares/auth/authorize.js";
 
 const router = express.Router();
@@ -14,16 +14,7 @@ router.get('/', async (req, res) => {
     res.status(200).send(categoryList);
 });
 
-router.get('/:name', async (req, res) => {
-    const name = req.params.name
-    const category = await getCategoryByName(name);
-    if (!category) {
-        res.status(500).send('The category with the given name was not found.')
-    }
-    res.status(200).send(category);
-});
-
-router.post('/categoryName', //authorize('POST-category'), 
+router.post('/categoryName',authorize('POST-category'), 
 (req, res) => {
     const category = req.body
     insertCategory(category).then((data) => {
