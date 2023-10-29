@@ -27,11 +27,7 @@ router.post("/add-to-cart/product/:productId/cart/:cartId", async (req, res) => 
 
     if (existingProductCart) {
       existingProductCart.quantity += 1;
-<<<<<<< HEAD
-      shoppingCart.bill += existingProductCart.product.price
-=======
-      shoppingCart.bill += (existingProductCart.product.price * existingProductCart.quantity);
->>>>>>> a3371e605a8cd5569f0c52aeaf9386e192cda14b
+      shoppingCart.bill += existingProductCart.product.price;
       await existingProductCart.save();
       await shoppingCart.save();
     } else {
@@ -39,11 +35,7 @@ router.post("/add-to-cart/product/:productId/cart/:cartId", async (req, res) => 
       newProductCart.product = product;
       newProductCart.quantity = 1;
       shoppingCart.bill += (newProductCart.product.price * newProductCart.quantity);
-<<<<<<< HEAD
 
-=======
-      
->>>>>>> a3371e605a8cd5569f0c52aeaf9386e192cda14b
       if (!shoppingCart.productCarts) {
         shoppingCart.productCarts = [];
       }
@@ -90,11 +82,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
 router.delete("/update-cart/product/:productId/cart/:cartId", async (req, res) => {
-=======
-router.delete("/remove-from-cart/product/:productId/cart/:cartId",async (req, res) => {
->>>>>>> a3371e605a8cd5569f0c52aeaf9386e192cda14b
   try {
     const shoppingCart = await ShoppingCart.findOne({
       relations: ["productCarts.product"],
