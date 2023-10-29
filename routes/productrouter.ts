@@ -6,25 +6,27 @@ import { authorize } from '../middlewares/auth/authorize.js';
 
 const router = express.Router();
 
+router.get("/category/:categoryName", async (req, res) => {
+    try {
+        const category = await Category.find({
+            relations: ["products"],
+            where: { name: req.params.categoryName }
+        });
 
-// router.get('/:categoryName', async (req, res) => {
-//     const categoryName = req.params.categoryName;
-//     try {
-//         const category = await Category.findOne({ where: { name: categoryName } });
-    
-//         if (!category) {
-//           return res.status(404).json({ message: 'Category not found' });
-//         }
-    
-//         const products = await Product.findOneBy({ where: { category } });
-    
-//         res.status(200).json(products);
-//       } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ error: "Internal Server Error" });
-//       }
-//     });
-    
+        if (!category) {
+            return res.status(404).send("Category not found");
+        }
+
+        const products = category.map((categoryProduct) => ({
+            products: categoryProduct.products
+        }));
+
+        res.send(products);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal server error");
+    }
+});
 
 router.get('/:id', async (req, res) => {
     try {
@@ -96,5 +98,42 @@ router.put('/update-category/:productId', async (req, res) => {
     }
 });
 
+router.delete('/category/:categoryName/product/:productId', authorize('DELETE-FromCategory'), async (req, res) => {
+    try {
+        const category = await Category.findOne({
+            relations: ["products"],
+            where: { name: req.params.categoryName }
+        });
+
+        if (!category) {
+            return res.status(400).send('Category Not Found');
+        }
+
+        const productCartIndex = category.products.findIndex(
+            (productCategory) => productCategory.id === parseInt(req.params.productId)
+        );
+
+        if (productCartIndex !== -1) {
+            const productCategory = category.products[productCartIndex];
+            productCategory.quantity -= 1;
+
+            if (productCategory.quantity === 0) {
+                category.products.splice(productCartIndex, 1);
+            }
+
+            await productCategory.save();
+            await category.save();
+            return res.status(200).json({
+                message: "Category updated successfully",
+                category: category,
+            });
+        } else {
+            return res.status(404).send("Product not found in the category");
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send("Internal server error");
+    }
+});
 
 export default router;

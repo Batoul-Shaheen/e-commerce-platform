@@ -27,7 +27,7 @@ router.post("/add-to-cart/product/:productId/cart/:cartId", async (req, res) => 
 
     if (existingProductCart) {
       existingProductCart.quantity += 1;
-      shoppingCart.bill += (existingProductCart.product.price * 1);
+      shoppingCart.bill += existingProductCart.product.price;
       await existingProductCart.save();
       await shoppingCart.save();
     } else {
@@ -35,7 +35,7 @@ router.post("/add-to-cart/product/:productId/cart/:cartId", async (req, res) => 
       newProductCart.product = product;
       newProductCart.quantity = 1;
       shoppingCart.bill += (newProductCart.product.price * newProductCart.quantity);
-      
+
       if (!shoppingCart.productCarts) {
         shoppingCart.productCarts = [];
       }
@@ -82,41 +82,43 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.delete("/remove-from-cart/product/:productId/cart/:cartId",async (req, res) => {
+router.delete("/update-cart/product/:productId/cart/:cartId", async (req, res) => {
   try {
-    const shoppingCartId = parseInt(req.params.cartId);
-    const productId = req.params.productId;
-
     const shoppingCart = await ShoppingCart.findOne({
-      relations: ["products"],
-      where: { id: shoppingCartId },
+      relations: ["productCarts.product"],
+      where: { id: parseInt(req.params.cartId) },
     });
 
     if (!shoppingCart) {
       return res.status(404).send("Shopping cart not found");
     }
 
-    const productToRemove = shoppingCart.products.find(
-      (product) => product.id === +productId
+    const productCartIndex = shoppingCart.productCarts.findIndex(
+      (productCart) => productCart.product.id === parseInt(req.params.productId)
     );
 
-    if (!productToRemove) {
-      return res
-        .status(404)
-        .send({ message: "Product not found in the shopping cart" });
+    if (productCartIndex !== -1) {
+      const productCart = shoppingCart.productCarts[productCartIndex];
+      productCart.quantity -= 1;
+      shoppingCart.bill -= productCart.product.price;
+
+      if (productCart.quantity === 0) {
+        shoppingCart.productCarts.splice(productCartIndex, 1);
+      }
+
+      await productCart.save();
+      await shoppingCart.save();
+      return res.status(200).json({
+        message: "Cart updated successfully",
+        cart: shoppingCart,
+      });
+    } else {
+      return res.status(404).send("Product not found in the shopping cart");
     }
-
-    shoppingCart.products = shoppingCart.products.filter(
-      (product) => product.id !== +productId
-    );
-    await shoppingCart.save();
-
-    res.send("Product removed from shopping cart");
   } catch (error) {
     console.error(error);
-    res.status(500).send("Internal server error");
+    return res.status(500).send("Internal server error");
   }
-}
-);
+});
 
 export default router;
