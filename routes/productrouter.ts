@@ -6,18 +6,28 @@ import { authorize } from '../middlewares/auth/authorize.js';
 
 const router = express.Router();
 
-router.get('/:categoryName', async (req, res) => {
+router.get("/category/:categoryName", async (req, res) => {
     try {
-        const categoryName = req.body;
-        const products = await Product.find(
-            categoryName
-        );
+        const category = await Category.find({
+            relations: ["products"],
+            where: { name: req.params.categoryName }
+        });
+
+        if (!category) {
+            return res.status(404).send("Category not found");
+        }
+
+        const products = category.map((categoryProduct) => ({
+            products: categoryProduct.products
+        }));
+
         res.send(products);
     } catch (error) {
-        res.status(500).send("no products")
+        console.error(error);
+        res.status(500).send("Internal server error");
     }
-
 });
+
 router.get('/:id', async (req, res) => {
     try {
         const id = parseInt(req.params.id);
@@ -33,40 +43,40 @@ router.get('/:id', async (req, res) => {
 
 
 router.post('/:categoryName', //authorize('POST-PTC'),
- async (req, res) => {
-    try {
-        const product = req.body;
-        const categoryName = product.categoryName;
-        if (!categoryName) {
-            return res.status(400).send('Category Name is missing');
+    async (req, res) => {
+        try {
+            const product = req.body;
+            const categoryName = product.categoryName;
+            if (!categoryName) {
+                return res.status(400).send('Category Name is missing');
+            }
+
+            const category = await Category.findOneBy({ name: categoryName });
+            if (!category) {
+                return res.status(400).send('Category Not Found');
+            }
+
+            const existingProduct = await Product.findOneBy({ id: product.id });
+
+            if (existingProduct) {
+                existingProduct.quantity += product.quantity;
+
+                await existingProduct.save();
+
+                res.status(200).send('Product quantity increased successfully');
+            } else {
+                product.category = category;
+                await insertProduct({
+                    ...product,
+                });
+
+                res.status(201).send('Product inserted successfully');
+            }
+
+        } catch (error) {
+            res.status(500).send(error)
         }
-
-        const category = await Category.findOneBy({ name: categoryName });
-        if (!category) {
-            return res.status(400).send('Category Not Found');
-        }
-
-        const existingProduct = await Product.findOneBy({ id: product.id });
-
-        if (existingProduct) {
-            existingProduct.quantity += product.quantity;
-
-            await existingProduct.save();
-
-            res.status(200).send('Product quantity increased successfully');
-        } else {
-            product.category = category;
-            await insertProduct({
-                ...product,
-            });
-
-            res.status(201).send('Product inserted successfully');
-        }
-
-    } catch (error) {
-        res.status(500).send(error)
-    }
-});
+    });
 
 
 router.put('/update-category/:productId', async (req, res) => {
@@ -90,34 +100,43 @@ router.put('/update-category/:productId', async (req, res) => {
     }
 });
 
+router.delete('/category/:categoryName/product/:productId', //authorize('DELETE-FC'), 
+    async (req, res) => {
+        try {
+            const category = await Category.findOne({
+                relations: ["products"],
+                where: { name: req.params.categoryName }
+            });
 
-router.delete('/:categoryName', authorize('DELETE-FC'), async (req, res) => {
-    try {
-        const categoryName = req.params.categoryName;
-        const productId = req.body.productId;
-        const category = await Category.findOneBy({ name: categoryName });
+            if (!category) {
+                return res.status(400).send('Category Not Found');
+            }
 
-        if (!category) {
-            return res.status(404).send('Category not found');
+            const productCartIndex = category.products.findIndex(
+                (productCategory) => productCategory.id === parseInt(req.params.productId)
+            );
+
+            if (productCartIndex !== -1) {
+                const productCategory = category.products[productCartIndex];
+                productCategory.quantity -= 1;
+
+                if (productCategory.quantity === 0) {
+                    category.products.splice(productCartIndex, 1);
+                }
+
+                await productCategory.save();
+                await category.save();
+                return res.status(200).json({
+                    message: "Category updated successfully",
+                    category: category,
+                });
+            }else {
+                return res.status(404).send("Product not found in the category");
+            }
+        }catch (error) {
+            console.error(error);
+            return res.status(500).send("Internal server error");
         }
-        const product = await Product.findOneBy({ id: productId });
-
-        if (!product) {
-            return res.status(404).send('Product not found');
-        }
-
-        const productIndex = category.products.findIndex((item) => item.toString() === productId);
-
-        if (productIndex === -1) {
-            return res.status(404).send('Product is not in the Category');
-        }
-
-        category.products.splice(productIndex, 1);
-        await category.save();
-        res.send('Product removed from the Category');
-    } catch (error) {
-        res.status(500).send("something went wrong");
-    }
 });
 
 export default router;

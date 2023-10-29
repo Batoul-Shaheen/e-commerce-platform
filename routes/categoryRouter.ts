@@ -34,15 +34,4 @@ router.post('/categoryName', //authorize('POST-category'),
     });
 });
 
-router.delete('/:name', authorize('DELETE-category'), async (req, res) => {
-    const name = req.params.name;
-    const category = await Category.findOneBy({ name });
-    if (category) {
-        category.remove();
-        res.send('Category Deleted');
-    } else {
-        res.status(404).send('Category not found!');
-    }
-});
-
 export default router
