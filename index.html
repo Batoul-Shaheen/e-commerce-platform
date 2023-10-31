@@ -16,48 +16,49 @@
             <form class="form" id="contact-us" method="POST" action="/review/email" > 
                   <div class="nes-field">
                      <label for= "name field">Your Name</label> 
-                     <input placeholder="Enter Your Name" type="text"
-                          name="name"
-                          id="name_field" class="nes_input"/>
+                     <input placeholder="Enter Your Name" type="text" name="name" id="name_field" class="nes_input"/>
                 </div>
                 <div class="nes-field job">
                     <label for="email field">Your Email</label>
-                    <input placeholder="Enter Your email" type="email"
-                          name="email"
-                          id="email_field" class="nes-input"/>
+                    <input placeholder="Enter Your Email" type="email" name="email" id="email_field" class="nes-input"/>
                 </div>
-
-
                 <div class="nes-field job">
-                    <label for="name_field">Message</label>
-                    <textarea placeholder="Enter message here" type="text"
-                    name="message" 
-                    rows="4"
-                    id="message_field" class="nes-input" ></textarea>
-                <div>
-
-                <button
-                 type="submit" id="button" class="job nes-btn is-primary">
-                 Send
-                <button>
-                <button
-                type="reset" id="button" class="job nes-btn is-primary">
-                Reset
-                <button>
-        </div>
-
+                    <label for="name_field">Your Review</label>
+                    <textarea placeholder="Enter Your Review Here" type="text" name="review" rows="4" id="review" class="nes-input" ></textarea>
+                </div>
+                <button type="submit" id="button" class="job nes-btn is-primary">Send</button>
+                <button type="reset" id="button" class="job nes-btn is-primary">Reset</button>
+            </div>
+            <dialog class="nes-dialog" id="dialog-default" ref="dialog">
+            <form method="dialog"></form>
+                <section class="character c1">
+                    <i class="nes-bcrikko nes-c"></i> 
+                    <div class="nes-balloon from-left">
+                        <p>Review Sent! Thanks!</p>
+                    </div>
+                </section>
+                <section class="character info">
+                    <h4 class="topic">Name: <span id="name"></span></h4>
+                    <h5>Email: <span id="email"></span></h5> 
+                    <h5>Review: <span id="job"></span></h5>
+                </section>
+                <menu class="dialog-menu">
+                    <button class="nes-btn is-primary">Confirm</button>
+                </menu>
+            </form>
         </dialog>
     </div> 
 </body> 
-  
-    <script>
 
-        const formEL = document.querySelector('.form');
+        <script>
+         const formEL = document.querySelector('.form');
+         const dialog = document.getElementById('dialog-default');
 
         formEL.addEventListener('submit', event => {
             event.preventDefault();
             const formData = new FormData(formEL);
             const data = Object.fromEntries(formData);
+
             fetch('http://localhost:5000/review/email', {
                 method: 'POST',
                 headers: {
@@ -65,9 +66,48 @@
                 },
                 body: JSON.stringify(data)
             }).then(res => res.json())
-            .then(data => console.log(data))
+            .then((data) => {
+                if (data.error) {
+                    dialog.querySelector('p').textContent = data.error;
+                } else {
+
+                    const nameElement = document.getElementById('name');
+                    const emailElement = document.getElementById('email');
+                    const reviewElement = document.getElementById('job');
+
+                    nameElement.textContent = `${data.name}`;
+                    emailElement.textContent = `${data.email}`;
+                    reviewElement.textContent = `${data.review}`;
+                }
+                
+                dialog.showModal();
+            })
             .catch(error => console.log(error))
     });
 
+    dialog.querySelector('button').addEventListener('click', () => {
+        dialog.close();
+    });
+
 </script>
-</html>
+
+<style>
+    body {
+        max-width: 768px;
+        margin: auto;
+        margin-top: 50px;
+    }
+
+    .job {
+        margin-top: 40px;
+    }
+
+    .c1 {
+        display: flex;
+        margin-bottom: 20px;
+    }
+
+    .nes-balloon {
+        margin-left: 22px;
+    }
+</style>
