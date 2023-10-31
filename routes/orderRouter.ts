@@ -5,11 +5,11 @@ import { User } from "../DB/entities/User.entity.js";
 import { Product } from "../DB/entities/Product.entity.js";
 import { authorize } from "../middlewares/auth/authorize.js";
 import { OrderItem } from "../DB/entities/orderItem.entity.js";
+import { auth } from "../middlewares/auth/authenticate.js";
 
 const router = express.Router();
 
-router.post("/:userId", authorize('POST-order'), 
-async (req, res) => {
+router.post("/:userId", auth, authorize('POST-order'), async (req, res) => {
   try {
     const { userId } = req.params;
     const userData = await User.findOne({ where: { id: parseInt(userId) } });
@@ -32,7 +32,7 @@ async (req, res) => {
   }
 });
 
-router.post("/add-to-order/product/:productId/order/:orderId", async (req, res) => {
+router.post("/add-to-order/product/:productId/order/:orderId", auth, authorize('POST-productToOrder'), async (req, res) => {
   try {
     const orderId = parseInt(req.params.orderId);
     const productId = parseInt(req.params.productId);
@@ -100,7 +100,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.put("/:orderId", authorize('PUT-order'),
+router.put("/:orderId", auth, authorize('PUT-order'),
  async (req, res) => {
   const orderId = parseInt(req.params.orderId);
   const { status } = req.body;

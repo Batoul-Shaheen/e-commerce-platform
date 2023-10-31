@@ -1,5 +1,5 @@
 import express from "express";
-import { insertUser, getUsers, getUsersById, insertRole, insertPermission, getRoles } from "../controllers/user.js";
+import { insertUser, getUsers, getUsersById, insertRole, insertPermission, getRoles, login } from "../controllers/user.js";
 import { validateUser } from "../middlewares/validation/user.js";
 import { auth } from "../middlewares/auth/authenticate.js";
 import { User } from "../DB/entities/User.entity.js";
@@ -17,8 +17,7 @@ router.post("/signup", validateUser, async (req, res, next) => {
   });
 });
 
-router.post('/role', authorize('POST_users/role'), auth,
-  (req, res, next) => {
+router.post('/role', authorize('POST-users/role'), auth, (req, res, next) => {
     insertRole(req.body).then((data) => {
       res.status(201).send(data)
     }).catch(err => {
@@ -27,7 +26,8 @@ router.post('/role', authorize('POST_users/role'), auth,
     });
   });
 
-router.post('/permission', auth, (req, res, next) => {
+router.post('/permission', auth,
+ (req, res, next) => {
   insertPermission(req.body).then((data) => {
     res.status(201).send(data)
   }).catch(err => {
@@ -36,30 +36,30 @@ router.post('/permission', auth, (req, res, next) => {
   });
 });
 
-router.post("/login", async (req, res, next) => {
-  try {
-    const { email, password } = req.body;
+router.post('/login', (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
 
-    const user = await User.findOneBy({ email });
+  login(email, password)
+    .then(data => {
+      res.cookie('fullName', data.username, {
+        maxAge: 60 * 60 * 1000
+      });
+      res.cookie('loginTime', Date.now(), {
+        maxAge: 60 * 60 * 1000
+      });
+      res.cookie('token', data.token, {
+        maxAge: 60 * 60 * 1000
+      });
 
-    if (!user) {
-      return res.status(404).json({ message: 'Authentication failed!!' });
-    }
-
-    const isPasswordValid = await bcrypt.compare(password, user?.password || '')
-
-    if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Authentication failed' });
-    }
-
-    res.status(200).json({ message: 'Login successful', user });
-  } catch (error) {
-    res.status(500).json({ message: 'An error occurred' });
-  }
+      res.send(data.token);
+    })
+    .catch(err => {
+      res.status(401).send(err);
+    })
 });
 
-router.get('/roles', authorize('GET_users/role'), auth,
-  async (req, res, next) => {
+router.get('/roles', authorize('GET-users/role'), auth, async (req, res, next) => {
     try {
       const roles = await getRoles();
       res.send(roles);

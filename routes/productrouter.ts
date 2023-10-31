@@ -3,6 +3,7 @@ import { Product } from '../DB/entities/Product.entity.js';
 import { getProductsById, insertProduct } from '../controllers/product.js';
 import { Category } from '../DB/entities/Category.entity.js';
 import { authorize } from '../middlewares/auth/authorize.js';
+import { auth } from '../middlewares/auth/authenticate.js';
 
 const router = express.Router();
 
@@ -42,7 +43,7 @@ router.get('/:id', async (req, res) => {
 });
 
 
-router.post('/:categoryName', authorize('POST-productToCategory'), async (req, res) => {
+router.post('/:categoryName', auth, authorize('POST-rpoductToCategory'), async (req, res) => {
     try {
         const product = req.body;
         const categoryName = product.categoryName;
@@ -77,7 +78,7 @@ router.post('/:categoryName', authorize('POST-productToCategory'), async (req, r
     }
 });
 
-router.put('/update-category/:productId', async (req, res) => {
+router.put('/update-category/:productId', auth, async (req, res) => {
     const productId = parseInt(req.params.productId);
     const newCategoryName = req.body.newCategoryName;
 
@@ -98,7 +99,7 @@ router.put('/update-category/:productId', async (req, res) => {
     }
 });
 
-router.delete('/category/:categoryName/product/:productId', authorize('DELETE-FromCategory'), 
+router.delete('/category/:categoryName/product/:productId',auth , authorize('DELETE-FromCategory'), 
 async (req, res) => {
     try {
         const category = await Category.findOne({

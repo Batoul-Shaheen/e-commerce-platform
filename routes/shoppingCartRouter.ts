@@ -2,10 +2,12 @@ import express from "express";
 import { Product } from "../DB/entities/Product.entity.js";
 import { ShoppingCart } from "../DB/entities/ShoppingCart.entity.js";
 import { ProductCart } from "../DB/entities/ProductCart.entity.js";
+import { auth } from "../middlewares/auth/authenticate.js";
+import { authorize } from "../middlewares/auth/authorize.js";
 
 const router = express.Router();
 
-router.post("/add-to-cart/product/:productId/cart/:cartId", async (req, res) => {
+router.post("/add-to-cart/product/:productId/cart/:cartId", auth, authorize('POST-productToCart'), async (req, res) => {
   try {
     const shoppingCart = await ShoppingCart.findOne({
       relations: ["productCarts.product", "products"],
@@ -51,7 +53,7 @@ router.post("/add-to-cart/product/:productId/cart/:cartId", async (req, res) => 
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", auth, authorize('GET-productToCart'), async (req, res) => {
   try {
     const productCarts = await ProductCart.find({
       where: { cart: { id: parseInt(req.params.id) } },
@@ -82,7 +84,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:productId/cart/:cartId", async (req, res) => {
+router.delete("/:productId/cart/:cartId", auth, authorize('DELETE-productFromCart'), async (req, res) => {
   try {
     const shoppingCart = await ShoppingCart.findOne({
       relations: ["productCarts.product"],
