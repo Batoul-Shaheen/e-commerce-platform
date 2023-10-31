@@ -98,7 +98,8 @@ router.put('/update-category/:productId', async (req, res) => {
     }
 });
 
-router.delete('/category/:categoryName/product/:productId', authorize('DELETE-FromCategory'), async (req, res) => {
+router.delete('/category/:categoryName/product/:productId', authorize('DELETE-FromCategory'), 
+async (req, res) => {
     try {
         const category = await Category.findOne({
             relations: ["products"],
@@ -124,7 +125,7 @@ router.delete('/category/:categoryName/product/:productId', authorize('DELETE-Fr
             await productCategory.save();
             await category.save();
             return res.status(200).json({
-                message: "Category updated successfully",
+                message: "Category updated successfully & quantity decrease",
                 category: category,
             });
         } else {

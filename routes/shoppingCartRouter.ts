@@ -82,7 +82,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.delete("/update-cart/product/:productId/cart/:cartId", async (req, res) => {
+router.delete("/:productId/cart/:cartId", async (req, res) => {
   try {
     const shoppingCart = await ShoppingCart.findOne({
       relations: ["productCarts.product"],
