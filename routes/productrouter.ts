@@ -78,7 +78,7 @@ router.post('/:categoryName', auth, authorize('POST-rpoductToCategory'), async (
     }
 });
 
-router.put('/update-category/:productId', auth, async (req, res) => {
+router.put('/update-category/:productId', auth, authorize('PUT-productToCategory'), async (req, res) => {
     const productId = parseInt(req.params.productId);
     const newCategoryName = req.body.newCategoryName;
 

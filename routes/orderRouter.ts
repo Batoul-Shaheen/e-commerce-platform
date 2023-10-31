@@ -100,8 +100,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.put("/:orderId", auth, authorize('PUT-order'),
- async (req, res) => {
+router.put("/:orderId", auth, authorize('PUT-order'), async (req, res) => {
   const orderId = parseInt(req.params.orderId);
   const { status } = req.body;
 
@@ -117,8 +116,6 @@ router.put("/:orderId", auth, authorize('PUT-order'),
   } catch (error) {
     res.status(500).send("Error updating order:");
   }
-}
-);
+});
 
 export default router;
-

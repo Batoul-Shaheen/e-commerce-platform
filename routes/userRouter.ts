@@ -2,8 +2,6 @@ import express from "express";
 import { insertUser, getUsers, getUsersById, insertRole, insertPermission, getRoles, login } from "../controllers/user.js";
 import { validateUser } from "../middlewares/validation/user.js";
 import { auth } from "../middlewares/auth/authenticate.js";
-import { User } from "../DB/entities/User.entity.js";
-import bcrypt from "bcrypt";
 import { authorize } from "../middlewares/auth/authorize.js";
 
 const router = express.Router();
@@ -26,8 +24,7 @@ router.post('/role', authorize('POST-users/role'), auth, (req, res, next) => {
     });
   });
 
-router.post('/permission', auth,
- (req, res, next) => {
+router.post('/permission', auth, (req, res, next) => {
   insertPermission(req.body).then((data) => {
     res.status(201).send(data)
   }).catch(err => {
