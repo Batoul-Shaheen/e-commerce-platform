@@ -43,7 +43,7 @@ const login = async (email: string, password: string) => {
         },
         process.env.SECRET_KEY || '',
         {
-          expiresIn: "30m"
+          expiresIn: "30d"
         }
       );
 

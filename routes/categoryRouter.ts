@@ -1,6 +1,6 @@
 import express from "express";
 import { Category } from "../DB/entities/Category.entity.js";
-import {insertCategory } from "../controllers/category.js";
+import { insertCategory } from "../controllers/category.js";
 import { authorize } from "../middlewares/auth/authorize.js";
 import { auth } from "../middlewares/auth/authenticate.js";
 

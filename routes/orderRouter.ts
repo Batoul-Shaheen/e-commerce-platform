@@ -34,34 +34,58 @@ router.post("/:userId", auth, authorize('POST-order'), async (req, res) => {
 
 router.post("/add-to-order/product/:productId/order/:orderId", auth, authorize('POST-productToOrder'), async (req, res) => {
   try {
-    const orderId = parseInt(req.params.orderId);
-    const productId = parseInt(req.params.productId);
+    const order = await Order.findOne({
+      relations: ["orderItem.products", "products"],
+      where: { id: parseInt(req.params.orderId) },
+    });
 
-    const order = await Order.findOne({ relations: ["orderItem.products", "products"], where: { id: orderId } });
-    const product = await Product.findOne({ where: { id: productId } });
+    const product = await Product.findOne({
+      where: { id: parseInt(req.params.productId) },
+    });
 
     if (!order || !product) {
       return res.status(404).send("Order or product not found");
     }
 
-    let orderItem = order.orderItem.find((oi) => oi.products.id === productId);
+    if (product.sales) {
+      const currentDate = new Date();
+      if (currentDate < product.sales.startDate || currentDate > product.sales.endDate) {
+        return res.status(400).send("Product sale is not valid.");
+      }
+    }
+
+    let orderItem = order.orderItem.find(
+      (oi) => oi.products.id === parseInt(req.params.productId)
+    );
 
     if (orderItem) {
       orderItem.quantity += 1;
+      const productPrice = product.salePrice || product.price;
+
+      order.totalAmount += productPrice;
       orderItem.products = product;
       orderItem.orders = order;
+
+      await orderItem.save();
+      await order.save();
+
     } else {
       orderItem = new OrderItem();
       orderItem.products = product;
       orderItem.quantity = 1;
+
+      const productPrice = product.salePrice || product.price;
+
+      order.totalAmount += productPrice;
+      orderItem.orders = order;
+
+      if (!order.orderItem) {
+        order.orderItem = [];
+      }
       order.orderItem.push(orderItem);
     }
 
-    order.totalAmount = order.orderItem.reduce((total, oi) => total + oi.products.price * oi.quantity, 0);
-
-    await orderItem.save();
     await order.save();
-
     return res.status(200).send("Product added to the order");
   } catch (error) {
     console.error(error);
@@ -100,8 +124,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.put("/:orderId", auth, authorize('PUT-order'),
- async (req, res) => {
+router.put("/:orderId", auth, authorize('PUT-order'), async (req, res) => {
   const orderId = parseInt(req.params.orderId);
   const { status } = req.body;
 
@@ -117,8 +140,6 @@ router.put("/:orderId", auth, authorize('PUT-order'),
   } catch (error) {
     res.status(500).send("Error updating order:");
   }
-}
-);
+});
 
 export default router;
-

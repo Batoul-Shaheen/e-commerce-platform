@@ -55,5 +55,5 @@ export class Product extends BaseEntity {
 
   @ManyToMany(() => Sale, (sale) => sale.products)
   @JoinTable()
-  sales: Sale[];
+  sales: Sale;
 }
