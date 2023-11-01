@@ -43,7 +43,7 @@ router.get('/:id', async (req, res) => {
 });
 
 
-router.post('/:categoryName', auth, authorize('POST-rpoductToCategory'), async (req, res) => {
+router.post('/:categoryName', auth, authorize('POST-productToCategory'), async (req, res) => {
     try {
         const product = req.body;
         const categoryName = product.categoryName;

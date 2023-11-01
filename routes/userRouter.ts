@@ -15,7 +15,7 @@ router.post("/signup", validateUser, async (req, res, next) => {
   });
 });
 
-router.post('/role', authorize('POST-users/role'), auth, (req, res, next) => {
+router.post('/role', auth, authorize('POST-users/role'), (req, res, next) => {
   insertRole(req.body).then((data) => {
     res.status(201).send(data)
   }).catch(err => {
@@ -24,7 +24,7 @@ router.post('/role', authorize('POST-users/role'), auth, (req, res, next) => {
   });
 });
 
-router.post('/permission', auth, (req, res, next) => {
+router.post('/permission', auth, authorize('POST-permission'), (req, res, next) => {
   insertPermission(req.body).then((data) => {
     res.status(201).send(data)
   }).catch(err => {
@@ -56,7 +56,7 @@ router.post('/login', (req, res) => {
     })
 });
 
-router.get('/roles', authorize('GET-users/role'), auth, async (req, res, next) => {
+router.get('/roles', auth, authorize('GET-users/role'), async (req, res, next) => {
   try {
     const roles = await getRoles();
     res.send(roles);
@@ -84,8 +84,8 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.get("/logout", async (req, res, next) => {
-  const username = req.body
+router.get("/logout/:username", async (req, res, next) => {
+  const username = req.params.username
   res.cookie("username", "", {
     maxAge: -1,
     expires: new Date(Date.now() - 1000),
@@ -97,7 +97,7 @@ router.get("/logout", async (req, res, next) => {
     maxAge: -1,
   });
 
-  res.status(200).send("successfully log out");
+  res.status(200).send(`${username} You have logged out successfully.`);
 });
 
 export default router;

@@ -36,18 +36,20 @@ router.post("/add-to-cart/product/:productId/cart/:cartId", auth, authorize('POS
 
     if (existingProductCart) {
       existingProductCart.quantity += 1;
-      const productPrice = product.salePrice
+      const productPrice = product.salePrice || product.price;
 
       shoppingCart.bill += productPrice;
 
       await existingProductCart.save();
       await shoppingCart.save();
+
+      res.status(200).send('Product quantity increased successfully');
     } else {
       const newProductCart = new ProductCart();
       newProductCart.product = product;
       newProductCart.quantity = 1;
 
-      const productPrice = product.price;
+      const productPrice = product.salePrice || product.price;
 
       shoppingCart.bill += (productPrice * newProductCart.quantity);
 
@@ -115,7 +117,7 @@ router.delete("/:productId/cart/:cartId", auth, authorize('DELETE-productFromCar
     if (productCartIndex !== -1) {
       const productCart = shoppingCart.productCarts[productCartIndex];
       productCart.quantity -= 1;
-      shoppingCart.bill -= productCart.product.price;
+      shoppingCart.bill -= productCart.product.salePrice || productCart.product.price;
 
       if (productCart.quantity === 0) {
         shoppingCart.productCarts.splice(productCartIndex, 1);

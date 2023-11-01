@@ -1,10 +1,12 @@
 import express from 'express';
 import { Product } from '../DB/entities/Product.entity.js';
 import { Sale } from "../DB/entities/Sale.entity.js";
+import { auth } from '../middlewares/auth/authenticate.js';
+import { authorize } from '../middlewares/auth/authorize.js';
 
 const router = express.Router();
 
-router.post('/sales', async (req, res) => {
+router.post('/sales', auth, authorize("Post-sale"), async (req, res) => {
     const { name, startDate, endDate, discountPercentage, productIds } = req.body;
     try {
         const sale = new Sale();

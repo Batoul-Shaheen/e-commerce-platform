@@ -68,7 +68,7 @@ router.post("/add-to-order/product/:productId/order/:orderId", auth, authorize('
 
       await orderItem.save();
       await order.save();
-
+      res.status(200).send('Product quantity increased successfully');
     } else {
       orderItem = new OrderItem();
       orderItem.products = product;
@@ -85,6 +85,7 @@ router.post("/add-to-order/product/:productId/order/:orderId", auth, authorize('
       order.orderItem.push(orderItem);
     }
 
+    await orderItem.save();
     await order.save();
     return res.status(200).send("Product added to the order");
   } catch (error) {
