@@ -10,7 +10,7 @@ import saleRouter from "./routes/saleRouter.js";
 import cookieParser from 'cookie-parser';
 import router from "./review.js";
 import cors from "cors";
-import stripeRouter from './server.js';
+import stripeRouter from './stripe.js';
 
 
 const app = express();
@@ -27,6 +27,7 @@ app.use("/shoppingCart", shoppingCartRouter);
 app.use("/sale", saleRouter);
 app.use("/review", router);
 app.use("/stripe", stripeRouter)
+
 
 
 

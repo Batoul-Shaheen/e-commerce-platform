@@ -26,7 +26,7 @@ router.post('/:saleId', async (req, res) => {
                 products,
             });
         } else {
-            sale.products = [...sale.products, ...products];
+             sale.products = [...sale.products, ...products];
             sale.name = name || sale.name;
             sale.startDate = startDate || sale.startDate;
             sale.endDate = endDate || sale.endDate;
@@ -34,14 +34,12 @@ router.post('/:saleId', async (req, res) => {
         }
 
         const savedSale = await Sale.save(sale);
-
         return res.status(201).json(savedSale);
     } catch (error) {
         console.error(error);
         return res.status(500).send("Internal server error");
     }
 });
-
 
 // router.put('/:id', async (req, res) => {
 //     try {
