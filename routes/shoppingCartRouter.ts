@@ -22,6 +22,13 @@ router.post("/add-to-cart/product/:productId/cart/:cartId", auth, authorize('POS
       return res.status(404).send("Shopping cart or product not found");
     }
 
+    if (product.sales) {
+      const currentDate = new Date();
+      if (currentDate < product.sales.startDate || currentDate > product.sales.endDate) {
+        return res.status(400).send("Product sale is not valid.");
+      }
+    }
+
     const existingProductCart = shoppingCart.productCarts ? shoppingCart.productCarts.find(
       (productCart) => productCart.product.id === parseInt(req.params.productId)
     )
@@ -29,19 +36,25 @@ router.post("/add-to-cart/product/:productId/cart/:cartId", auth, authorize('POS
 
     if (existingProductCart) {
       existingProductCart.quantity += 1;
-      shoppingCart.bill += existingProductCart.product.price;
+      const productPrice = product.salePrice
+
+      shoppingCart.bill += productPrice;
+
       await existingProductCart.save();
       await shoppingCart.save();
     } else {
       const newProductCart = new ProductCart();
       newProductCart.product = product;
       newProductCart.quantity = 1;
-      shoppingCart.bill += (newProductCart.product.price * newProductCart.quantity);
+
+      const productPrice = product.price;
+
+      shoppingCart.bill += (productPrice * newProductCart.quantity);
 
       if (!shoppingCart.productCarts) {
         shoppingCart.productCarts = [];
       }
-      
+
       shoppingCart.productCarts.push(newProductCart);
       await newProductCart.save();
       await shoppingCart.save();

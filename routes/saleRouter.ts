@@ -4,72 +4,31 @@ import { Sale } from "../DB/entities/Sale.entity.js";
 
 const router = express.Router();
 
-router.post('/:saleId', async (req, res) => {
+router.post('/sales', async (req, res) => {
+    const { name, startDate, endDate, discountPercentage, productIds } = req.body;
     try {
-        const { name, startDate, endDate, discountPercentage, productIds } = req.body;
-        const saleId = parseInt(req.params.saleId);
+        const sale = new Sale();
+        sale.name = name;
+        sale.startDate = new Date(startDate);
+        sale.endDate = new Date(endDate);
+        sale.discountPercentage = discountPercentage;
 
-        let sale = saleId ? await Sale.findOne({ relations: ["products"], where: { id: saleId } }) : null;
+        const products = await Product.findByIds(productIds);
 
-        const products = await Product.findBy(productIds);
+        products.forEach(product => {
+            product.salePrice = product.price - (product.price * discountPercentage) / 100;
+            product.save();
+        });
 
-        if (!products || products.length === 0) {
-            return res.status(400).send("No valid products selected for the sale.");
-        }
+        sale.products = products;
 
-        if (!sale) {
-            sale = Sale.create({
-                name,
-                startDate,
-                endDate,
-                discountPercentage,
-                products,
-            });
-        } else {
-            sale.products = [...sale.products, ...products];
-            sale.name = name || sale.name;
-            sale.startDate = startDate || sale.startDate;
-            sale.endDate = endDate || sale.endDate;
-            sale.discountPercentage = discountPercentage || sale.discountPercentage;
-        }
+        await sale.save();
 
-        const savedSale = await Sale.save(sale);
-
-        return res.status(201).json(savedSale);
+        res.status(201).json(sale);
     } catch (error) {
-        console.error(error);
-        return res.status(500).send("Internal server error");
+        console.error('An error occurred:', error);
+        res.status(500).json({ error: 'An error occurred.' });
     }
 });
-
-
-// router.put('/:id', async (req, res) => {
-//     try {
-//         const { name, startDate, endDate, discountPercentage, productIds } = req.body;
-
-//         const sale = await Sale.findOne({ relations: ["products"], where: { id: parseInt(req.params.id) } });
-
-//         if (!sale) {
-//             return res.status(404).send("Sale not found.");
-//         }
-
-//         if (productIds) {
-//             const products = await Product.findBy(productIds);
-//             sale.products = products;
-//         }
-
-//         if (name) sale.name = name;
-//         if (startDate) sale.startDate = startDate;
-//         if (endDate) sale.endDate = endDate;
-//         if (discountPercentage) sale.discountPercentage = discountPercentage;
-
-//         const updatedSale = await Sale.save(sale);
-
-//         return res.status(200).json(updatedSale);
-//     } catch (error) {
-//         console.error(error);
-//         return res.status(500).send("Internal server error");
-//     }
-// });
 
 export default router;

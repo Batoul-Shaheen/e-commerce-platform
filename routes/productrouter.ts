@@ -99,8 +99,7 @@ router.put('/update-category/:productId', auth, authorize('PUT-productToCategory
     }
 });
 
-router.delete('/category/:categoryName/product/:productId',auth , authorize('DELETE-FromCategory'), 
-async (req, res) => {
+router.delete('/category/:categoryName/product/:productId', auth, authorize('DELETE-FromCategory'), async (req, res) => {
     try {
         const category = await Category.findOne({
             relations: ["products"],

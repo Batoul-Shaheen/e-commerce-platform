@@ -16,13 +16,13 @@ router.post("/signup", validateUser, async (req, res, next) => {
 });
 
 router.post('/role', authorize('POST-users/role'), auth, (req, res, next) => {
-    insertRole(req.body).then((data) => {
-      res.status(201).send(data)
-    }).catch(err => {
-      console.error(err);
-      res.status(500).send(err);
-    });
+  insertRole(req.body).then((data) => {
+    res.status(201).send(data)
+  }).catch(err => {
+    console.error(err);
+    res.status(500).send(err);
   });
+});
 
 router.post('/permission', auth, (req, res, next) => {
   insertPermission(req.body).then((data) => {
@@ -57,13 +57,13 @@ router.post('/login', (req, res) => {
 });
 
 router.get('/roles', authorize('GET-users/role'), auth, async (req, res, next) => {
-    try {
-      const roles = await getRoles();
-      res.send(roles);
-    } catch (error) {
-      res.status(500).send("Something went wrong");
-    }
-  });
+  try {
+    const roles = await getRoles();
+    res.send(roles);
+  } catch (error) {
+    res.status(500).send("Something went wrong");
+  }
+});
 
 router.get("/", async (req, res) => {
   try {
