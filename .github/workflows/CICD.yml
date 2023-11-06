@@ -36,14 +36,14 @@ jobs:
     - name: Publish docker image
       run: docker push ghcr.io/batoul-shaheen/e-commerce-platform:${{ steps.image_version.outputs.gitsha }}
     - name: Get EC2 Instance IPs
-        id: get_instance_ips
-        run: |
-          instances=$(aws ec2 describe-instances --filters "Name=tag:aws:autoscaling:groupName,Values=e-Commerce-AB" --query 'Reservations[*].Instances[*].[PublicIpAddress]' --output json | jq --compact-output 'flatten')
-          echo "ips=$instances" >> $GITHUB_OUTPUT
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
+      id: get_instance_ips
+      run: |
+        instances=$(aws ec2 describe-instances --filters "Name=tag:aws:autoscaling:groupName,Values=e-Commerce-AB" --query 'Reservations[*].Instances[*].[PublicIpAddress]' --output json | jq --compact-output 'flatten')
+        echo "ips=$instances" >> $GITHUB_OUTPUT
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
   
   deploy:
     needs: ["build"]
