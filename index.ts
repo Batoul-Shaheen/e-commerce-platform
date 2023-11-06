@@ -28,9 +28,6 @@ app.use("/sale", saleRouter);
 app.use("/review", router);
 app.use("/stripe", stripeRouter)
 
-
-
-
 app.get("/health", (req, res) => {
   res.send("Hello, From E-Commerce :)");
 });
