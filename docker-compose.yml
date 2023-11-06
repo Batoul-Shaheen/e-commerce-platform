@@ -1,14 +1,18 @@
 version: '3'
 services:
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  app:
+    container_name: app-docker
+    build: .
     environment:
-     - RDS_DB_PORT=3306
-     - RDS_DB_HOST=e-commerceDB.conevz7aueby.eu-north-1.rds.amazonaws.com
-     - RDS_DB_USER_NAME=AnwarBatool
-     - RDS_DB_PASSWORD=$RDS_DB_PASSWORD
-     - RDS_DB_NAME=e-commerce
+      - PORT=$PORT
+      - RDS_DB_HOST=$RDS_DB_HOST
+      - RDS_DB_USER_NAME=$RDS_DB_USER_NAME
+      - RDS_DB_PASSWORD=$RDS_DB_PASSWORD
+      - RDS_DB_NAME=$RDS_DB_NAME
+      - RDS_DB_PORT=$RDS_DB_PORT
+      - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+      - AWS_REGION=$AWS_REGION
     ports:
-     - "80:5000"
+      - "5000:80"
+     

@@ -78,7 +78,8 @@ router.post('/:categoryName', auth, authorize('POST-productToCategory'), async (
     }
 });
 
-router.put('/update-category/:productId', auth, authorize('PUT-productToCategory'), async (req, res) => {
+router.put('/update-category/:productId', auth, authorize('PUT-productToCategory'),
+ async (req, res) => {
     const productId = parseInt(req.params.productId);
     const newCategoryName = req.body.newCategoryName;
 
@@ -99,7 +100,8 @@ router.put('/update-category/:productId', auth, authorize('PUT-productToCategory
     }
 });
 
-router.delete('/category/:categoryName/product/:productId', auth, authorize('DELETE-FromCategory'), async (req, res) => {
+router.delete('/category/:categoryName/product/:productId', auth, authorize('DELETE-FromCategory'),
+ async (req, res) => {
     try {
         const category = await Category.findOne({
             relations: ["products"],

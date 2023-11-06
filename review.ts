@@ -7,8 +7,8 @@ import aws from 'aws-sdk';
 import { User } from "./DB/entities/User.entity.js";
 
 const SESCONFIG = {
-    accessKeyId: process.env.AWS_ACCESS_KEY,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    accessKeyId: process.env.ACCESS_KEY,
+    secretAccessKey: process.env.SECRET_ACCESS_KEY,
     region: process.env.AWS_SES_REGION
 }
 
