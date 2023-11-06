@@ -1,6 +1,6 @@
 version: '3'
 services:
-  web:
+  app:
     image: ghcr.io/batoul-shaheen/e-commerce-platform:$GIT_VERSION
     mem_limit: 5g
     restart: always

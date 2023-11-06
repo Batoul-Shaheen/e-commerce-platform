@@ -10,6 +10,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+
     permissions:
       contents: read
       packages: write
@@ -29,12 +31,13 @@ jobs:
       uses: docker/login-action@v3
       with:
         registry: ghcr.io
-        username: ${{ github.actor }}
+        username: batoul-shaheen
         password: ${{ secrets.GITHUB_TOKEN }}
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag ghcr.io/batoul-shaheen/e-commerce-platform:${{ steps.image_version.outputs.gitsha }}
     - name: Publish docker image
       run: docker push ghcr.io/batoul-shaheen/e-commerce-platform:${{ steps.image_version.outputs.gitsha }}
+
     - name: Get EC2 Instance IPs
       id: get_instance_ips
       run: |
@@ -44,6 +47,7 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: ${{ secrets.AWS_REGION }}
+
   
   deploy:
     needs: ["build"]
@@ -63,7 +67,7 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
+          username: batoul-shaheen
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: deploy
         run: docker compose -f docker-compose-prod.yml up -d && docker system prune -af
