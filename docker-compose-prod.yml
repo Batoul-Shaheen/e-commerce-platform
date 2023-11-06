@@ -6,6 +6,7 @@ services:
     restart: always
     environment:
       - PORT=$PORT
+      - GIT_VERSISON= ${{ needs.build.outputs.image_version }}
       - RDS_DB_HOST=$RDS_DB_HOST
       - RDS_DB_USER_NAME=$RDS_DB_USER_NAME
       - RDS_DB_PASSWORD=$RDS_DB_PASSWORD
