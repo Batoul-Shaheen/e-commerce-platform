@@ -30,6 +30,7 @@ export namespace NSUser {
     price: number;
     quantity: number;
     categoryName: string ;
+    image: string;
   }
 
   export interface Category {

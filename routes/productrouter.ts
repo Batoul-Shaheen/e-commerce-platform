@@ -4,8 +4,21 @@ import { getProductsById, insertProduct } from '../controllers/product.js';
 import { Category } from '../DB/entities/Category.entity.js';
 import { authorize } from '../middlewares/auth/authorize.js';
 import { auth } from '../middlewares/auth/authenticate.js';
+import multer from 'multer'
 
 const router = express.Router();
+
+const storage = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, 'uploads/');
+    },
+    filename: (req, file, callback) => {
+        callback(null, Date.now() + '-' + file.originalname)
+    }
+});
+
+const upload = multer({ storage });
+
 
 router.get("/category/:categoryName", async (req, res) => {
     try {
@@ -43,7 +56,8 @@ router.get('/:id', async (req, res) => {
 });
 
 
-router.post('/:categoryName', auth, authorize('POST-productToCategory'), async (req, res) => {
+router.post('/categoryName', //auth, authorize('POST-productToCategory'), 
+upload.single('image'), async (req, res, next) => {
     try {
         const product = req.body;
         const categoryName = product.categoryName;
@@ -56,6 +70,10 @@ router.post('/:categoryName', auth, authorize('POST-productToCategory'), async (
             return res.status(400).send('Category Not Found');
         }
 
+        if (!req.file) {
+            return next("No file uploaded for product image.")
+        } 
+        
         const existingProduct = await Product.findOneBy({ id: product.id });
 
         if (existingProduct) {
@@ -66,9 +84,7 @@ router.post('/:categoryName', auth, authorize('POST-productToCategory'), async (
             res.status(200).send('Product quantity increased successfully');
         } else {
             product.category = category;
-            await insertProduct({
-                ...product,
-            });
+            await insertProduct(product, req.file);
 
             res.status(201).send('Product inserted successfully');
         }

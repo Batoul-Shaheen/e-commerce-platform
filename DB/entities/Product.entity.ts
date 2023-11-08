@@ -36,6 +36,9 @@ export class Product extends BaseEntity {
   @Column('decimal', { precision: 10, scale: 2 })
   salePrice: number;
 
+  @Column({ nullable: false })
+  image: string;
+
   @ManyToMany(() => Order, (order) => order.products)
   orders: Order[];
 
