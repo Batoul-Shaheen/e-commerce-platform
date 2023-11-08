@@ -6,3 +6,4 @@ dist
 !user.test.js
 !jest.config.js
 uploads
+docker-compose-prod.yml
