@@ -56,7 +56,7 @@ router.get('/:id', async (req, res) => {
 });
 
 
-router.post('/categoryName', //auth, authorize('POST-productToCategory'), 
+router.post('/categoryName', auth, authorize('POST-productToCategory'), 
 upload.single('image'), async (req, res, next) => {
     try {
         const product = req.body;
