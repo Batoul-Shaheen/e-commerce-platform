@@ -1,14 +1,19 @@
 version: '3'
 services:
-  web:
-    image:  ghcr.io/batoul-shaheen/e-commerce-platform:$GIT_VERSION
+  app:
+    image: ghcr.io/batoul-shaheen/e-commerce-platform:latest
+    mem_limit: 5g
     restart: always
     environment:
-     - RDS_DB_PORT=3306
-     - RDS_DB_HOST=e-commerceDB.conevz7aueby.eu-north-1.rds.amazonaws.com
-     - RDS_DB_USER_NAME=AnwarBatool
-     - RDS_DB_PASSWORD=$RDS_DB_PASSWORD
-     - RDS_DB_NAME=e-commerce
+      - PORT=$PORT
+      - RDS_DB_HOST=$RDS_DB_HOST
+      - RDS_DB_USER_NAME=$RDS_DB_USER_NAME
+      - RDS_DB_PASSWORD=$RDS_DB_PASSWORD
+      - RDS_DB_NAME=$RDS_DB_NAME
+      - RDS_DB_PORT=$RDS_DB_PORT
+      - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+      - AWS_REGION=$AWS_REGION
     ports:
-     - "80:5000"
+     - "80:80"
     
