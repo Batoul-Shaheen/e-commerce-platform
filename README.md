@@ -26,8 +26,7 @@ Welcome to **lumières xpress** —the E-commerce Platform backend! Designed usi
 - **Amazon RDS (Relational Database Service)** -> To manage relational databases for our models.
 - **Amazon S3** -> For storing static files and images (image attachment functionality).
 - **Continuous Delivery** -> where every commit to the main branch must result in building a Docker image and automatically deployed to AWS Auto-Scaling Group.
-> Docker Hub
-> AWS Auto-Scaling Group
+> Docker Hub &AWS Auto-Scaling Group
 
 
 ## 🛒 Tech Stack
@@ -41,6 +40,7 @@ Welcome to **lumières xpress** —the E-commerce Platform backend! Designed usi
 <img align="left" alt="Docker Hub" width="30px" style="padding-right:10px;" src="https://drive.google.com/file/d/1BidljLgMkorrC1PlIp8CQ9Gla2KG8fYb/view?usp=sharing" />
 <img align="left" alt="amazon SES" width="30px" style="padding-right:10px;" src="https://images.app.goo.gl/GQK4sMUTExd6p8hF8" />
 <img align="left" alt="AWS" width="30px" style="padding-right:10px;" src="https://drive.google.com/file/d/1JLqeq5MzDXF2oLB0hem01Jb3YoKPTV0x/view?usp=sharing" />
+
 <br     />
   
 -----
@@ -61,7 +61,7 @@ Welcome to **lumières xpress** —the E-commerce Platform backend! Designed usi
 
 1. Clone the repository to your local machine:
    ```
-  https://github.com/Batoul-Shaheen/e-commerce-platform.git
+    https://github.com/Batoul-Shaheen/e-commerce-platform.git
    ```
 2. Install the project dependencies:
    ```
@@ -72,11 +72,10 @@ Welcome to **lumières xpress** —the E-commerce Platform backend! Designed usi
 
 1. Start the development server:
   ```
-    npm run dev
-   ```
+   npm run dev
+  ```
 2. The server should now be running at http://localhost:5000.
 
---- 
 
 
 ## 🛒 Database Schema
@@ -85,10 +84,4 @@ You can see it by clicking [here](https://drive.google.com/file/d/1kexr6YVabyGiS
 ## 🛒 Contributing
 🌟 [Anwar Maswadeh](https://github.com/anwarmaswadeh)
 🌟 [Batool Shaheen](https://github.com/Batoul-Shaheen)
-
-
-
-
-
-
 
