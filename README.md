@@ -25,8 +25,7 @@ Welcome to **lumières xpress** —the E-commerce Platform backend! Designed usi
 - **Amazon SES (Simple Email Service)** -> We used it so that the user would submit a rating for the orderز
 - **Amazon RDS (Relational Database Service)** -> To manage relational databases for our models.
 - **Amazon S3** -> For storing static files and images (image attachment functionality).
-- **Continuous Delivery** -> where every commit to the main branch must result in building a Docker image and automatically deployed to AWS Auto-Scaling Group.
-> Docker Hub &AWS Auto-Scaling Group
+- **Continuous Delivery** -> where every commit to the main branch must result in building a Docker image and automatically deployed to AWS Auto-Scaling Group. > Docker Hub & AWS Auto-Scaling Group
 
 
 ## 🛒 Tech Stack
@@ -37,6 +36,8 @@ Welcome to **lumières xpress** —the E-commerce Platform backend! Designed usi
 <img align="left" alt="TypeORM" width="30px" style="padding-right:10px;" src="https://user-images.githubusercontent.com/62142146/208088732-e168fd64-3e48-4f48-b14d-9d91fa7d99f6.svg" />
 <img align="left" alt="Stripe" width="30px" style="padding-right:10px;" src="https://cdn.iconscout.com/icon/free/png-256/free-stripe-2-498440.png?f=webp" />
 <img align="left" alt="amazon S3" width="30px" style="padding-right:10px;" src="https://www.gliffy.com/sites/default/files/image/2020-06/Amazon-Simple-Storage-Service-S3_Bucket-with-Objects_dark-bg.png" />
+<img align="left" alt="Git Hub" width="30px" style="padding-right:10px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" />
+<img align="left" alt="HTML" width="30px" style="padding-right:10px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-plain.svg" />
 <br     />
   
 -----
@@ -64,7 +65,7 @@ Welcome to **lumières xpress** —the E-commerce Platform backend! Designed usi
     npm install
    ```
 
-> ## RUN
+> ### RUN
 
 1. Start the development server:
   ```
