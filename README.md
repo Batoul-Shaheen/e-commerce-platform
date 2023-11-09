@@ -1,12 +1,12 @@
 <h1 align="center">lumières Xpress 🌟🛒</h1>
 
 ## 🛒 Table of contents
-- **[Introduction]()**
-- **[Features]()**
-- **[Tech Stack]()**
-- **[ Installation and Usage]()**
-- **[Database Schema]()**
-- **[Contributing]()**
+- **[Introduction](https://github.com/Batoul-Shaheen/e-commerce-platform/blob/master/README.md#-introduction)**
+- **[Features](https://github.com/Batoul-Shaheen/e-commerce-platform/tree/master#-features)**
+- **[Tech Stack](https://github.com/Batoul-Shaheen/e-commerce-platform/tree/master#-tech-stack)**
+- **[ Installation and Usage](https://github.com/Batoul-Shaheen/e-commerce-platform/tree/master#-installation-and-usage)**
+- **[Database Schema](https://github.com/Batoul-Shaheen/e-commerce-platform/tree/master#-database-schema)**
+- **[Contributing](https://github.com/Batoul-Shaheen/e-commerce-platform/tree/master#-contributing)**
 
 ## 🛒 Introduction
 Welcome to **lumières xpress** —the E-commerce Platform backend! Designed using ExpressJS with TypeORM, This system will provide the core functionality required for an E-commerce website, ensuring a secure, efficient, and scalable solution for customers and administrators, such as product management, user authentication, shopping cart functionality, order processing, and payment integration.
@@ -40,10 +40,9 @@ Welcome to **lumières xpress** —the E-commerce Platform backend! Designed usi
 <img align="left" alt="Docker Hub" width="30px" style="padding-right:10px;" src="https://drive.google.com/file/d/1BidljLgMkorrC1PlIp8CQ9Gla2KG8fYb/view?usp=sharing" />
 <img align="left" alt="amazon SES" width="30px" style="padding-right:10px;" src="https://images.app.goo.gl/GQK4sMUTExd6p8hF8" />
 <img align="left" alt="AWS" width="30px" style="padding-right:10px;" src="https://drive.google.com/file/d/1JLqeq5MzDXF2oLB0hem01Jb3YoKPTV0x/view?usp=sharing" />
-
 <br     />
   
------
+-
 - **Typed programming language:** TypeScript
 - **Server Environment:** Node.js 
 - **Framework:** Express.js
@@ -82,6 +81,6 @@ Welcome to **lumières xpress** —the E-commerce Platform backend! Designed usi
 You can see it by clicking [here](https://drive.google.com/file/d/1kexr6YVabyGiSkE3ATknDCN5UCYxvBmQ/view?usp=sharing)
 
 ## 🛒 Contributing
-🌟 [Anwar Maswadeh](https://github.com/anwarmaswadeh)
-🌟 [Batool Shaheen](https://github.com/Batoul-Shaheen)
+- 🌟 [Anwar Maswadeh](https://github.com/anwarmaswadeh)
+- 🌟 [Batool Shaheen](https://github.com/Batoul-Shaheen)
 
