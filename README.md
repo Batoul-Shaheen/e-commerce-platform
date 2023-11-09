@@ -7,6 +7,7 @@
 - **[ Installation and Usage](https://github.com/Batoul-Shaheen/e-commerce-platform/tree/master#-installation-and-usage)**
 - **[Database Schema](https://github.com/Batoul-Shaheen/e-commerce-platform/tree/master#-database-schema)**
 - **[Contributing](https://github.com/Batoul-Shaheen/e-commerce-platform/tree/master#-contributing)**
+- **[Connect with us in LinkedIn]()**
 
 ## 🛒 Introduction
 Welcome to **lumières xpress** —the E-commerce Platform backend! Designed using ExpressJS with TypeORM, This system will provide the core functionality required for an E-commerce website, ensuring a secure, efficient, and scalable solution for customers and administrators, such as product management, user authentication, shopping cart functionality, order processing, and payment integration.
@@ -25,7 +26,7 @@ Welcome to **lumières xpress** —the E-commerce Platform backend! Designed usi
 - **Amazon SES (Simple Email Service)** -> We used it so that the user would submit a rating for the orderز
 - **Amazon RDS (Relational Database Service)** -> To manage relational databases for our models.
 - **Amazon S3** -> For storing static files and images (image attachment functionality).
-- **Continuous Delivery** -> where every commit to the main branch must result in building a Docker image and automatically deployed to AWS Auto-Scaling Group. > Docker Hub & AWS Auto-Scaling Group
+- **Continuous Delivery** -> where every commit to the main branch must result in building a **Docker image** and automatically deployed to **AWS Auto-Scaling Group**. 
 
 
 ## 🛒 Tech Stack
@@ -74,11 +75,17 @@ Welcome to **lumières xpress** —the E-commerce Platform backend! Designed usi
 2. The server should now be running at http://localhost:5000.
 
 
-
 ## 🛒 Database Schema
 You can see it by clicking [here](https://drive.google.com/file/d/1kexr6YVabyGiSkE3ATknDCN5UCYxvBmQ/view?usp=sharing)
+
 
 ## 🛒 Contributing
 - 🌟 [Anwar Maswadeh](https://github.com/anwarmaswadeh)
 - 🌟 [Batool Shaheen](https://github.com/Batoul-Shaheen)
+
+## 💻 Connect with us in LinkedIn
+- 🌟 [Anwar Maswadeh](https://www.linkedin.com/in/anwar-maswadeh-31064b27b/)
+- 🌟 [Batool Shaheen](https://www.linkedin.com/in/batool-shaheen-14a583252)
+
+
 
