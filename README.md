@@ -42,7 +42,7 @@ Welcome to **lumières xpress** —the E-commerce Platform backend! Designed usi
 <img align="left" alt="AWS" width="30px" style="padding-right:10px;" src="https://drive.google.com/file/d/1JLqeq5MzDXF2oLB0hem01Jb3YoKPTV0x/view?usp=sharing" />
 <br     />
   
----------
+---------------------------------------------------
 - **Typed programming language:** TypeScript
 - **Server Environment:** Node.js 
 - **Framework:** Express.js
