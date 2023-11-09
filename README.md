@@ -23,7 +23,7 @@ Welcome to **lumières xpress** —the E-commerce Platform backend! Designed usi
 - Integration with Stripe for payment processing.
 - Error Handling.
 - Unit Testing.
-- **Amazon SES (Simple Email Service)** -> We used it so that the user would submit a rating for the orderز
+- **Amazon SES (Simple Email Service)** -> We used it so that the user would submit a rating for the order.
 - **Amazon RDS (Relational Database Service)** -> To manage relational databases for our models.
 - **Amazon S3** -> For storing static files and images (image attachment functionality).
 - **Continuous Delivery** -> where every commit to the main branch must result in building a **Docker image** and automatically deployed to **AWS Auto-Scaling Group**. 
@@ -61,7 +61,7 @@ Welcome to **lumières xpress** —the E-commerce Platform backend! Designed usi
 
 1. Clone the repository to your local machine:
    ```
-    https://github.com/Batoul-Shaheen/e-commerce-platform.git
+   git clone https://github.com/Batoul-Shaheen/e-commerce-platform.git
    ```
 2. Install the project dependencies:
    ```
