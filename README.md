@@ -7,7 +7,7 @@
 - **[ Installation and Usage](https://github.com/Batoul-Shaheen/e-commerce-platform/tree/master#-installation-and-usage)**
 - **[Database Schema](https://github.com/Batoul-Shaheen/e-commerce-platform/tree/master#-database-schema)**
 - **[Contributing](https://github.com/Batoul-Shaheen/e-commerce-platform/tree/master#-contributing)**
-- **[Connect with us in LinkedIn]()**
+- **[Connect with us in LinkedIn](https://github.com/Batoul-Shaheen/e-commerce-platform/blob/master/README.md#-connect-with-us-in-linkedin)**
 
 ## 🛒 Introduction
 Welcome to **lumières xpress** —the E-commerce Platform backend! Designed using ExpressJS with TypeORM, This system will provide the core functionality required for an E-commerce website, ensuring a secure, efficient, and scalable solution for customers and administrators, such as product management, user authentication, shopping cart functionality, order processing, and payment integration.
