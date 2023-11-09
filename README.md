@@ -37,12 +37,9 @@ Welcome to **lumières xpress** —the E-commerce Platform backend! Designed usi
 <img align="left" alt="TypeORM" width="30px" style="padding-right:10px;" src="https://user-images.githubusercontent.com/62142146/208088732-e168fd64-3e48-4f48-b14d-9d91fa7d99f6.svg" />
 <img align="left" alt="Stripe" width="30px" style="padding-right:10px;" src="https://cdn.iconscout.com/icon/free/png-256/free-stripe-2-498440.png?f=webp" />
 <img align="left" alt="amazon S3" width="30px" style="padding-right:10px;" src="https://www.gliffy.com/sites/default/files/image/2020-06/Amazon-Simple-Storage-Service-S3_Bucket-with-Objects_dark-bg.png" />
-<img align="left" alt="Docker Hub" width="30px" style="padding-right:10px;" src="https://drive.google.com/file/d/1BidljLgMkorrC1PlIp8CQ9Gla2KG8fYb/view?usp=sharing" />
-<img align="left" alt="amazon SES" width="30px" style="padding-right:10px;" src="https://images.app.goo.gl/GQK4sMUTExd6p8hF8" />
-<img align="left" alt="AWS" width="30px" style="padding-right:10px;" src="https://drive.google.com/file/d/1JLqeq5MzDXF2oLB0hem01Jb3YoKPTV0x/view?usp=sharing" />
 <br     />
   
----------------------------------------------------
+-----
 - **Typed programming language:** TypeScript
 - **Server Environment:** Node.js 
 - **Framework:** Express.js
